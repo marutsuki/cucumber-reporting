@@ -1,16 +1,23 @@
 {
-  "name": "cucumbler",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build": "tsup src/index.ts --minify --dts --out-dir dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "tsup": "^8.2.3",
-    "typescript": "^5.5.4"
-  }
+    "name": "cucumbler",
+    "version": "0.0.1",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "lint": "eslint src",
+        "format": "prettier --write src",
+        "build": "tsup src/index.ts --minify --dts --out-dir dist",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@eslint/js": "8.57.0",
+        "eslint": "8.57.0",
+        "globals": "^15.8.0",
+        "prettier": "3.3.3",
+        "tsup": "^8.2.3",
+        "typescript": "^5.5.4",
+        "typescript-eslint": "^7.17.0"
+    }
 }
