@@ -4,5 +4,8 @@ export default function processFeature(filePath: string): Feature[] {
     console.info('Processing...');
     const feature: Feature[] = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     console.debug('Processed feature:', filePath);
+
+    // TESTING: REMOVE
+
     return feature;
 }

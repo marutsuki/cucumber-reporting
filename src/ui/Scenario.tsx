@@ -16,13 +16,18 @@ function Status({ status }: { status: Status }) {
             return <div className="badge gap-2">Ambiguous</div>;
     }
 }
-function Step({ name, result }: Step) {
+function Step({ keyword, name, result }: Step) {
     return (
         <li>
             <div className="flex flex-row justify-between text-md">
-                <span>{name}</span>
+                <div className="flex flex-row">
+                    <span className="font-bold">{keyword}</span>
+                    <span className="indent-2">{name}</span>
+                </div>
                 <div className="flex flex-row items-center">
-                    <p className="px-2">{result?.duration || '0.00s'}</p>
+                    <p className="px-2">
+                        {(result?.duration || 0) * 1e-9 + 's'}
+                    </p>
                     <Status status={result?.status || 'ambiguous'} />
                 </div>
             </div>
@@ -38,10 +43,10 @@ export default function Scenario({ name, steps }: Scenario) {
         failed = true;
     }
     return (
-        <div className="collapse bg-base-200 m-2">
+        <div className="collapse bg-base-300 m-2">
             <input className="min-h-1" type="checkbox" />
             <h2
-                className={`collapse-title text-xl font-medium p-2 min-h-0 ${failed ? 'bg-error' : ''}`}
+                className={`collapse-title text-md font-medium p-1 min-h-0 ${failed ? 'bg-error' : ''}`}
             >
                 {name}
             </h2>
