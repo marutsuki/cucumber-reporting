@@ -2,8 +2,17 @@ type Match = {
     location: string;
 };
 
+type Status =
+    | 'passed'
+    | 'failed'
+    | 'skipped'
+    | 'pending'
+    | 'undefined'
+    | 'ambiguous'
+    | 'ambiguous';
+
 type Result = {
-    status: string;
+    status: Status;
     duration: number;
     error_message?: string;
 };
