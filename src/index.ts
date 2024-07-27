@@ -22,6 +22,5 @@ fs.writeFile(path.join(outPath, 'output.html'), document, (err) => {
     } else {
         console.info('Done.');
     }
+    process.exit(0);
 });
-
-process.exit(0);
