@@ -1,3 +1,6 @@
+import { Feature } from '../processing/types';
+import { TestSuite } from '../rendering/types';
+
 export type TestSuiteStats = {
     passed: number;
     failed: number;

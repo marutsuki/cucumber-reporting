@@ -1,10 +1,12 @@
 type Config = {
     projDir?: string;
     theme?: string;
+    showFailedOnStart: boolean;
 };
 
 const config: Config = {
     theme: 'light',
+    showFailedOnStart: false,
 };
 
 export const Config = {

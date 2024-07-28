@@ -1,5 +1,6 @@
 import path from 'path';
 import { Config } from '../config';
+import { Scenario, Status, Step } from '../processing/types';
 
 function Status({ status }: { status: Status }) {
     switch (status) {

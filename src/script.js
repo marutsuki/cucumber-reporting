@@ -18,7 +18,48 @@ const activeFeatures = [];
 
 const allScenarios = [...document.getElementsByClassName("scenario")];
 
-let scenarioFailFilterEnabled = false;
+/** Tailwind setup */
+
+
+// eslint-disable-next-line no-undef
+tailwind.config = {
+    daisyui: {
+        themes: [
+            "light",
+            "dark",
+            "cupcake",
+            "bumblebee",
+            "emerald",
+            "corporate",
+            "synthwave",
+            "retro",
+            "cyberpunk",
+            "valentine",
+            "halloween",
+            "garden",
+            "forest",
+            "aqua",
+            "lofi",
+            "pastel",
+            "fantasy",
+            "wireframe",
+            "black",
+            "luxury",
+            "dracula",
+            "cmyk",
+            "autumn",
+            "business",
+            "acid",
+            "lemonade",
+            "night",
+            "coffee",
+            "winter",
+            "dim",
+            "nord",
+            "sunset",
+        ],
+    }
+}
 
 /**
  * Add an event listener to filter features based on the search input.
@@ -59,7 +100,6 @@ const FAILED_SCENARIOS_ONLY_CHECKBOX_ID = "fail-filter-scenario"
  */
 document.getElementById(FAILED_SCENARIOS_ONLY_CHECKBOX_ID).addEventListener("change", (e) => {
     const enabled = e.target.checked;
-    scenarioFailFilterEnabled = enabled;
     for (const scenario of allScenarios) {
         if (!enabled || scenario.getAttribute('data-status') === 'failed') {
             scenario.removeAttribute(FAILED_SCENARIO_FILTER_ATT);

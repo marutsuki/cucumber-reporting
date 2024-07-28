@@ -1,8 +1,8 @@
-type Match = {
+export type Match = {
     location: string;
 };
 
-type Status =
+export type Status =
     | 'passed'
     | 'failed'
     | 'skipped'
@@ -11,24 +11,24 @@ type Status =
     | 'ambiguous'
     | 'ambiguous';
 
-type Result = {
+export type Result = {
     status: Status;
     duration: number;
     error_message?: string;
 };
 
-type Embedding = {
+export type Embedding = {
     data: string;
     mime_type: string;
 };
 
-type Argument = {
+export type Argument = {
     rows: {
         cells: string[];
     }[];
 };
 
-type Step = {
+export type Step = {
     keyword: string;
     line: number;
     name: string;
@@ -38,12 +38,12 @@ type Step = {
     arguments?: Argument[];
 };
 
-type Tag = {
+export type Tag = {
     name: string;
     line: number;
 };
 
-type Scenario = {
+export type Scenario = {
     description: string;
     id: string;
     keyword: string;
@@ -54,7 +54,7 @@ type Scenario = {
     type: string;
 };
 
-type Feature = {
+export type Feature = {
     id: string;
     line: number;
     description: string;

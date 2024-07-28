@@ -1,4 +1,5 @@
 import { FeatureStats } from '../data/stats';
+import { Feature } from '../processing/types';
 import Scenario from './Scenario';
 
 export default function Feature({

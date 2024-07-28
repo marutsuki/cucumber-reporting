@@ -1,7 +1,7 @@
 import { Config } from '../config';
 import { getTestSuiteStats } from '../data/stats';
+import { TestSuite } from '../rendering/types';
 import Feature from './Feature';
-import './globals.css';
 import Header from './Header';
 import Summary from './Summary';
 import Toolbar from './Toolbar';
@@ -18,6 +18,12 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                     content="width=device-width, initial-scale=1.0"
                 />
                 <title>{`${model.name} Cucumber Report`}</title>
+                <link
+                    href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
+                    rel="stylesheet"
+                    type="text/css"
+                />
+                <script src="https://cdn.tailwindcss.com"></script>
                 <link type="text/css" rel="stylesheet" href="./globals.css" />
             </head>
             <body className="py-4 px-10">

@@ -1,5 +1,7 @@
 {
     "compilerOptions": {
+        "baseUrl": ".",
+        "rootDir": ".",
         "outDir": "./dist",
         "target": "ESNext",
         "moduleResolution": "node",
@@ -7,8 +9,12 @@
         "esModuleInterop": true,
         "declaration": true,
         "jsx": "react-jsx",
+        "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "strict": true
+        "strict": true,
+        "allowJs": true,
+        "resolveJsonModule": true,
     },
-    "exclude": ["node_modules", "dist"]
+    "include": ["cli.ts", "src/**/*.tsx", "src/**/*.ts", "package.json", "src/script.js", "./LICENSE"],
+    "exclude": ["node_modules"]
 }
