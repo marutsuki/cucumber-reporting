@@ -46,7 +46,7 @@ function Ref({ location }: { location: string }) {
     );
 }
 
-function Step({ keyword, name, match, result }: Step) {
+function Step({ keyword, name, match, result, embeddings }: Step) {
     return (
         <li>
             <div className="flex flex-row justify-between text-md">
@@ -61,6 +61,28 @@ function Step({ keyword, name, match, result }: Step) {
                     <Status status={result?.status || 'ambiguous'} />
                 </div>
             </div>
+            {embeddings &&
+                embeddings.length > 0 &&
+                embeddings.map((embedding) => {
+                    switch (embedding.mime_type) {
+                        case 'image/png':
+                            return (
+                                <img
+                                    src={`data:image/png;base64,${embedding.data}`}
+                                    alt="screenshot"
+                                />
+                            );
+                        case 'image/jpeg':
+                            return (
+                                <img
+                                    src={`data:image/jpeg;base64,${embedding.data}`}
+                                    alt="screenshot"
+                                />
+                            );
+                        default:
+                            return <pre>{embedding.data}</pre>;
+                    }
+                })}
             {result?.error_message && (
                 <>
                     {match && <Ref location={match.location} />}

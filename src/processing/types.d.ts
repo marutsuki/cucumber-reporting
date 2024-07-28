@@ -17,12 +17,18 @@ type Result = {
     error_message?: string;
 };
 
+type Embedding = {
+    data: string;
+    mime_type: string;
+};
+
 type Step = {
     keyword: string;
     line: number;
     name: string;
     match?: Match;
     result?: Result;
+    embeddings?: Embedding[];
 };
 
 type Tag = {
