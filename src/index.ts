@@ -25,7 +25,6 @@ export async function renderReport(
     }
     const features = await processFeature(reportPath);
 
-    console.log(features);
     const document = render({ name: appName, features: features });
 
     Promise.all([
