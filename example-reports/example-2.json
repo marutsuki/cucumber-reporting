@@ -928,6 +928,87 @@
                 ],
                 "tags": [],
                 "type": "scenario"
+            },
+            {
+                "description": "",
+                "id": "super-wide;a-table",
+                "keyword": "Scenario",
+                "line": 30,
+                "name": "A table",
+                "steps": [
+                    {
+                        "arguments": [],
+                        "keyword": "Given ",
+                        "line": 31,
+                        "name": "SUPER WIDE MESSAGE AAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                        "match": {
+                            "location": "features\\steps\\feature1.js:4"
+                        },
+                        "result": {
+                            "status": "passed",
+                            "duration": 414299
+                        }
+                    },
+                    {
+                        "arguments": [],
+                        "keyword": "When ",
+                        "line": 32,
+                        "name": "the app loads",
+                        "match": {
+                            "location": "features\\steps\\feature1.js:14"
+                        },
+                        "result": {
+                            "status": "passed",
+                            "duration": 290700
+                        }
+                    },
+                    {
+                        "arguments": [],
+                        "keyword": "Then ",
+                        "line": 33,
+                        "name": "the user should see a greeting",
+                        "match": {
+                            "location": "features\\steps\\feature1.js:21"
+                        },
+                        "result": {
+                            "status": "passed",
+                            "duration": 297100
+                        }
+                    },
+                    {
+                        "arguments": [
+                            {
+                                "rows": [
+                                    {
+                                        "cells": ["a", "b", "c"]
+                                    },
+                                    {
+                                        "cells": ["1", "2", "3"]
+                                    },
+                                    {
+                                        "cells": ["4", "5", "6"]
+                                    },
+                                    {
+                                        "cells": ["7", "8", "9"]
+                                    }
+                                ]
+                            }
+                        ],
+                        "keyword": "And ",
+                        "line": 34,
+                        "name": "I will have a table like this:",
+                        "match": {
+                            "location": "features\\steps\\feature3.js:19"
+                        },
+                        "result": {
+                            "status": "failed",
+                            "duration": 4572999,
+                            "error_message": "SUPER WIDE MESSAGE AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                        }
+                    }
+                ],
+                "tags": [],
+                "type": "scenario"
             }
         ],
         "id": "extra-stuff-1231231",

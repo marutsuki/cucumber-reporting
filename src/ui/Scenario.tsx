@@ -49,8 +49,10 @@ function Ref({ location }: { location: string }) {
 
 function ErrorMessage({ message }: { message: string }) {
     return (
-        <div className="max-h-96 overflow-y-auto">
-            <pre className="text-sm">{message}</pre>
+        <div className="max-h-96 overflow-y-auto p-4">
+            <pre className="text-sm max-w-full bg-base-100 text-base-content p-2">
+                {message}
+            </pre>
         </div>
     );
 }
@@ -69,7 +71,7 @@ function Step({
 }: Step & React.Attributes) {
     const key = props.key?.toString() || '';
     return (
-        <li {...props} className="pt-2">
+        <li {...props} className="pt-2 max-w-full">
             <div>
                 <div className="flex flex-row justify-between text-md">
                     <div className="flex flex-row">
@@ -84,7 +86,7 @@ function Step({
                     </div>
                 </div>
 
-                <div className="max-w-fit">
+                <div className="max-w-[75%]">
                     {argumentz &&
                         argumentz.map((arg, k) => (
                             <table key={`${name}:table:${k}`} className="table">
