@@ -156,7 +156,7 @@ export default function Scenario({ id, name, steps }: Scenario) {
             </h2>
             <ul className="collapse-content">
                 {steps.map((step) => (
-                    <Step key={id.concat(':').concat(step.name)} {...step} />
+                    <Step key={`${id || name}:${step.name}}`} {...step} />
                 ))}
             </ul>
         </div>

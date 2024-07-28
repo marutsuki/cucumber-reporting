@@ -98,6 +98,7 @@ document
         update();
     });
 
+document.getElementById(FAILED_FEATURES_ONLY_CHECKBOX_ID).dispatchEvent(new Event('change'));
 const FAILED_SCENARIOS_ONLY_CHECKBOX_ID = 'fail-filter-scenario';
 
 /**
@@ -116,6 +117,7 @@ document
         }
         update();
     });
+document.getElementById(FAILED_SCENARIOS_ONLY_CHECKBOX_ID).dispatchEvent(new Event('change'));
 
 /* Utility functions */
 
