@@ -1,7 +1,7 @@
 {
-    "name": "cucumbler",
-    "version": "0.0.1",
-    "description": "",
+    "name": "cuke-reports",
+    "version": "1.0.0",
+    "description": "HTML reports for Cucumber test results",
     "main": "src/index.js",
     "scripts": {
         "lint": "eslint src",
