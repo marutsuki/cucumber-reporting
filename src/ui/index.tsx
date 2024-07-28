@@ -49,9 +49,15 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                         <a className="btn btn-ghost text-xl">Results</a>
                     </div>
                     <div className="flex-none gap-2">
-                        <label>Failed Only</label>
+                        <label>Failed Features Only</label>
                         <input
-                            id="fail-filter"
+                            id="fail-filter-feature"
+                            type="checkbox"
+                            defaultChecked={false}
+                        />
+                        <label>Failed Scenarios Only</label>
+                        <input
+                            id="fail-filter-scenario"
                             type="checkbox"
                             defaultChecked={false}
                         />

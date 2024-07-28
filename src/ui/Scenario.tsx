@@ -48,7 +48,7 @@ function Ref({ location }: { location: string }) {
 
 function Step({ keyword, name, match, result, embeddings }: Step) {
     return (
-        <li>
+        <li className="pt-2">
             <div className="flex flex-row justify-between text-md">
                 <div className="flex flex-row">
                     <span className="font-bold">{keyword}</span>
@@ -100,10 +100,13 @@ export default function Scenario({ name, steps }: Scenario) {
         failed = true;
     }
     return (
-        <div className="collapse bg-base-300 m-2">
+        <div
+            {...(failed && { 'data-status': 'failed' })}
+            className="scenario collapse bg-base-300 m-2"
+        >
             <input className="min-h-1" type="checkbox" />
             <h2
-                className={`text-base-content collapse-title text-md font-medium p-1 min-h-0 bg-opacity-50 ${failed ? 'bg-error' : 'bg-neutral'}`}
+                className={`text-base-content collapse-title text-md font-medium p-1 min-h-0 bg-opacity-50 ${failed ? 'bg-error text-error-content' : 'bg-neutral text-neutral-content'}`}
             >
                 {name}
             </h2>

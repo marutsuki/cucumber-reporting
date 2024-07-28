@@ -5,7 +5,8 @@ const PAGE_SIZE = 15;
 
 const FEATURE_NAME_ATT = 'data-name';
 const SEARCH_FILTER_ATT = 'data-filtered-search'
-const FAILED_FILTER_ATT = 'data-filtered-failed'
+const FAILED_SCENARIO_FILTER_ATT = 'data-filtered-failed-scenario'
+const FAILED_FEATURE_FILTER_ATT = 'data-filtered-failed-feature'
 
 /* Event listeners */
 
@@ -14,6 +15,10 @@ const SEARCH_INPUT_ID = "feature-search"
 const allFeatures = [...document.getElementsByClassName("feature")];
 const inactiveFeatures = [];
 const activeFeatures = [];
+
+const allScenarios = [...document.getElementsByClassName("scenario")];
+
+let scenarioFailFilterEnabled = false;
 
 /**
  * Add an event listener to filter features based on the search input.
@@ -30,18 +35,36 @@ document.getElementById(SEARCH_INPUT_ID).addEventListener("input", (e) => {
     update();
 })
 
-const FAILED_ONLY_CHECKBOX_ID = "fail-filter"
+const FAILED_FEATURES_ONLY_CHECKBOX_ID = "fail-filter-feature"
 
 /**
  * Add an event listener to filter features based on if they have failed.
  */
-document.getElementById(FAILED_ONLY_CHECKBOX_ID).addEventListener("change", (e) => {
+document.getElementById(FAILED_FEATURES_ONLY_CHECKBOX_ID).addEventListener("change", (e) => {
     const enabled = e.target.checked;
     for (const feature of allFeatures) {
         if (!enabled || feature.getAttribute('data-status') === 'failed') {
-            feature.removeAttribute(FAILED_FILTER_ATT);
+            feature.removeAttribute(FAILED_FEATURE_FILTER_ATT);
         } else {
-            feature.setAttribute(FAILED_FILTER_ATT, '');
+            feature.setAttribute(FAILED_FEATURE_FILTER_ATT, '');
+        }
+    }
+    update();
+});
+
+const FAILED_SCENARIOS_ONLY_CHECKBOX_ID = "fail-filter-scenario"
+
+/**
+ * Add an event listener to filter features based on if they have failed.
+ */
+document.getElementById(FAILED_SCENARIOS_ONLY_CHECKBOX_ID).addEventListener("change", (e) => {
+    const enabled = e.target.checked;
+    scenarioFailFilterEnabled = enabled;
+    for (const scenario of allScenarios) {
+        if (!enabled || scenario.getAttribute('data-status') === 'failed') {
+            scenario.removeAttribute(FAILED_SCENARIO_FILTER_ATT);
+        } else {
+            scenario.setAttribute(FAILED_SCENARIO_FILTER_ATT, '');
         }
     }
     update();
@@ -51,7 +74,7 @@ document.getElementById(FAILED_ONLY_CHECKBOX_ID).addEventListener("change", (e) 
 
 const isEligibleForDisplay = (feature) => {
     return feature.getAttribute(SEARCH_FILTER_ATT) === null
-        && feature.getAttribute(FAILED_FILTER_ATT) === null;
+        && feature.getAttribute(FAILED_FEATURE_FILTER_ATT) === null;
 }
 
 const loadFeatures = () => {
@@ -61,11 +84,21 @@ const loadFeatures = () => {
     allFeatures.forEach((feature) => {
         // Exclude pages that are filtered out
         if (isEligibleForDisplay(feature)) {
+            // DaisyUI uses display: grid for the accordion component
             feature.style.display = "grid";
             activeFeatures.push(feature);
         } else {
             feature.style.display = "none";
             inactiveFeatures.push(feature);
+        }
+    });
+
+    allScenarios.forEach((scenario) => {
+        if (scenario.getAttribute(FAILED_SCENARIO_FILTER_ATT) === null) {
+            // DaisyUI uses display: grid for the accordion component
+            scenario.style.display = "grid";
+        } else {
+            scenario.style.display = "none";
         }
     });
 }
