@@ -4,7 +4,7 @@ import render from './rendering';
 import path from 'path';
 import { Config } from './config';
 
-export function renderReport(
+export async function renderReport(
     reportPath: string,
     outPath: string,
     projDir: string | null,
@@ -23,9 +23,9 @@ export function renderReport(
         Config.setConfig('theme', theme);
         console.info('Using theme:', theme);
     }
+    const features = await processFeature(reportPath);
 
-    const features = processFeature(reportPath);
-
+    console.log(features);
     const document = render({ name: appName, features: features });
 
     Promise.all([
