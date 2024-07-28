@@ -18,11 +18,6 @@ export function getTestSuiteStats(model: TestSuite): TestSuiteStats {
             return [feature.id, featureStats];
         })
     );
-    console.log({
-        passed,
-        failed,
-        features,
-    });
     return {
         passed,
         failed,

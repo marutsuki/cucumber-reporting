@@ -6,7 +6,6 @@ export default function Feature({
     stats,
     ...props
 }: { model: Feature; stats: FeatureStats } & React.Attributes) {
-    console.log(stats);
     const failed = stats.failed > 0;
     return (
         <div

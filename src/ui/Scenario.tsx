@@ -46,21 +46,46 @@ function Ref({ location }: { location: string }) {
     );
 }
 
-function Step({ keyword, name, match, result, embeddings }: Step) {
+function Step({
+    keyword,
+    name,
+    match,
+    result,
+    embeddings,
+    arguments: argumentz,
+}: Step) {
     return (
         <li className="pt-2">
-            <div className="flex flex-row justify-between text-md">
-                <div className="flex flex-row">
-                    <span className="font-bold">{keyword}</span>
-                    <span className="indent-2">{name}</span>
+            <div>
+                <div className="flex flex-row justify-between text-md">
+                    <div className="flex flex-row">
+                        <span className="font-bold">{keyword}</span>
+                        <span className="indent-2">{name}</span>
+                    </div>
+                    <div className="flex flex-row items-center">
+                        <p className="px-2">
+                            {(result?.duration || 0) * 1e-9 + 's'}
+                        </p>
+                        <Status status={result?.status || 'ambiguous'} />
+                    </div>
                 </div>
-                <div className="flex flex-row items-center">
-                    <p className="px-2">
-                        {(result?.duration || 0) * 1e-9 + 's'}
-                    </p>
-                    <Status status={result?.status || 'ambiguous'} />
+
+                <div className="max-w-fit">
+                    {argumentz &&
+                        argumentz.map((arg) => (
+                            <table className="table">
+                                {arg.rows.map((row) => (
+                                    <tr>
+                                        {row.cells.map((cell) => (
+                                            <td>{cell}</td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </table>
+                        ))}
                 </div>
             </div>
+
             {embeddings &&
                 embeddings.length > 0 &&
                 embeddings.map((embedding) => {

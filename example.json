@@ -4,7 +4,7 @@
         "elements": [
             {
                 "description": "",
-                "id": "the-app-should-greet-the-user-upon-startup-1;the-user-launches-the-app-1",
+                "id": "the-app-should-greet-the-user-upon-startup;the-user-launches-the-app",
                 "keyword": "Scenario",
                 "line": 4,
                 "name": "The user launches the app",
@@ -19,7 +19,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 2813199
+                            "duration": 1987899
                         }
                     },
                     {
@@ -32,7 +32,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 407999
+                            "duration": 335199
                         }
                     },
                     {
@@ -45,7 +45,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 453399
+                            "duration": 270700
                         }
                     }
                 ],
@@ -69,7 +69,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 628399
+                            "duration": 237000
                         }
                     },
                     {
@@ -82,7 +82,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 500000
+                            "duration": 309000
                         }
                     },
                     {
@@ -95,7 +95,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 337500
+                            "duration": 230399
                         }
                     },
                     {
@@ -108,7 +108,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 321699
+                            "duration": 255800
                         }
                     },
                     {
@@ -121,7 +121,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 334099
+                            "duration": 230800
                         }
                     }
                 ],
@@ -129,7 +129,7 @@
                 "type": "scenario"
             }
         ],
-        "id": "the-app-should-greet-the-user-upon-startup-1",
+        "id": "the-app-should-greet-the-user-upon-startup",
         "line": 1,
         "keyword": "Feature",
         "name": "The app should greet the user upon startup",
@@ -156,7 +156,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 309599
+                            "duration": 301600
                         }
                     },
                     {
@@ -169,7 +169,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 107699
+                            "duration": 110200
                         }
                     },
                     {
@@ -182,7 +182,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 574000
+                            "duration": 535899
                         }
                     },
                     {
@@ -195,7 +195,7 @@
                         },
                         "result": {
                             "status": "failed",
-                            "duration": 139600,
+                            "duration": 161500,
                             "error_message": "Error: fail\n    at World.<anonymous> (C:\\Users\\marut\\Documents\\Projects\\test-cucumber\\features\\steps\\feature2.js:18:11)"
                         }
                     }
@@ -220,7 +220,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 415100
+                            "duration": 411000
                         }
                     },
                     {
@@ -233,7 +233,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 234900
+                            "duration": 54399
                         }
                     },
                     {
@@ -246,7 +246,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 452100
+                            "duration": 327099
                         }
                     },
                     {
@@ -259,7 +259,7 @@
                         },
                         "result": {
                             "status": "failed",
-                            "duration": 147399,
+                            "duration": 71899,
                             "error_message": "Error: fail\n    at World.<anonymous> (C:\\Users\\marut\\Documents\\Projects\\test-cucumber\\features\\steps\\feature2.js:18:11)"
                         }
                     }
@@ -289,7 +289,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 318000
+                            "duration": 287599
                         }
                     },
                     {
@@ -302,7 +302,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 52699
+                            "duration": 48399
                         }
                     },
                     {
@@ -315,7 +315,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 270999
+                            "duration": 250900
                         }
                     },
                     {
@@ -328,7 +328,7 @@
                         },
                         "result": {
                             "status": "failed",
-                            "duration": 63199,
+                            "duration": 86499,
                             "error_message": "Error: fail\n    at World.<anonymous> (C:\\Users\\marut\\Documents\\Projects\\test-cucumber\\features\\steps\\feature2.js:18:11)"
                         }
                     }
@@ -353,7 +353,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 320800
+                            "duration": 208299
                         }
                     },
                     {
@@ -366,7 +366,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 64999
+                            "duration": 48500
                         }
                     },
                     {
@@ -379,7 +379,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 270699
+                            "duration": 296100
                         }
                     },
                     {
@@ -392,7 +392,7 @@
                         },
                         "result": {
                             "status": "failed",
-                            "duration": 87799,
+                            "duration": 131999,
                             "error_message": "Error: fail\n    at World.<anonymous> (C:\\Users\\marut\\Documents\\Projects\\test-cucumber\\features\\steps\\feature2.js:18:11)"
                         }
                     }
@@ -417,7 +417,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 395199
+                            "duration": 303800
                         }
                     },
                     {
@@ -430,7 +430,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 102399
+                            "duration": 66000
                         }
                     },
                     {
@@ -443,7 +443,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 307000
+                            "duration": 321100
                         }
                     },
                     {
@@ -456,7 +456,7 @@
                         },
                         "result": {
                             "status": "failed",
-                            "duration": 77500,
+                            "duration": 69299,
                             "error_message": "Error: fail\n    at World.<anonymous> (C:\\Users\\marut\\Documents\\Projects\\test-cucumber\\features\\steps\\feature2.js:18:11)"
                         }
                     }
@@ -477,7 +477,7 @@
         "elements": [
             {
                 "description": "",
-                "id": "the-app-should-greet-the-user-upon-startup;the-user-launches-the-app",
+                "id": "extra-stuff;the-user-launches-the-app",
                 "keyword": "Scenario",
                 "line": 4,
                 "name": "The user launches the app",
@@ -492,7 +492,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 367400
+                            "duration": 371800
                         }
                     },
                     {
@@ -505,7 +505,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 330099
+                            "duration": 242599
                         }
                     },
                     {
@@ -518,7 +518,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 291000
+                            "duration": 348399
                         }
                     }
                 ],
@@ -527,7 +527,7 @@
             },
             {
                 "description": "",
-                "id": "the-app-should-greet-the-user-upon-startup;the-user-restarts-the-app",
+                "id": "extra-stuff;the-user-restarts-the-app",
                 "keyword": "Scenario",
                 "line": 9,
                 "name": "The user restarts the app",
@@ -542,7 +542,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 265300
+                            "duration": 186300
                         }
                     },
                     {
@@ -555,7 +555,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 289299
+                            "duration": 238000
                         }
                     },
                     {
@@ -568,7 +568,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 342300
+                            "duration": 308599
                         }
                     },
                     {
@@ -581,7 +581,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 265500
+                            "duration": 197899
                         }
                     },
                     {
@@ -594,7 +594,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 207500
+                            "duration": 267899
                         }
                     },
                     {
@@ -607,7 +607,7 @@
                         },
                         "result": {
                             "status": "failed",
-                            "duration": 86400,
+                            "duration": 76999,
                             "error_message": "Error: fail\n    at World.<anonymous> (C:\\Users\\marut\\Documents\\Projects\\test-cucumber\\features\\steps\\feature2.js:18:11)"
                         }
                     }
@@ -617,7 +617,7 @@
             },
             {
                 "description": "",
-                "id": "the-app-should-greet-the-user-upon-startup;screenshot",
+                "id": "extra-stuff;screenshot",
                 "keyword": "Scenario",
                 "line": 18,
                 "name": "Screenshot",
@@ -627,7 +627,7 @@
                         "hidden": true,
                         "result": {
                             "status": "passed",
-                            "duration": 3688899
+                            "duration": 3308900
                         },
                         "embeddings": [
                             {
@@ -646,7 +646,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 346300
+                            "duration": 399000
                         }
                     },
                     {
@@ -659,7 +659,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 314300
+                            "duration": 357600
                         }
                     },
                     {
@@ -672,7 +672,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 257299
+                            "duration": 345300
                         }
                     },
                     {
@@ -680,7 +680,7 @@
                         "hidden": true,
                         "result": {
                             "status": "passed",
-                            "duration": 159299
+                            "duration": 177799
                         },
                         "embeddings": [
                             {
@@ -704,7 +704,7 @@
             },
             {
                 "description": "",
-                "id": "the-app-should-greet-the-user-upon-startup;another-screenshot",
+                "id": "extra-stuff;another-screenshot",
                 "keyword": "Scenario",
                 "line": 24,
                 "name": "Another Screenshot",
@@ -719,7 +719,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 278599
+                            "duration": 435299
                         }
                     },
                     {
@@ -732,7 +732,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 320899
+                            "duration": 333000
                         }
                     },
                     {
@@ -745,7 +745,7 @@
                         },
                         "result": {
                             "status": "passed",
-                            "duration": 246800
+                            "duration": 252900
                         }
                     },
                     {
@@ -758,7 +758,7 @@
                         },
                         "result": {
                             "status": "failed",
-                            "duration": 85599,
+                            "duration": 104799,
                             "error_message": "Error: fail\n    at World.<anonymous> (C:\\Users\\marut\\Documents\\Projects\\test-cucumber\\features\\steps\\feature2.js:18:11)"
                         }
                     },
@@ -767,7 +767,7 @@
                         "hidden": true,
                         "result": {
                             "status": "passed",
-                            "duration": 1583600
+                            "duration": 1218699
                         },
                         "embeddings": [
                             {
@@ -784,12 +784,92 @@
                     }
                 ],
                 "type": "scenario"
+            },
+            {
+                "description": "",
+                "id": "extra-stuff;a-table",
+                "keyword": "Scenario",
+                "line": 30,
+                "name": "A table",
+                "steps": [
+                    {
+                        "arguments": [],
+                        "keyword": "Given ",
+                        "line": 31,
+                        "name": "the app is started",
+                        "match": {
+                            "location": "features\\steps\\feature1.js:4"
+                        },
+                        "result": {
+                            "status": "passed",
+                            "duration": 312000
+                        }
+                    },
+                    {
+                        "arguments": [],
+                        "keyword": "When ",
+                        "line": 32,
+                        "name": "the app loads",
+                        "match": {
+                            "location": "features\\steps\\feature1.js:14"
+                        },
+                        "result": {
+                            "status": "passed",
+                            "duration": 283600
+                        }
+                    },
+                    {
+                        "arguments": [],
+                        "keyword": "Then ",
+                        "line": 33,
+                        "name": "the user should see a greeting",
+                        "match": {
+                            "location": "features\\steps\\feature1.js:21"
+                        },
+                        "result": {
+                            "status": "passed",
+                            "duration": 267799
+                        }
+                    },
+                    {
+                        "arguments": [
+                            {
+                                "rows": [
+                                    {
+                                        "cells": ["a", "b", "c"]
+                                    },
+                                    {
+                                        "cells": ["1", "2", "3"]
+                                    },
+                                    {
+                                        "cells": ["4", "5", "6"]
+                                    },
+                                    {
+                                        "cells": ["7", "8", "9"]
+                                    }
+                                ]
+                            }
+                        ],
+                        "keyword": "And ",
+                        "line": 34,
+                        "name": "I will have a table like this:",
+                        "match": {
+                            "location": "features\\steps\\feature3.js:19"
+                        },
+                        "result": {
+                            "status": "passed",
+                            "duration": 3777300
+                        }
+                    }
+                ],
+                "tags": [],
+                "type": "scenario"
             }
         ],
-        "id": "the-app-should-greet-the-user-upon-startup",
+        "id": "extra-stuff",
         "line": 1,
         "keyword": "Feature",
-        "name": "The app should greet the user upon startup",
+        "name": "Extra stuff",
         "tags": [],
         "uri": "features\\feature3.feature"
     }

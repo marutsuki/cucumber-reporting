@@ -22,6 +22,12 @@ type Embedding = {
     mime_type: string;
 };
 
+type Argument = {
+    rows: {
+        cells: string[];
+    }[];
+};
+
 type Step = {
     keyword: string;
     line: number;
@@ -29,6 +35,7 @@ type Step = {
     match?: Match;
     result?: Result;
     embeddings?: Embedding[];
+    arguments?: Argument[];
 };
 
 type Tag = {
