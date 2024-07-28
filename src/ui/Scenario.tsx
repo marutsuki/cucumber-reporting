@@ -46,6 +46,24 @@ function Ref({ location }: { location: string }) {
     );
 }
 
+const applyNewLines = (str: string) => str.split('\n');
+
+function ErrorMessage({ message }: { message: string }) {
+    const lines = applyNewLines(message);
+    return (
+        <div className="max-h-96 overflow-y-auto">
+            <code className="text-sm">
+                {lines.map((line) => (
+                    <>
+                        {line}
+                        <br />
+                    </>
+                ))}
+            </code>
+        </div>
+    );
+}
+
 function Step({
     keyword,
     name,
@@ -111,9 +129,7 @@ function Step({
             {result?.error_message && (
                 <>
                     {match && <Ref location={match.location} />}
-                    <div className="p-4 mockup-code">
-                        {result.error_message}
-                    </div>
+                    <ErrorMessage message={result.error_message} />
                 </>
             )}
         </li>
