@@ -81,7 +81,7 @@ export default function Scenario({ name, steps }: Scenario) {
         <div className="collapse bg-base-300 m-2">
             <input className="min-h-1" type="checkbox" />
             <h2
-                className={`collapse-title text-md font-medium p-1 min-h-0 ${failed ? 'bg-error' : ''}`}
+                className={`text-base-content collapse-title text-md font-medium p-1 min-h-0 bg-opacity-50 ${failed ? 'bg-error' : 'bg-neutral'}`}
             >
                 {name}
             </h2>

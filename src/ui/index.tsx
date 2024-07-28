@@ -1,3 +1,4 @@
+import { Config } from '../config';
 import Feature from './Feature';
 import './globals.css';
 
@@ -20,9 +21,10 @@ function getTestSuiteStats(model: TestSuite) {
     return stats;
 }
 export default function CucumberReport({ model }: { model: TestSuite }) {
+    const theme = Config.getConfig('theme');
     const { passed, failed } = getTestSuiteStats(model);
     return (
-        <html>
+        <html data-theme={theme}>
             <head>
                 <meta charSet="UTF-8" />
                 <meta
@@ -33,7 +35,7 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                 <link type="text/css" rel="stylesheet" href="./globals.css" />
             </head>
             <body className="p-10">
-                <div className="card bg-base-100 w-96 shadow-xl">
+                <div className="card shadow-base-300 bg-base-100 w-96 shadow-xl">
                     <div className="card-body">
                         <h2 className="card-title">Summary</h2>
                         <p className="text-success">

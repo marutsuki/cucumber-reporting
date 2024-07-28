@@ -21,7 +21,7 @@ export default function Feature({
         >
             <input className="min-h-1" type="checkbox" />
             <h2
-                className={`collapse-title text-md font-medium m-0 p-1 min-h-0 ${failed ? 'bg-error' : ''}`}
+                className={`text-base-content collapse-title text-md font-medium m-0 p-1 min-h-0 bg-opacity-50 ${failed ? 'bg-error' : 'bg-success'}`}
             >
                 {model.name}
             </h2>

@@ -8,6 +8,7 @@ import { Config } from './config';
 const featurePath = process.argv[2];
 const outPath = process.argv[3];
 const projDir = process.argv[4].length > 0 ? process.argv[4] : undefined;
+const theme = process.argv[5].length > 0 ? process.argv[5] : undefined;
 
 if (!featurePath) {
     console.error('No feature path provided.');
@@ -19,6 +20,10 @@ if (projDir) {
     console.info('Using project directory:', projDir);
 }
 
+if (theme) {
+    Config.setConfig('theme', theme);
+    console.info('Using theme:', theme);
+}
 
 const features = processFeature(featurePath);
 

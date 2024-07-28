@@ -1,8 +1,11 @@
 type Config = {
     projDir?: string;
+    theme?: string;
 };
 
-const config: Config = {};
+const config: Config = {
+    theme: 'light',
+};
 
 export const Config = {
     setConfig: <K extends keyof Config>(key: K, value: Config[K]): void => {
