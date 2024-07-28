@@ -1,3 +1,6 @@
+import path from 'path';
+import { Config } from '../config';
+
 function Status({ status }: { status: Status }) {
     switch (status) {
         case 'passed':
@@ -16,7 +19,34 @@ function Status({ status }: { status: Status }) {
             return <div className="badge gap-2">Ambiguous</div>;
     }
 }
-function Step({ keyword, name, result }: Step) {
+
+// Currently the supported languages are Java, JavaScript, TypeScript, Ruby
+const cleanUrl = (url: string) =>
+    url.replace(/(.+\.(java|js|ts|jsx|tsx|rb)):\d+/g, '$1');
+
+const getLineNo = (url: string) => {
+    const match = url.match(/:(\d+)$/);
+    return match ? match[1] : '';
+};
+
+function Ref({ location }: { location: string }) {
+    const projDir = Config.getConfig('projDir');
+    const url = cleanUrl(location);
+    const link = (
+        <code>
+            Line ${getLineNo(location)} at ${url}
+        </code>
+    );
+    return projDir ? (
+        <a className="text-primary underline" href={path.join(projDir, url)}>
+            {link}
+        </a>
+    ) : (
+        <div>{link}</div>
+    );
+}
+
+function Step({ keyword, name, match, result }: Step) {
     return (
         <li>
             <div className="flex flex-row justify-between text-md">
@@ -32,7 +62,12 @@ function Step({ keyword, name, result }: Step) {
                 </div>
             </div>
             {result?.error_message && (
-                <div className="p-4 mockup-code">{result.error_message}</div>
+                <>
+                    {match && <Ref location={match.location} />}
+                    <div className="p-4 mockup-code">
+                        {result.error_message}
+                    </div>
+                </>
             )}
         </li>
     );
