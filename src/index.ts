@@ -12,7 +12,10 @@ export async function renderReport(
     appName: string,
     showFailedOnStart: boolean = false
 ) {
-    Config.setConfig('showFailedOnStart', showFailedOnStart);
+    if (showFailedOnStart) {
+        console.info('Showing failed scenarios by default');
+        Config.setConfig('showFailedOnStart', showFailedOnStart);
+    }
 
     if (projDir) {
         Config.setConfig('projDir', projDir);

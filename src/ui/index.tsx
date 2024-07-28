@@ -24,7 +24,6 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                     type="text/css"
                 />
                 <script src="https://cdn.tailwindcss.com"></script>
-                <link type="text/css" rel="stylesheet" href="./globals.css" />
             </head>
             <body className="py-4 px-10">
                 <Header appName={model.name} />
@@ -46,6 +45,11 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                     <div id="pagination" className="join"></div>
                 </div>
             </body>
+            <script>
+                {`window.config = {
+                    showFailedOnStart: ${Config.getConfig('showFailedOnStart')}
+                };`}
+            </script>
             <script src="./script.js" />
         </html>
     );

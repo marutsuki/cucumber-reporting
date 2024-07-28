@@ -10,7 +10,7 @@ let showFailedOnStart = false;
 
 process.argv.slice(2).forEach((val) => {
     const keyValArg = val.match(/-([a-z])=(.+)/);
-    const arg = val.match(/--([a-z])/);
+    const arg = val.match(/--([a-z-]+)/);
     if (keyValArg === null && arg === null) {
         if (reportPath === null) {
             reportPath = val;
@@ -42,9 +42,10 @@ process.argv.slice(2).forEach((val) => {
             }
         }
     } else if (arg !== null) {
-        switch (arg[0]) {
+        switch (arg[1]) {
             case 'show-failed': {
                 showFailedOnStart = true;
+                break;
             }
         }
     }
