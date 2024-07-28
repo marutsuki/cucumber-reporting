@@ -1,5 +1,5 @@
 {
-    "name": "cuke-reports",
+    "name": "cucumber-reportify",
     "version": "1.0.0",
     "description": "HTML reports for Cucumber test results",
     "main": "src/index.js",
