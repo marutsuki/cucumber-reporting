@@ -43,6 +43,11 @@ export type Tag = {
     line: number;
 };
 
+export type BeforeAfter = {
+    embeddings: Embedding[];
+    result: Result;
+};
+
 export type Scenario = {
     description: string;
     id: string;
@@ -52,6 +57,8 @@ export type Scenario = {
     steps: Step[];
     tags: Tag[];
     type: string;
+    before?: BeforeAfter[];
+    after?: BeforeAfter[];
 };
 
 export type Feature = {

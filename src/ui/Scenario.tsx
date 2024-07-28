@@ -138,7 +138,7 @@ function Step({
         </li>
     );
 }
-export default function Scenario({ id, name, steps }: Scenario) {
+export default function Scenario({ id, name, steps, before, after }: Scenario) {
     let failed = false;
     if (steps.some((step) => step.result?.status === 'failed')) {
         failed = true;
@@ -155,9 +155,29 @@ export default function Scenario({ id, name, steps }: Scenario) {
                 {name}
             </h2>
             <ul className="collapse-content">
+                {before &&
+                    before.map((beforeStep, i) => (
+                        <Step
+                            key={`${id || name}:before:${i}`}
+                            {...beforeStep}
+                            keyword="Before"
+                            line={0}
+                            name=""
+                        />
+                    ))}
                 {steps.map((step) => (
                     <Step key={`${id || name}:${step.name}}`} {...step} />
                 ))}
+                {after &&
+                    after.map((afterStep, i) => (
+                        <Step
+                            key={`${id || name}:after:${i}`}
+                            {...afterStep}
+                            keyword="After"
+                            line={0}
+                            name=""
+                        />
+                    ))}
             </ul>
         </div>
     );
