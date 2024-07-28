@@ -1,10 +1,26 @@
 import Feature from './Feature';
 import './globals.css';
 
-const PAGE_SIZE = 15;
+function getTestSuiteStats(model: TestSuite) {
+    const stats = {
+        passed: 0,
+        failed: 0,
+    };
+    model.features.forEach((feature) => {
+        feature.elements.forEach((scenario) => {
+            for (const step of scenario.steps) {
+                if (step.result?.status === 'failed') {
+                    stats.failed += 1;
+                    return;
+                }
+            }
+            stats.passed += 1;
+        });
+    });
+    return stats;
+}
 export default function CucumberReport({ model }: { model: TestSuite }) {
-    const pages = Math.ceil(model.features.length / PAGE_SIZE);
-    const getPageIndex = (index: number) => Math.floor(index / PAGE_SIZE);
+    const { passed, failed } = getTestSuiteStats(model);
     return (
         <html>
             <head>
@@ -17,34 +33,47 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                 <link type="text/css" rel="stylesheet" href="./globals.css" />
             </head>
             <body className="p-10">
+                <div className="card bg-base-100 w-96 shadow-xl">
+                    <div className="card-body">
+                        <h2 className="card-title">Summary</h2>
+                        <p className="text-success">
+                            {passed} scenarios passed
+                        </p>
+                        <p className="text-error">{failed} scenarios failed</p>
+                    </div>
+                </div>
+                <div className="navbar bg-base-100">
+                    <div className="flex-1">
+                        <a className="btn btn-ghost text-xl">Results</a>
+                    </div>
+                    <div className="flex-none gap-2">
+                        <label>Failed Only</label>
+                        <input
+                            id="fail-filter"
+                            type="checkbox"
+                            defaultChecked={false}
+                        />
+
+                        <div className="form-control">
+                            <input
+                                id="feature-search"
+                                type="text"
+                                placeholder="Search"
+                                className="input input-bordered w-24 md:w-auto"
+                            />
+                        </div>
+                    </div>
+                </div>
                 <div className="content">
-                    {model.features.map((feature, i) => (
-                        <div
-                            key={feature.id}
-                            className={'page page-'.concat(
-                                getPageIndex(i).toString()
-                            )}
-                        >
-                            <Feature model={feature} />
+                    {model.features.map((feature) => (
+                        <div>
+                            <Feature key={feature.id} model={feature} />
                         </div>
                     ))}
                 </div>
 
                 <div>
-                    <div className="join">
-                        {Array(pages)
-                            .fill(0)
-                            .map((_, i) => (
-                                <input
-                                    className="pagination-button pagination-button-join-item btn btn-square"
-                                    data-page={i.toString()}
-                                    type="radio"
-                                    name="options"
-                                    aria-label={i.toString()}
-                                    defaultChecked={i === 0}
-                                />
-                            ))}
-                    </div>
+                    <div id="pagination" className="join"></div>
                 </div>
             </body>
             <script src="./script.js" />
