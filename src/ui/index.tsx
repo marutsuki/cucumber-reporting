@@ -1,28 +1,14 @@
 import { Config } from '../config';
+import { getTestSuiteStats } from '../data/stats';
 import Feature from './Feature';
 import './globals.css';
+import Header from './Header';
+import Summary from './Summary';
+import Toolbar from './Toolbar';
 
-function getTestSuiteStats(model: TestSuite) {
-    const stats = {
-        passed: 0,
-        failed: 0,
-    };
-    model.features.forEach((feature) => {
-        feature.elements.forEach((scenario) => {
-            for (const step of scenario.steps) {
-                if (step.result?.status === 'failed') {
-                    stats.failed += 1;
-                    return;
-                }
-            }
-            stats.passed += 1;
-        });
-    });
-    return stats;
-}
 export default function CucumberReport({ model }: { model: TestSuite }) {
     const theme = Config.getConfig('theme');
-    const { passed, failed } = getTestSuiteStats(model);
+    const stats = getTestSuiteStats(model);
     return (
         <html data-theme={theme}>
             <head>
@@ -34,48 +20,18 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                 <title>{`${model.name} Cucumber Report`}</title>
                 <link type="text/css" rel="stylesheet" href="./globals.css" />
             </head>
-            <body className="p-10">
-                <div className="card shadow-base-300 bg-base-100 w-96 shadow-xl">
-                    <div className="card-body">
-                        <h2 className="card-title">Summary</h2>
-                        <p className="text-success">
-                            {passed} scenarios passed
-                        </p>
-                        <p className="text-error">{failed} scenarios failed</p>
-                    </div>
-                </div>
-                <div className="navbar bg-base-100">
-                    <div className="flex-1">
-                        <a className="btn btn-ghost text-xl">Results</a>
-                    </div>
-                    <div className="flex-none gap-2">
-                        <label>Failed Features Only</label>
-                        <input
-                            id="fail-filter-feature"
-                            type="checkbox"
-                            defaultChecked={false}
-                        />
-                        <label>Failed Scenarios Only</label>
-                        <input
-                            id="fail-filter-scenario"
-                            type="checkbox"
-                            defaultChecked={false}
-                        />
-
-                        <div className="form-control">
-                            <input
-                                id="feature-search"
-                                type="text"
-                                placeholder="Search"
-                                className="input input-bordered w-24 md:w-auto"
-                            />
-                        </div>
-                    </div>
-                </div>
+            <body className="py-4 px-10">
+                <Header appName={model.name} />
+                <Summary {...stats} />
+                <Toolbar />
                 <div className="content">
                     {model.features.map((feature) => (
                         <div>
-                            <Feature key={feature.id} model={feature} />
+                            <Feature
+                                key={feature.id}
+                                model={feature}
+                                stats={stats.features[feature.id]}
+                            />
                         </div>
                     ))}
                 </div>

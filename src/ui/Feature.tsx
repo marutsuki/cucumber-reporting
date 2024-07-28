@@ -1,45 +1,12 @@
+import { FeatureStats } from '../data/stats';
 import Scenario from './Scenario';
-
-type FeatureStats = {
-    passed: number;
-    failed: number;
-    skipped: number;
-};
-
-const getFeatureStats = (feature: Feature): FeatureStats => {
-    let passed = 0;
-    let failed = 0;
-    let skipped = 0;
-    feature.elements.forEach((scenario) => {
-        scenario.steps.forEach((step) => {
-            if (step.result === undefined) {
-                return;
-            }
-            switch (step.result.status) {
-                case 'passed':
-                    passed++;
-                    break;
-                case 'failed':
-                    failed++;
-                    break;
-                case 'skipped':
-                    skipped++;
-                    break;
-            }
-        });
-    });
-    return {
-        passed,
-        failed,
-        skipped,
-    };
-};
 
 export default function Feature({
     model,
+    stats,
     ...props
-}: { model: Feature } & React.Attributes) {
-    const stats = getFeatureStats(model);
+}: { model: Feature; stats: FeatureStats } & React.Attributes) {
+    console.log(stats);
     const failed = stats.failed > 0;
     return (
         <div

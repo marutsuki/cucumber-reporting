@@ -4,7 +4,7 @@
         "elements": [
             {
                 "description": "",
-                "id": "the-app-should-greet-the-user-upon-startup;the-user-launches-the-app",
+                "id": "the-app-should-greet-the-user-upon-startup-1;the-user-launches-the-app-1",
                 "keyword": "Scenario",
                 "line": 4,
                 "name": "The user launches the app",
@@ -129,7 +129,7 @@
                 "type": "scenario"
             }
         ],
-        "id": "the-app-should-greet-the-user-upon-startup",
+        "id": "the-app-should-greet-the-user-upon-startup-1",
         "line": 1,
         "keyword": "Feature",
         "name": "The app should greet the user upon startup",
