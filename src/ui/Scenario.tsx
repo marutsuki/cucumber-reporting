@@ -46,23 +46,16 @@ function Ref({ location }: { location: string }) {
     );
 }
 
-const applyNewLines = (str: string) => str.split('\n');
-
 function ErrorMessage({ message }: { message: string }) {
-    const lines = applyNewLines(message);
     return (
         <div className="max-h-96 overflow-y-auto">
-            <code className="text-sm">
-                {lines.map((line) => (
-                    <>
-                        {line}
-                        <br />
-                    </>
-                ))}
-            </code>
+            <pre className="text-sm">{message}</pre>
         </div>
     );
 }
+
+const formatSeconds = (seconds: number) =>
+    `${Math.round(seconds * 1e-9 * 100) / 100}s`;
 
 function Step({
     keyword,
@@ -71,9 +64,11 @@ function Step({
     result,
     embeddings,
     arguments: argumentz,
-}: Step) {
+    ...props
+}: Step & React.Attributes) {
+    const key = props.key?.toString() || '';
     return (
-        <li className="pt-2">
+        <li {...props} className="pt-2">
             <div>
                 <div className="flex flex-row justify-between text-md">
                     <div className="flex flex-row">
@@ -82,7 +77,7 @@ function Step({
                     </div>
                     <div className="flex flex-row items-center">
                         <p className="px-2">
-                            {(result?.duration || 0) * 1e-9 + 's'}
+                            {formatSeconds(result?.duration || 0)}
                         </p>
                         <Status status={result?.status || 'ambiguous'} />
                     </div>
@@ -90,12 +85,16 @@ function Step({
 
                 <div className="max-w-fit">
                     {argumentz &&
-                        argumentz.map((arg) => (
-                            <table className="table">
-                                {arg.rows.map((row) => (
-                                    <tr>
-                                        {row.cells.map((cell) => (
-                                            <td>{cell}</td>
+                        argumentz.map((arg, k) => (
+                            <table key={`${name}:table:${k}`} className="table">
+                                {arg.rows.map((row, i) => (
+                                    <tr key={`${name}:${i}:${key}`}>
+                                        {row.cells.map((cell, j) => (
+                                            <td
+                                                key={`${name}:${i}:${key}:${j}`}
+                                            >
+                                                {cell}
+                                            </td>
                                         ))}
                                     </tr>
                                 ))}
@@ -106,11 +105,13 @@ function Step({
 
             {embeddings &&
                 embeddings.length > 0 &&
-                embeddings.map((embedding) => {
+                embeddings.map((embedding, i) => {
+                    const key = `${embedding.data.slice(0, 10)}:${i}:embedding`;
                     switch (embedding.mime_type) {
                         case 'image/png':
                             return (
                                 <img
+                                    key={key}
                                     src={`data:image/png;base64,${embedding.data}`}
                                     alt="screenshot"
                                 />
@@ -118,12 +119,13 @@ function Step({
                         case 'image/jpeg':
                             return (
                                 <img
+                                    key={key}
                                     src={`data:image/jpeg;base64,${embedding.data}`}
                                     alt="screenshot"
                                 />
                             );
                         default:
-                            return <pre>{embedding.data}</pre>;
+                            return <pre key={key}>{embedding.data}</pre>;
                     }
                 })}
             {result?.error_message && (
@@ -135,7 +137,7 @@ function Step({
         </li>
     );
 }
-export default function Scenario({ name, steps }: Scenario) {
+export default function Scenario({ id, name, steps }: Scenario) {
     let failed = false;
     if (steps.some((step) => step.result?.status === 'failed')) {
         failed = true;
@@ -153,7 +155,7 @@ export default function Scenario({ name, steps }: Scenario) {
             </h2>
             <ul className="collapse-content">
                 {steps.map((step) => (
-                    <Step {...step} />
+                    <Step key={id.concat(':').concat(step.name)} {...step} />
                 ))}
             </ul>
         </div>

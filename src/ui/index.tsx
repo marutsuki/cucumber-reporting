@@ -26,7 +26,7 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                 <Toolbar />
                 <div className="content">
                     {model.features.map((feature) => (
-                        <div>
+                        <div key={feature.id.concat(':wrapper')}>
                             <Feature
                                 key={feature.id}
                                 model={feature}
