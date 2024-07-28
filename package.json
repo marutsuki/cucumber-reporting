@@ -7,7 +7,7 @@
         "lint": "eslint src",
         "format": "prettier --write src",
         "build": "tsc",
-        "prepare": "npm run build",
+        "pre-publish": "npm run build | cp LICENSE dist/LICENSE",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
