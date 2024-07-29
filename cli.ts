@@ -10,6 +10,7 @@ const argv = yargs
         n: { type: 'string', alias: 'app-name', default: '[undefined]' },
         f: { type: 'boolean', alias: 'show-failed', default: false },
         i: { type: 'string', alias: 'input', default: null },
+        v: { type: 'boolean', alias: 'verbose', default: false },
     })
     .positional('report-dir', {
         describe: 'The report directory to read from',
@@ -22,4 +23,4 @@ if (reportPath === null) {
     process.exit(1);
 }
 
-renderReport(reportPath, argv.o, argv.p, argv.t, argv.n, argv.f);
+renderReport(reportPath, argv.o, argv.p, argv.t, argv.n, argv.f, argv.v);

@@ -5,7 +5,7 @@ import path from 'path';
 export default async function processFeature(
     filePath: string
 ): Promise<Feature[]> {
-    console.info('Processing...');
+    console.debug('Processing feature/directory:', filePath);
     const p = new Promise<Feature[]>((resolve, reject) => {
         if (fs.existsSync(filePath) === false) {
             return resolve([]);
@@ -23,7 +23,17 @@ export default async function processFeature(
                 fs
                     .readdirSync(filePath)
                     .map((f) => processFeature(path.join(filePath, f)))
-            ).then((features) => resolve(features.flat()));
+            ).then((features) => {
+                const flat = features.flat();
+                console.debug(
+                    'Processed directory',
+                    filePath,
+                    ':',
+                    flat.length,
+                    'features included'
+                );
+                resolve(flat);
+            });
         }
     });
 

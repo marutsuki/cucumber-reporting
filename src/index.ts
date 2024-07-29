@@ -4,31 +4,42 @@ import render from './rendering';
 import path from 'path';
 import { Config } from './config';
 
+console.debug = (message: string, ...args: unknown[]) => {
+    if (Config.getConfig('verbose')) {
+        console.info(message, args);
+    }
+};
+
 export async function renderReport(
     reportPath: string,
     outPath: string,
     projDir: string | null,
     theme: string,
     appName: string,
-    showFailedOnStart: boolean = false
+    showFailed: boolean,
+    verbose: boolean
 ) {
-    if (showFailedOnStart) {
+    if (showFailed) {
         console.info('Showing failed scenarios by default');
-        Config.setConfig('showFailedOnStart', showFailedOnStart);
+        Config.setConfig('showFailedOnStart', showFailed);
     }
 
     if (projDir) {
-        Config.setConfig('projDir', projDir);
         console.info('Using project directory:', projDir);
+        Config.setConfig('projDir', projDir);
     }
 
-    if (theme) {
-        Config.setConfig('theme', theme);
-        console.info('Using theme:', theme);
-    }
+    Config.setConfig('theme', theme);
+    console.info('Using theme:', theme);
+
+    Config.setConfig('verbose', verbose);
+
+    console.info('Processing JSON report files found under:', reportPath);
     const features = await processFeature(reportPath);
 
     const document = render({ name: appName, features: features });
+
+    console.info('Static HTML markup rendered');
 
     Promise.all([
         new Promise<void>((resolve, reject) =>
@@ -40,7 +51,7 @@ export async function renderReport(
                         console.error(`An error occurred: ${err}`);
                         reject();
                     } else {
-                        console.info('Done.');
+                        console.debug('script.js copied');
                         resolve();
                     }
                 }
@@ -53,13 +64,18 @@ export async function renderReport(
                     console.error(`An error occurred: ${err}`);
                     reject();
                 } else {
-                    console.info('Done.');
+                    console.debug('output.html created');
                     resolve();
                 }
-                process.exit(0);
             })
         ),
     ])
-        .then(() => process.exit(0))
-        .catch(() => process.exit(1));
+        .then(() => {
+            console.info('Done.');
+            process.exit(0);
+        })
+        .catch(() => {
+            console.error('Something went wrong.');
+            process.exit(1);
+        });
 }
