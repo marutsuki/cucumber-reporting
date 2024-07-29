@@ -50,7 +50,7 @@ function Ref({ location }: { location: string }) {
 function ErrorMessage({ message }: { message: string }) {
     return (
         <div className="max-h-96 overflow-y-auto p-4">
-            <pre className="text-sm max-w-full bg-base-100 text-base-content p-2">
+            <pre className="whitespace-pre-wrap text-sm bg-base-100 text-base-content p-2">
                 {message}
             </pre>
         </div>
