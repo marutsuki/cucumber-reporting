@@ -11,7 +11,7 @@ export default function Feature({
     return (
         <div
             id={model.id}
-            className="page feature collapse bg-base-200 m-1"
+            className="page feature collapse bg-base-200 m-1 shadow-xl shadow-base-content"
             data-name={model.name}
             {...(failed && { 'data-status': 'failed' })}
             {...props}

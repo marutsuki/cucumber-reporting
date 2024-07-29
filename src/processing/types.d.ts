@@ -44,8 +44,9 @@ export type Tag = {
 };
 
 export type BeforeAfter = {
-    embeddings: Embedding[];
+    embeddings?: Embedding[];
     result: Result;
+    match?: Match;
 };
 
 export type Scenario = {

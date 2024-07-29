@@ -148,38 +148,52 @@ export default function Scenario({ id, name, steps, before, after }: Scenario) {
     return (
         <div
             {...(failed && { 'data-status': 'failed' })}
-            className="scenario collapse bg-base-300 m-2"
+            className="scenario collapse bg-base-300 m-2 shadow-lg shadow-base-content"
         >
             <input className="min-h-1" type="checkbox" />
             <h2
-                className={`text-base-content collapse-title text-md font-medium p-1 min-h-0 bg-opacity-50 ${failed ? 'bg-error text-error-content' : 'bg-neutral text-neutral-content'}`}
+                className={`text-base-content collapse-title text-md font-medium px-2 py-0.5 min-h-0 bg-opacity-50 ${failed ? 'bg-error text-error-content' : 'bg-neutral text-neutral-content'}`}
             >
                 {name}
             </h2>
             <ul className="collapse-content">
                 {before &&
-                    before.map((beforeStep, i) => (
-                        <Step
-                            key={`${id || name}:before:${i}`}
-                            {...beforeStep}
-                            keyword="Before"
-                            line={0}
-                            name=""
-                        />
-                    ))}
+                    before
+                        .filter(
+                            (b) =>
+                                // Only display the After step if there's meaningful information
+                                (b.embeddings && b.embeddings.length > 0) ||
+                                b.result.status !== 'passed'
+                        )
+                        .map((beforeStep, i) => (
+                            <Step
+                                key={`${id || name}:before:${i}`}
+                                {...beforeStep}
+                                keyword="Before"
+                                line={0}
+                                name={beforeStep.match?.location || ''}
+                            />
+                        ))}
                 {steps.map((step) => (
                     <Step key={`${id || name}:${step.name}}`} {...step} />
                 ))}
                 {after &&
-                    after.map((afterStep, i) => (
-                        <Step
-                            key={`${id || name}:after:${i}`}
-                            {...afterStep}
-                            keyword="After"
-                            line={0}
-                            name=""
-                        />
-                    ))}
+                    after
+                        .filter(
+                            (a) =>
+                                // Only display the After step if there's meaningful information
+                                (a.embeddings && a.embeddings.length > 0) ||
+                                a.result.status !== 'passed'
+                        )
+                        .map((afterStep, i) => (
+                            <Step
+                                key={`${id || name}:after:${i}`}
+                                {...afterStep}
+                                keyword="After"
+                                line={0}
+                                name={afterStep.match?.location || ''}
+                            />
+                        ))}
             </ul>
         </div>
     );
