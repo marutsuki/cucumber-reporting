@@ -1,11 +1,9 @@
 /* Constants */
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const PAGE_SIZE = 15;
 
 const FEATURE_NAME_ATT = 'data-name';
-const SEARCH_FILTER_ATT = 'data-filtered-search';
-const FAILED_SCENARIO_FILTER_ATT = 'data-filtered-failed-scenario';
-const FAILED_FEATURE_FILTER_ATT = 'data-filtered-failed-feature';
 
 /* Event listeners */
 
@@ -16,6 +14,10 @@ const inactiveFeatures = [];
 const activeFeatures = [];
 
 const allScenarios = [...document.getElementsByClassName('scenario')];
+
+const searchFiltered = new Set();
+const failedScenarioFiltered = new Set();
+const failedFeatureFiltered = new Set();
 
 /** Tailwind setup */
 
@@ -71,9 +73,9 @@ document.getElementById(SEARCH_INPUT_ID).addEventListener('input', (e) => {
                 .toLowerCase()
                 .includes(search.toLowerCase())
         ) {
-            feature.removeAttribute(SEARCH_FILTER_ATT);
+            searchFiltered.delete(feature);
         } else {
-            feature.setAttribute(SEARCH_FILTER_ATT, '');
+            searchFiltered.add(feature);
         }
     }
     update();
@@ -84,9 +86,9 @@ const FAILED_FEATURES_ONLY_CHECKBOX_ID = 'fail-filter-feature';
 const failedFeaturesOnly = (enabled) => {
     for (const feature of allFeatures) {
         if (!enabled || feature.getAttribute('data-status') === 'failed') {
-            feature.removeAttribute(FAILED_FEATURE_FILTER_ATT);
+            failedFeatureFiltered.delete(feature);
         } else {
-            feature.setAttribute(FAILED_FEATURE_FILTER_ATT, '');
+            failedFeatureFiltered.add(feature);
         }
     }
 };
@@ -108,9 +110,9 @@ const FAILED_SCENARIOS_ONLY_CHECKBOX_ID = 'fail-filter-scenario';
 const failedScenariosOnly = (enabled) => {
     for (const scenario of allScenarios) {
         if (!enabled || scenario.getAttribute('data-status') === 'failed') {
-            scenario.removeAttribute(FAILED_SCENARIO_FILTER_ATT);
+            failedScenarioFiltered.delete(scenario);
         } else {
-            scenario.setAttribute(FAILED_SCENARIO_FILTER_ATT, '');
+            failedScenarioFiltered.add(scenario);
         }
     }
 };
@@ -128,29 +130,28 @@ document
 
 const isEligibleForDisplay = (feature) => {
     return (
-        feature.getAttribute(SEARCH_FILTER_ATT) === null &&
-        feature.getAttribute(FAILED_FEATURE_FILTER_ATT) === null
+        !failedFeatureFiltered.has(feature) &&
+        !searchFiltered.has(feature)
     );
 };
 
 const loadFeatures = () => {
+    // Clear cache
     activeFeatures.splice(0, activeFeatures.length);
     inactiveFeatures.splice(0, inactiveFeatures.length);
 
     allFeatures.forEach((feature) => {
         // Exclude pages that are filtered out
         if (isEligibleForDisplay(feature)) {
-            // DaisyUI uses display: grid for the accordion component
-            feature.style.display = 'grid';
             activeFeatures.push(feature);
         } else {
-            feature.style.display = 'none';
             inactiveFeatures.push(feature);
         }
     });
 
+    // Show/hide scenarios
     allScenarios.forEach((scenario) => {
-        if (scenario.getAttribute(FAILED_SCENARIO_FILTER_ATT) === null) {
+        if (!failedScenarioFiltered.has(scenario)) {
             // DaisyUI uses display: grid for the accordion component
             scenario.style.display = 'grid';
         } else {
@@ -158,27 +159,31 @@ const loadFeatures = () => {
         }
     });
 };
-/**
- * Gets the pagination index for the nth record.
- *
- * @param {*} index the index of the record
- * @returns the page index
- */
-const getPageIndex = (index) => Math.floor(index / PAGE_SIZE);
+
+// Keep track of active page index
+let activePage = 0;
 
 /**
  * Updates the displayed page to the given page index.
  *
  * @param {*} page the page index to display
  */
-const changePage = (page) => {
-    document.querySelectorAll('.page').forEach((p) => {
-        p.style.display = 'none';
-    });
-    document.querySelectorAll(`.feature[data-page='${page}'`).forEach((p) => {
-        p.style.display = 'grid';
-    });
+const changePage = (newPage) => {
+    // Hide old page
+    togglePage(activePage, false);
+    // Display new page
+    togglePage(newPage, true);
+
+    activePage = newPage;
 };
+
+const togglePage = (page, show) => {
+    const display = show ? 'grid' : 'none';
+    const start = page * PAGE_SIZE;
+    activeFeatures.slice(start, start + PAGE_SIZE).forEach(p => {
+        p.style.display = display;
+    });
+}
 
 const paginationButton = (i) => {
     const button = document.createElement('input');
@@ -200,15 +205,7 @@ const paginationButton = (i) => {
  * Updates the pagination based on the current filters.
  */
 const updatePagination = () => {
-    // Remove page index from inactive features
-    inactiveFeatures.forEach((p) => p.removeAttribute('data-page'));
-
-    // Assign css class indicating page index
-    const features = activeFeatures.map((p, i) => {
-        p.setAttribute('data-page', getPageIndex(i));
-    });
-
-    const pages = Math.ceil(features.length / PAGE_SIZE);
+    const pages = Math.ceil(activeFeatures.length / PAGE_SIZE);
 
     const paginationElem = document.getElementById('pagination');
 
@@ -221,15 +218,16 @@ const updatePagination = () => {
         .forEach((_, i) => {
             paginationElem.appendChild(paginationButton(i));
         });
-
-    changePage(0);
 };
 
-/* Main */
-
 const update = () => {
+    // Remove all the features on the current page
+    togglePage(activePage, false);
     loadFeatures();
     updatePagination();
+    // Reset active page back to 0
+    togglePage(0, true);
+    activePage = 0;
 };
 
 
@@ -237,5 +235,25 @@ if (window.config.showFailedOnStart) {
     failedFeaturesOnly(true);
     failedScenariosOnly(true);
 }
+
+// Initally hide all pages and let update() populate the first page
+document.querySelectorAll('.page').forEach((p) => {
+    p.style.display = 'none';
+    // Even though the content is already collapsed inside the accordion, we can
+    // set `display` to `none` to reduce the amount of layout computation needed.
+    const content = [...p.getElementsByClassName('content')];
+    content.forEach(c => {
+        c.style.display = 'none';
+    });
+
+    // Then we only enable `display` when the accordion contents should be
+    // visible, ie. the input is checked.
+    p.getElementsByTagName('input')[0].addEventListener('change', (e) => {
+        const display = e.target.checked ? 'grid' : 'none'
+        content.forEach(c => {
+            c.style.display = display;
+        })
+    })
+});
 
 update();

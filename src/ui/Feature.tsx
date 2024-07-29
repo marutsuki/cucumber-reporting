@@ -10,6 +10,7 @@ export default function Feature({
     const failed = stats.failed > 0;
     return (
         <div
+            id={model.id}
             className="page feature collapse bg-base-200 m-1"
             data-name={model.name}
             {...(failed && { 'data-status': 'failed' })}
@@ -37,7 +38,7 @@ export default function Feature({
                 </div>
             </div>
 
-            <div className="collapse-content">
+            <div className="content collapse-content">
                 <ul>
                     {model.elements.map((scenario) => (
                         <Scenario key={scenario.id} {...scenario} />

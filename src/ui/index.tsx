@@ -47,7 +47,7 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
             </body>
             <script>
                 {`window.config = {
-                    showFailedOnStart: ${Config.getConfig('showFailedOnStart')}
+                    showFailedOnStart: ${Config.getConfig('showFailedOnStart')},
                 };`}
             </script>
             <script src="./script.js" />
