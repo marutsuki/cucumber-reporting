@@ -1,59 +1,25 @@
 #!/usr/bin/env node
 import { renderReport } from './src/index';
+import yargs from 'yargs';
 
-let reportPath: string | null = null;
-let outPath = 'out';
-let projDir: string | null = null;
-let theme = 'light';
-let appName = '[Undefined]';
-let showFailedOnStart = false;
+const argv = yargs
+    .options({
+        o: { type: 'string', alias: 'output', default: 'out' },
+        p: { type: 'string', alias: 'proj-loc', default: null },
+        t: { type: 'string', alias: 'theme', default: 'dark' },
+        n: { type: 'string', alias: 'app-name', default: '[undefined]' },
+        f: { type: 'boolean', alias: 'show-failed', default: false },
+        i: { type: 'string', alias: 'input', default: null },
+    })
+    .positional('report-dir', {
+        describe: 'The report directory to read from',
+    })
+    .parseSync();
 
-process.argv.slice(2).forEach((val) => {
-    const keyValArg = val.match(/-([a-z])=(.+)/);
-    const arg = val.match(/--([a-z-]+)/);
-    if (keyValArg === null && arg === null) {
-        if (reportPath === null) {
-            reportPath = val;
-        } else {
-            console.error('Could not determine report file/directory path.');
-            process.exit(1);
-        }
-    } else if (keyValArg !== null) {
-        switch (keyValArg[1]) {
-            case 'o': {
-                outPath = keyValArg[2];
-                break;
-            }
-            case 'p': {
-                projDir = keyValArg[2];
-                break;
-            }
-            case 't': {
-                theme = keyValArg[2];
-                break;
-            }
-            case 'n': {
-                appName = keyValArg[2];
-                break;
-            }
-            default: {
-                console.error(`Unknown option: ${keyValArg[1]}`);
-                process.exit(1);
-            }
-        }
-    } else if (arg !== null) {
-        switch (arg[1]) {
-            case 'show-failed': {
-                showFailedOnStart = true;
-                break;
-            }
-        }
-    }
-});
-
+const reportPath = argv.i;
 if (reportPath === null) {
     console.error('No report path provided.');
     process.exit(1);
 }
 
-renderReport(reportPath, outPath, projDir, theme, appName, showFailedOnStart);
+renderReport(reportPath, argv.o, argv.p, argv.t, argv.n, argv.f);

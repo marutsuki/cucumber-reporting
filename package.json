@@ -28,8 +28,10 @@
     },
     "dependencies": {
         "@types/react-dom": "^18.3.0",
+        "@types/yargs": "^17.0.32",
         "react": "^18.3.1",
-        "react-dom": "^18.3.1"
+        "react-dom": "^18.3.1",
+        "yargs": "^17.7.2"
     },
     "bin": {
         "cuke": "cli.js"
