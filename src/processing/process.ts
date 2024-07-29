@@ -16,7 +16,17 @@ export default async function processFeature(
                     console.error('An error occurred:', err);
                     reject();
                 }
-                return resolve(JSON.parse(data) as Feature[]);
+                try {
+                    const features = JSON.parse(data) as Feature[];
+                    resolve(features);
+                } catch (err: unknown) {
+                    console.debug(
+                        'Tried to process:',
+                        filePath,
+                        "but the content isn't JSON"
+                    );
+                    resolve([]);
+                }
             });
         } else {
             return Promise.all(
