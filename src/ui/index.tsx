@@ -53,6 +53,7 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                         type="application/json"
                     />
                 ))}
+            <script src="./templating.js" />
             <script src="./data.js" />
             <script src="./script.js" />
         </html>

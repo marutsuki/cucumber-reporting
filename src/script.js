@@ -180,7 +180,7 @@ const togglePage = async (page) => {
         cache = await window.features[partition]();
     }
     const features = cache[page];
-    // TODO: Populate the page with the features
+    contentElem.innerHTML = window.genFeatureHtml(features);
     activePartition = partition;
 }
 
