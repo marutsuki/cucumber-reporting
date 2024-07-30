@@ -35,7 +35,10 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                 <div id="content" className="content"></div>
 
                 <div>
-                    <div id="pagination" className="join"></div>
+                    <div
+                        id="pagination"
+                        className="join w-full flex justify-center my-4"
+                    ></div>
                 </div>
             </body>
             <script>
@@ -43,9 +46,7 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                     showFailedOnStart: ${Config.getConfig('showFailedOnStart')},
                 };`}
             </script>
-            <script>
-                const exports = {'{}'};
-            </script>
+            <script>const exports = {'{}'};</script>
             {Array(partitions)
                 .fill(0)
                 .map((_, i) => (

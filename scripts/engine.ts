@@ -17,6 +17,7 @@ declare global {
     }
 }
 
+const MAX_PAGINATION_BUTTONS = 30;
 const PAGES_PER_PARTITION = 30;
 
 const FEATURE_NAME_ATT = 'data-name';
@@ -170,6 +171,23 @@ if (paginationElem === null) {
     throw new Error('Pagination container not found');
 }
 
+const paginationInput = () => {
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.placeholder = '...';
+    input.className = 'input w-20 mx-4 text-center bg-base-300';
+    input.addEventListener('change', (e) => {
+        if (!(e.target instanceof HTMLInputElement)) {
+            return;
+        }
+        const page = parseInt(e.target.value);
+        if (isNaN(page)) {
+            return;
+        }
+        togglePage(page);
+    });
+    return input;
+};
 /**
  * Updates the pagination based on the current filters.
  */
@@ -180,11 +198,17 @@ const updatePagination = () => {
     paginationElem.innerHTML = '';
 
     // Add new pagination buttons
-    Array(pages)
-        .fill(0)
-        .forEach((_, i) => {
-            paginationElem.appendChild(paginationButton(i));
-        });
+    if (pages > MAX_PAGINATION_BUTTONS) {
+        paginationElem.appendChild(paginationButton(0));
+        paginationElem.appendChild(paginationInput());
+        paginationElem.appendChild(paginationButton(pages - 1));
+    } else {
+        Array(pages)
+            .fill(0)
+            .forEach((_, i) => {
+                paginationElem.appendChild(paginationButton(i));
+            });
+    }
 };
 
 const updateScenarios = () => {
