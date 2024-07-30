@@ -7,28 +7,22 @@ export default async function processFeature(
     filePath: string
 ): Promise<Feature[]> {
     console.debug('Processing feature/directory:', filePath);
-    const p = new Promise<Feature[]>((resolve, reject) => {
+    const p = new Promise<Feature[]>((resolve) => {
         if (fs.existsSync(filePath) === false) {
             return resolve([]);
         }
         if (fs.lstatSync(filePath).isFile()) {
-            fs.readFile(filePath, 'utf8', (err, data) => {
-                if (err) {
-                    console.error('An error occurred:', err);
-                    reject();
-                }
-                const readStream = fs.createReadStream(filePath);
-                const parseStream = createParseStream();
-                parseStream.on('data', (data) => {
-                    resolve(data as Feature[]);
-                });
-                parseStream.on('error', () => {
-                    resolve([]);
-                });
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                //@ts-ignore
-                readStream.pipe(parseStream);
+            const readStream = fs.createReadStream(filePath);
+            const parseStream = createParseStream();
+            parseStream.on('data', (data) => {
+                resolve(data as Feature[]);
             });
+            parseStream.on('error', () => {
+                resolve([]);
+            });
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            readStream.pipe(parseStream);
         } else {
             return Promise.all(
                 fs
