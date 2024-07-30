@@ -1,7 +1,4 @@
-import { Config } from '../config';
-
 export default function Toolbar() {
-    const showFailedOnStart = Config.getConfig('showFailedOnStart');
     return (
         <div className="navbar bg-base-100">
             <div className="flex-1">
@@ -9,15 +6,9 @@ export default function Toolbar() {
             </div>
             <div className="flex-none gap-2">
                 <label>Failed Features Only</label>
-                <input
-                    id="fail-filter-feature"
-                    type="checkbox"
-                />
+                <input id="fail-filter-feature" type="checkbox" />
                 <label>Failed Scenarios Only</label>
-                <input
-                    id="fail-filter-scenario"
-                    type="checkbox"
-                />
+                <input id="fail-filter-scenario" type="checkbox" />
 
                 <div className="form-control">
                     <input
