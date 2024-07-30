@@ -2,13 +2,17 @@
 
 import { Feature } from "src/processing/types";
 
+type PartitionData = {
+    providers: (() => Promise<Feature[][]>)[];
+    pages: number;
+}
 declare global {
     interface Window {
         genFeatureHtml: (features: Feature[]) => string;
-        features: (() => Promise<Feature[][]>)[];
+        data: PartitionData;
+        failed: PartitionData;
         config: {
             showFailedOnStart: boolean;
-
         }
     }
 }
@@ -26,8 +30,6 @@ const allFeatures = [...document.getElementsByClassName('feature')];
 const allScenarios = [...document.getElementsByClassName('scenario')];
 
 const searchFiltered = new Set();
-const failedScenarioFiltered = new Set();
-const failedFeatureFiltered = new Set();
 
 /**
  * Add an event listener to filter features based on the search input.
@@ -58,16 +60,6 @@ if (searchElem !== null) {
 
 const FAILED_FEATURES_ONLY_CHECKBOX_ID = 'fail-filter-feature';
 
-const failedFeaturesOnly = (enabled: boolean) => {
-    for (const feature of allFeatures) {
-        if (!enabled || feature.getAttribute('data-status') === 'failed') {
-            failedFeatureFiltered.delete(feature);
-        } else {
-            failedFeatureFiltered.add(feature);
-        }
-    }
-};
-
 /**
  * Add an event listener to filter features based on if they have failed.
  */
@@ -78,7 +70,7 @@ if (failedFeaturesCheckbox !== null) {
         if (!(e.target instanceof HTMLInputElement)) {
             return;
         }
-        failedFeaturesOnly(e.target.checked);
+        failedFeaturesOnly = e.target.checked;
         update();
     });
 }
@@ -86,30 +78,39 @@ if (failedFeaturesCheckbox !== null) {
 
 const FAILED_SCENARIOS_ONLY_CHECKBOX_ID = 'fail-filter-scenario';
 
-const failedScenariosOnly = (enabled: boolean) => {
-    for (const scenario of allScenarios) {
-        if (!enabled || scenario.getAttribute('data-status') === 'failed') {
-            failedScenarioFiltered.delete(scenario);
-        } else {
-            failedScenarioFiltered.add(scenario);
-        }
-    }
-};
+if (failedFeaturesCheckbox === null || !(failedFeaturesCheckbox instanceof HTMLInputElement)) {
+    throw new Error("Couldn't find failed features filter checkbox");
+}
 
 /**
  * Add an event listener to filter features based on if they have failed.
  */
 const failedScenariosCheckbox = document
     .getElementById(FAILED_SCENARIOS_ONLY_CHECKBOX_ID)
+if (failedScenariosCheckbox === null || !(failedScenariosCheckbox instanceof HTMLInputElement)) {
+    throw new Error("Couldn't find failed scenarios filter checkbox");
+}
 if (failedScenariosCheckbox !== null) {
     failedScenariosCheckbox.addEventListener('change', (e) => {
         if (!(e.target instanceof HTMLInputElement)) {
             return;
         }
         failedScenariosOnly(e.target.checked);
-        update();
     });
 }
+
+const failedScenariosOnly = (enabled: boolean) => {
+    for (const scenario of allScenarios) {
+        if (!(scenario instanceof HTMLElement)) {
+            continue;
+        }
+        if (!enabled || scenario.getAttribute('data-status') === 'failed') {
+            scenario.style.display = 'grid';
+        } else {
+            scenario.style.display = 'none';
+        }
+    }
+};
 
 const contentElem = document.getElementById('content');
 
@@ -120,14 +121,18 @@ if (contentElem === null) {
 let activePartition = -1;
 let cache: Feature[][];
 
-const togglePage = async (page: number) => {
+let failedFeaturesOnly = false;
+
+const features = (partitionIndex: number) => (failedFeaturesOnly ? window.failed.providers : window.data.providers)[partitionIndex]();
+
+const togglePage = async (page: number, refresh: boolean = false) => {
     const partition = Math.floor(page / PAGES_PER_PARTITION);
-    if (activePartition !== partition) {
-        cache = await window.features[partition]();
+    if (refresh || activePartition !== partition) {
+        cache = await features(partition);
     }
-    const features = cache[page];
-    contentElem.innerHTML = window.genFeatureHtml(features);
+    contentElem.innerHTML = window.genFeatureHtml(cache[page]);
     activePartition = partition;
+    updateScenarios();
 };
 
 const paginationButton = (i: number) => {
@@ -161,8 +166,7 @@ if (paginationElem === null) {
  * Updates the pagination based on the current filters.
  */
 const updatePagination = () => {
-    const pages = window.features.length;
-
+    const pages = failedFeaturesOnly ? window.failed.pages : window.data.pages;
 
     // Remove existing pagination buttons
     paginationElem.innerHTML = '';
@@ -175,15 +179,22 @@ const updatePagination = () => {
         });
 };
 
+const updateScenarios = () => {
+    allScenarios.splice(0, allScenarios.length);
+    allScenarios.push(...document.getElementsByClassName('scenario'));
+}
 const update = () => {
     updatePagination();
     // Reset active page back to 0
-    togglePage(0);
+    togglePage(0, true);
 };
 
 if (window.config.showFailedOnStart) {
-    failedFeaturesOnly(true);
+    console.info("Showing failed features only on load");
     failedScenariosOnly(true);
+    failedFeaturesOnly = true;
+    failedFeaturesCheckbox.checked = true;
+    failedScenariosCheckbox.checked = true;
 }
 
 update();

@@ -8,18 +8,20 @@ export const PARTITION_SIZE = 500;
 
 const PAGE_SIZE = 15;
 
-function* pageGenerator(features: Feature[], testStats: TestSuiteStats) {
+const featureFailed = (feature: Feature) => feature.elements.some(f => f.steps.some(s => s.result?.status === 'failed'));
+
+function* pageGenerator(features: Feature[], testStats: TestSuiteStats, failedOnly: boolean) {
     let page = 0;
     const len = features.length;
     const pages = Math.ceil(len / PAGE_SIZE);
     while (page < pages) {
         const pageFeatures = [];
-        for (
-            let j = page * PAGE_SIZE;
-            j < page * PAGE_SIZE + PAGE_SIZE && j < len;
-            j++
-        ) {
-            pageFeatures.push(postProcess(features[j], testStats));
+        let j = page * PAGE_SIZE;
+        while (j < page * PAGE_SIZE + PAGE_SIZE && j < len) {
+            if (!failedOnly || featureFailed(features[j])) {
+                pageFeatures.push(postProcess(features[j], testStats));
+            }
+            j++;
         }
         yield pageFeatures;
         page++;
@@ -29,18 +31,21 @@ function* pageGenerator(features: Feature[], testStats: TestSuiteStats) {
 export default function createDataJs(
     outPath: string,
     features: Feature[],
-    testStats: TestSuiteStats
+    testStats: TestSuiteStats,
+    prefix: string,
+    failedOnly = false,
 ) {
     return new Promise<void>((resolve, reject) => {
-        const writeStream = fs.createWriteStream(path.join(outPath, 'data.js'));
-        const gen = pageGenerator(features, testStats);
+        const writeStream = fs.createWriteStream(path.join(outPath, `${prefix}.js`));
+        const gen = pageGenerator(features, testStats, failedOnly);
         let done = false;
         let partitionIndex = 0;
+        let totalPages = 0;
         try {
-            writeStream.write('window.features.push(');
+            writeStream.write(`window.${prefix} = {}; window.${prefix}.providers = []; window.${prefix}.providers.push(`);
             while (!done) {
                 const jsonWriteStream = fs.createWriteStream(
-                    path.join(outPath, `data-${partitionIndex}.json`)
+                    path.join(outPath, `${prefix}-${partitionIndex}.json`)
                 );
 
                 jsonWriteStream.write('[');
@@ -53,9 +58,10 @@ export default function createDataJs(
                     }
                     jsonWriteStream.write(JSON.stringify(page.value));
                     writeStream.write(
-                        `() => fetch('data-${partitionIndex}.json').then(res => res.json()),`
+                        `() => fetch('${prefix}-${partitionIndex}.json').then(res => res.json()),`
                     );
                     index++;
+                    totalPages++;
                     page = gen.next();
                     first = false;
                 }
@@ -66,6 +72,7 @@ export default function createDataJs(
                 partitionIndex++;
             }
             writeStream.write(');');
+            writeStream.write(`window.${prefix}.pages = ${totalPages};`);
         } catch (err) {
             reject(err);
         } finally {

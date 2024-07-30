@@ -12,13 +12,11 @@ export default function Toolbar() {
                 <input
                     id="fail-filter-feature"
                     type="checkbox"
-                    defaultChecked={showFailedOnStart}
                 />
                 <label>Failed Scenarios Only</label>
                 <input
                     id="fail-filter-scenario"
                     type="checkbox"
-                    defaultChecked={showFailedOnStart}
                 />
 
                 <div className="form-control">

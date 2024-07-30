@@ -45,11 +45,21 @@ export async function renderReport(
 
     fs.mkdirSync(path.join(outPath, 'scripts'), { recursive: true });
 
+    const stats = getTestSuiteStats({ name: appName, features: features });
     Promise.all([
         createDataJs(
             outPath,
             features,
-            getTestSuiteStats({ name: appName, features: features })
+            stats,
+            "data",
+        ),
+
+        createDataJs(
+            outPath,
+            features,
+            stats,
+            "failed",
+            true,
         ),
 
         new Promise<void>((resolve, reject) =>
