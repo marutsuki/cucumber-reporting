@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import { Feature } from './types';
 import path from 'path';
+import { createParseStream } from 'big-json';
 
 export default async function processFeature(
     filePath: string
@@ -16,17 +17,17 @@ export default async function processFeature(
                     console.error('An error occurred:', err);
                     reject();
                 }
-                try {
-                    const features = JSON.parse(data) as Feature[];
-                    resolve(features);
-                } catch (err: unknown) {
-                    console.debug(
-                        'Tried to process:',
-                        filePath,
-                        "but the content isn't JSON"
-                    );
+                const readStream = fs.createReadStream(filePath);
+                const parseStream = createParseStream();
+                parseStream.on('data', (data) => {
+                    resolve(data as Feature[]);
+                });
+                parseStream.on('error', () => {
                     resolve([]);
-                }
+                });
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
+                readStream.pipe(parseStream);
             });
         } else {
             return Promise.all(

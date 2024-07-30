@@ -3,6 +3,7 @@ import processFeature from './processing/process';
 import render from './rendering';
 import path from 'path';
 import { Config } from './config';
+import createDataJs from './create-datajs';
 
 console.debug = (message: string, ...args: unknown[]) => {
     if (Config.getConfig('verbose')) {
@@ -42,6 +43,7 @@ export async function renderReport(
     console.info('Static HTML markup rendered');
 
     Promise.all([
+        createDataJs(outPath, features),
         new Promise<void>((resolve, reject) =>
             fs.copyFile(
                 path.join(__dirname, 'script.js'),

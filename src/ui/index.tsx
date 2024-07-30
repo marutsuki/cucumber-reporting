@@ -1,7 +1,6 @@
 import { Config } from '../config';
 import { getTestSuiteStats } from '../data/stats';
 import { TestSuite } from '../rendering/types';
-import Feature from './Feature';
 import Header from './Header';
 import Summary from './Summary';
 import Toolbar from './Toolbar';
@@ -9,6 +8,7 @@ import Toolbar from './Toolbar';
 export default function CucumberReport({ model }: { model: TestSuite }) {
     const theme = Config.getConfig('theme');
     const stats = getTestSuiteStats(model);
+
     return (
         <html data-theme={theme}>
             <head>
@@ -29,17 +29,7 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                 <Header appName={model.name} />
                 <Summary {...stats} />
                 <Toolbar />
-                <div className="content">
-                    {model.features.map((feature) => (
-                        <div key={feature.id.concat(':wrapper')}>
-                            <Feature
-                                key={feature.id}
-                                model={feature}
-                                stats={stats.features[feature.id]}
-                            />
-                        </div>
-                    ))}
-                </div>
+                <div id="content" className="content"></div>
 
                 <div>
                     <div id="pagination" className="join"></div>
@@ -51,6 +41,7 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                 };`}
             </script>
             <script src="./script.js" />
+            <script src="./data.js" />
         </html>
     );
 }
