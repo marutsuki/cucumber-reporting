@@ -8,23 +8,30 @@ export const PARTITION_SIZE = 500;
 
 const PAGE_SIZE = 15;
 
-const featureFailed = (feature: Feature) => feature.elements.some(f => f.steps.some(s => s.result?.status === 'failed'));
+const featureFailed = (feature: Feature) =>
+    feature.elements.some((f) =>
+        f.steps.some((s) => s.result?.status === 'failed')
+    );
 
-function* pageGenerator(features: Feature[], testStats: TestSuiteStats, failedOnly: boolean) {
-    let page = 0;
+function* pageGenerator(
+    features: Feature[],
+    testStats: TestSuiteStats,
+    failedOnly: boolean
+) {
+    let i = 0;
     const len = features.length;
-    const pages = Math.ceil(len / PAGE_SIZE);
-    while (page < pages) {
+    while (i < len) {
         const pageFeatures = [];
-        let j = page * PAGE_SIZE;
-        while (j < page * PAGE_SIZE + PAGE_SIZE && j < len) {
-            if (!failedOnly || featureFailed(features[j])) {
-                pageFeatures.push(postProcess(features[j], testStats));
+        let size = 0;
+
+        while (size < PAGE_SIZE && i < len) {
+            if (!failedOnly || featureFailed(features[i])) {
+                pageFeatures.push(postProcess(features[i], testStats));
+                size++;
             }
-            j++;
+            i++;
         }
         yield pageFeatures;
-        page++;
     }
 }
 
@@ -33,16 +40,20 @@ export default function createDataJs(
     features: Feature[],
     testStats: TestSuiteStats,
     prefix: string,
-    failedOnly = false,
+    failedOnly = false
 ) {
     return new Promise<void>((resolve, reject) => {
-        const writeStream = fs.createWriteStream(path.join(outPath, `${prefix}.js`));
+        const writeStream = fs.createWriteStream(
+            path.join(outPath, `${prefix}.js`)
+        );
         const gen = pageGenerator(features, testStats, failedOnly);
         let done = false;
         let partitionIndex = 0;
         let totalPages = 0;
         try {
-            writeStream.write(`window.${prefix} = {}; window.${prefix}.providers = []; window.${prefix}.providers.push(`);
+            writeStream.write(
+                `window.${prefix} = {}; window.${prefix}.providers = []; window.${prefix}.providers.push(`
+            );
             while (!done) {
                 const jsonWriteStream = fs.createWriteStream(
                     path.join(outPath, `${prefix}-${partitionIndex}.json`)

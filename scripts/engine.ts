@@ -1,11 +1,11 @@
 /* Constants */
 
-import { Feature } from "src/processing/types";
+import { Feature } from 'src/processing/types';
 
 type PartitionData = {
     providers: (() => Promise<Feature[][]>)[];
     pages: number;
-}
+};
 declare global {
     interface Window {
         genFeatureHtml: (features: Feature[]) => string;
@@ -13,7 +13,7 @@ declare global {
         failed: PartitionData;
         config: {
             showFailedOnStart: boolean;
-        }
+        };
     }
 }
 
@@ -44,9 +44,8 @@ if (searchElem !== null) {
         for (const feature of allFeatures) {
             if (
                 (
-                    feature
-                        .getAttribute(FEATURE_NAME_ATT)?.toLowerCase() || '')
-                    .includes(search.toLowerCase())
+                    feature.getAttribute(FEATURE_NAME_ATT)?.toLowerCase() || ''
+                ).includes(search.toLowerCase())
             ) {
                 searchFiltered.delete(feature);
             } else {
@@ -57,14 +56,14 @@ if (searchElem !== null) {
     });
 }
 
-
 const FAILED_FEATURES_ONLY_CHECKBOX_ID = 'fail-filter-feature';
 
 /**
  * Add an event listener to filter features based on if they have failed.
  */
-const failedFeaturesCheckbox = document
-    .getElementById(FAILED_FEATURES_ONLY_CHECKBOX_ID);
+const failedFeaturesCheckbox = document.getElementById(
+    FAILED_FEATURES_ONLY_CHECKBOX_ID
+);
 if (failedFeaturesCheckbox !== null) {
     failedFeaturesCheckbox.addEventListener('change', (e) => {
         if (!(e.target instanceof HTMLInputElement)) {
@@ -75,19 +74,25 @@ if (failedFeaturesCheckbox !== null) {
     });
 }
 
-
 const FAILED_SCENARIOS_ONLY_CHECKBOX_ID = 'fail-filter-scenario';
 
-if (failedFeaturesCheckbox === null || !(failedFeaturesCheckbox instanceof HTMLInputElement)) {
+if (
+    failedFeaturesCheckbox === null ||
+    !(failedFeaturesCheckbox instanceof HTMLInputElement)
+) {
     throw new Error("Couldn't find failed features filter checkbox");
 }
 
 /**
  * Add an event listener to filter features based on if they have failed.
  */
-const failedScenariosCheckbox = document
-    .getElementById(FAILED_SCENARIOS_ONLY_CHECKBOX_ID)
-if (failedScenariosCheckbox === null || !(failedScenariosCheckbox instanceof HTMLInputElement)) {
+const failedScenariosCheckbox = document.getElementById(
+    FAILED_SCENARIOS_ONLY_CHECKBOX_ID
+);
+if (
+    failedScenariosCheckbox === null ||
+    !(failedScenariosCheckbox instanceof HTMLInputElement)
+) {
     throw new Error("Couldn't find failed scenarios filter checkbox");
 }
 if (failedScenariosCheckbox !== null) {
@@ -115,7 +120,7 @@ const failedScenariosOnly = (enabled: boolean) => {
 const contentElem = document.getElementById('content');
 
 if (contentElem === null) {
-    throw new Error("Content container not found");
+    throw new Error('Content container not found');
 }
 
 let activePartition = -1;
@@ -123,7 +128,10 @@ let cache: Feature[][];
 
 let failedFeaturesOnly = false;
 
-const features = (partitionIndex: number) => (failedFeaturesOnly ? window.failed.providers : window.data.providers)[partitionIndex]();
+const features = (partitionIndex: number) =>
+    (failedFeaturesOnly ? window.failed.providers : window.data.providers)[
+        partitionIndex
+    ]();
 
 const togglePage = async (page: number, refresh: boolean = false) => {
     const partition = Math.floor(page / PAGES_PER_PARTITION);
@@ -159,7 +167,7 @@ const paginationButton = (i: number) => {
 const paginationElem = document.getElementById('pagination');
 
 if (paginationElem === null) {
-    throw new Error("Pagination container not found");
+    throw new Error('Pagination container not found');
 }
 
 /**
@@ -182,7 +190,7 @@ const updatePagination = () => {
 const updateScenarios = () => {
     allScenarios.splice(0, allScenarios.length);
     allScenarios.push(...document.getElementsByClassName('scenario'));
-}
+};
 const update = () => {
     updatePagination();
     // Reset active page back to 0
@@ -190,7 +198,7 @@ const update = () => {
 };
 
 if (window.config.showFailedOnStart) {
-    console.info("Showing failed features only on load");
+    console.info('Showing failed features only on load');
     failedScenariosOnly(true);
     failedFeaturesOnly = true;
     failedFeaturesCheckbox.checked = true;
