@@ -25,7 +25,6 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                     rel="stylesheet"
                     type="text/css"
                 />
-                <script src="https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.min.js"></script>
                 <script src="https://cdn.tailwindcss.com"></script>
             </head>
             <body className="py-4 px-10">
@@ -60,7 +59,7 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
             <script src="scripts/templating.js" />
             <script src="data.js" />
             <script src="failed.js" />
-            <script src="scripts/engine.js" />
+            <script src="scripts/main.js" />
         </html>
     );
 }

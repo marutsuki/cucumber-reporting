@@ -1,3 +1,6 @@
+import { ProcessedFeature } from 'src/processing/types';
+import Mustache from 'mustache';
+
 const beforeAfterTemplate = `
  <li class="pt-2 max-w-full">
         <div>
@@ -200,6 +203,6 @@ const template = `{{#features}}
 </div>
 {{/features}}`;
 
-window.genFeatureHtml = (features) => {
+export const genFeatureHtml = (features: ProcessedFeature[]) => {
     return Mustache.render(template, { features }, partial);
 };

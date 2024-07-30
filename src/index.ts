@@ -47,63 +47,21 @@ export async function renderReport(
 
     const stats = getTestSuiteStats({ name: appName, features: features });
     Promise.all([
-        createDataJs(
-            outPath,
-            features,
-            stats,
-            "data",
-        ),
+        createDataJs(outPath, features, stats, 'data'),
 
-        createDataJs(
-            outPath,
-            features,
-            stats,
-            "failed",
-            true,
-        ),
+        createDataJs(outPath, features, stats, 'failed', true),
 
         new Promise<void>((resolve, reject) =>
-            fs.copyFile(
-                path.join(__dirname, '../scripts', 'engine.js'),
-                path.join(outPath, 'scripts', 'engine.js'),
+            fs.cp(
+                path.join(__dirname, '../scripts'),
+                path.join(outPath, 'scripts'),
+                { recursive: true },
                 (err) => {
                     if (err) {
                         console.error(`An error occurred: ${err}`);
                         reject();
                     } else {
                         console.debug('engine.js copied');
-                        resolve();
-                    }
-                }
-            )
-        ),
-
-        new Promise<void>((resolve, reject) =>
-            fs.copyFile(
-                path.join(__dirname, '../scripts', 'templating.js'),
-                path.join(outPath, 'scripts', 'templating.js'),
-                (err) => {
-                    if (err) {
-                        console.error(`An error occurred: ${err}`);
-                        reject();
-                    } else {
-                        console.debug('script.js copied');
-                        resolve();
-                    }
-                }
-            )
-        ),
-
-        new Promise<void>((resolve, reject) =>
-            fs.copyFile(
-                path.join(__dirname, '/../scripts', 'tailwind.js'),
-                path.join(outPath, 'scripts', 'tailwind.js'),
-                (err) => {
-                    if (err) {
-                        console.error(`An error occurred: ${err}`);
-                        reject();
-                    } else {
-                        console.debug('script.js copied');
                         resolve();
                     }
                 }

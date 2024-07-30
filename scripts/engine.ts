@@ -1,14 +1,16 @@
-/* Constants */
-
-import { Feature } from 'src/processing/types';
+import { ProcessedFeature } from 'src/processing/types';
+import { MAX_PAGINATION_BUTTONS, PAGES_PER_PARTITION } from './constants';
+import { loadTries } from './trie';
+import { features } from './features';
+import { genFeatureHtml } from './templating';
 
 type PartitionData = {
-    providers: (() => Promise<Feature[][]>)[];
+    providers: (() => Promise<ProcessedFeature[][]>)[];
     pages: number;
 };
+
 declare global {
     interface Window {
-        genFeatureHtml: (features: Feature[]) => string;
         data: PartitionData;
         failed: PartitionData;
         config: {
@@ -17,42 +19,23 @@ declare global {
     }
 }
 
-const MAX_PAGINATION_BUTTONS = 30;
-const PAGES_PER_PARTITION = 30;
-
-const FEATURE_NAME_ATT = 'data-name';
-
 /* Event listeners */
 
 const SEARCH_INPUT_ID = 'feature-search';
 
-const allFeatures = [...document.getElementsByClassName('feature')];
-
 const allScenarios = [...document.getElementsByClassName('scenario')];
-
-const searchFiltered = new Set();
 
 /**
  * Add an event listener to filter features based on the search input.
  */
+let searchFilter = '';
 const searchElem = document.getElementById(SEARCH_INPUT_ID);
 if (searchElem !== null) {
-    searchElem.addEventListener('input', (e) => {
+    searchElem.addEventListener('change', (e) => {
         if (!(e.target instanceof HTMLInputElement)) {
             return;
         }
-        const search = e.target.value;
-        for (const feature of allFeatures) {
-            if (
-                (
-                    feature.getAttribute(FEATURE_NAME_ATT)?.toLowerCase() || ''
-                ).includes(search.toLowerCase())
-            ) {
-                searchFiltered.delete(feature);
-            } else {
-                searchFiltered.add(feature);
-            }
-        }
+        searchFilter = e.target.value;
         update();
     });
 }
@@ -125,21 +108,16 @@ if (contentElem === null) {
 }
 
 let activePartition = -1;
-let cache: Feature[][];
+let cache: ProcessedFeature[][];
 
 let failedFeaturesOnly = false;
-
-const features = (partitionIndex: number) =>
-    (failedFeaturesOnly ? window.failed.providers : window.data.providers)[
-        partitionIndex
-    ]();
 
 const togglePage = async (page: number, refresh: boolean = false) => {
     const partition = Math.floor(page / PAGES_PER_PARTITION);
     if (refresh || activePartition !== partition) {
-        cache = await features(partition);
+        cache = await features(partition, failedFeaturesOnly, searchFilter);
     }
-    contentElem.innerHTML = window.genFeatureHtml(cache[page]);
+    contentElem.innerHTML = genFeatureHtml(cache[page]);
     activePartition = partition;
     updateScenarios();
 };
@@ -215,6 +193,7 @@ const updateScenarios = () => {
     allScenarios.splice(0, allScenarios.length);
     allScenarios.push(...document.getElementsByClassName('scenario'));
 };
+
 const update = () => {
     updatePagination();
     // Reset active page back to 0
@@ -228,5 +207,7 @@ if (window.config.showFailedOnStart) {
     failedFeaturesCheckbox.checked = true;
     failedScenariosCheckbox.checked = true;
 }
+
+loadTries();
 
 update();
