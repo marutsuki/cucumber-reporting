@@ -103,8 +103,6 @@ document
         update();
     });
 
-
-
 const FAILED_SCENARIOS_ONLY_CHECKBOX_ID = 'fail-filter-scenario';
 
 const failedScenariosOnly = (enabled) => {
@@ -127,12 +125,8 @@ document
         update();
     });
 
-
 const isEligibleForDisplay = (feature) => {
-    return (
-        !failedFeatureFiltered.has(feature) &&
-        !searchFiltered.has(feature)
-    );
+    return !failedFeatureFiltered.has(feature) && !searchFiltered.has(feature);
 };
 
 const loadFeatures = () => {
@@ -182,7 +176,7 @@ const togglePage = async (page) => {
     const features = cache[page];
     contentElem.innerHTML = window.genFeatureHtml(features);
     activePartition = partition;
-}
+};
 
 const paginationButton = (i) => {
     const button = document.createElement('input');
@@ -226,7 +220,6 @@ const update = () => {
     togglePage(0);
 };
 
-
 if (window.config.showFailedOnStart) {
     failedFeaturesOnly(true);
     failedScenariosOnly(true);
@@ -238,18 +231,18 @@ document.querySelectorAll('.page').forEach((p) => {
     // Even though the content is already collapsed inside the accordion, we can
     // set `display` to `none` to reduce the amount of layout computation needed.
     const content = [...p.getElementsByClassName('content')];
-    content.forEach(c => {
+    content.forEach((c) => {
         c.style.display = 'none';
     });
 
     // Then we only enable `display` when the accordion contents should be
     // visible, ie. the input is checked.
     p.getElementsByTagName('input')[0].addEventListener('change', (e) => {
-        const display = e.target.checked ? 'grid' : 'none'
-        content.forEach(c => {
+        const display = e.target.checked ? 'grid' : 'none';
+        content.forEach((c) => {
             c.style.display = display;
-        })
-    })
+        });
+    });
 });
 
 update();

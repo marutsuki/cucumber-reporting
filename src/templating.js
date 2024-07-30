@@ -40,7 +40,7 @@ const beforeAfterTemplate = `
             </div>
         {{/result.error_message}}
     </li>
-`
+`;
 const statusTemplate = `
     {{#result.passed}}
     <div class="badge badge-success gap-2">Passed</div>
@@ -60,7 +60,7 @@ const statusTemplate = `
     {{#result.pending}}
     <div class="badge badge-info gap-2">Pending</div>
     {{/result.pending}}
-`
+`;
 const stepTemplate = `
     <li class="pt-2 max-w-full">
         <div>
@@ -119,7 +119,7 @@ const stepTemplate = `
             </div>
         {{/result.error_message}}
     </li>
-`
+`;
 
 const scenarioTemplate = `
 <div
@@ -144,14 +144,14 @@ const scenarioTemplate = `
         {{/after}}
     </ul>
 </div>
-<div`
+<div`;
 
 const partial = {
     scenario: scenarioTemplate,
     step: stepTemplate,
     status: statusTemplate,
     beforeAfter: beforeAfterTemplate,
-}
+};
 
 const template = `{{#features}}
 <div
@@ -200,8 +200,6 @@ const template = `{{#features}}
 </div>
 {{/features}}`;
 
-window.genFeatureHtml = (
-    features
-) => {
+window.genFeatureHtml = (features) => {
     return Mustache.render(template, { features }, partial);
-}
+};
