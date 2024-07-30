@@ -15,6 +15,6 @@
         "allowJs": true,
         "resolveJsonModule": true,
     },
-    "include": ["cli.ts", "src/**/*.tsx", "src/**/*.ts", "package.json", "src/script.js", "./LICENSE"],
+    "include": ["cli.ts", "src/**/*.tsx", "src/**/*.ts", "package.json", "src/script.js", "src/templating.js", "./LICENSE"],
     "exclude": ["node_modules"]
 }

@@ -1,3 +1,4 @@
+import { PARTITION_SIZE } from '../create-datajs';
 import { Config } from '../config';
 import { getTestSuiteStats } from '../data/stats';
 import { TestSuite } from '../rendering/types';
@@ -9,6 +10,7 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
     const theme = Config.getConfig('theme');
     const stats = getTestSuiteStats(model);
 
+    const partitions = Math.ceil(model.features.length / PARTITION_SIZE);
     return (
         <html data-theme={theme}>
             <head>
@@ -23,6 +25,7 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                     rel="stylesheet"
                     type="text/css"
                 />
+                <script src="https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.min.js"></script>
                 <script src="https://cdn.tailwindcss.com"></script>
             </head>
             <body className="py-4 px-10">
@@ -40,8 +43,18 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                     showFailedOnStart: ${Config.getConfig('showFailedOnStart')},
                 };`}
             </script>
-            <script src="./script.js" />
+            <script>window.features = []</script>
+            {Array(partitions)
+                .fill(0)
+                .map((_, i) => (
+                    <script
+                        id={`data-${i}`}
+                        src={`./data-${i}.json`}
+                        type="application/json"
+                    />
+                ))}
             <script src="./data.js" />
+            <script src="./script.js" />
         </html>
     );
 }

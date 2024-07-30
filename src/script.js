@@ -1,7 +1,7 @@
 /* Constants */
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const PAGE_SIZE = 15;
+const PAGES_PER_PARTITION = 30;
 
 const FEATURE_NAME_ATT = 'data-name';
 
@@ -160,29 +160,28 @@ const loadFeatures = () => {
     });
 };
 
-// Keep track of active page index
-let activePage = 0;
-
 /**
  * Updates the displayed page to the given page index.
  *
  * @param {*} page the page index to display
  */
 const changePage = (newPage) => {
-    // Hide old page
-    togglePage(activePage, false);
-    // Display new page
-    togglePage(newPage, true);
-
-    activePage = newPage;
+    togglePage(newPage);
 };
 
-const togglePage = (page, show) => {
-    const display = show ? 'grid' : 'none';
-    const start = page * PAGE_SIZE;
-    activeFeatures.slice(start, start + PAGE_SIZE).forEach(p => {
-        p.style.display = display;
-    });
+const contentElem = document.getElementById('content');
+
+let activePartition;
+let cache;
+
+const togglePage = async (page) => {
+    const partition = Math.floor(page / PAGES_PER_PARTITION);
+    if (activePartition !== partition) {
+        cache = await window.features[partition]();
+    }
+    const features = cache[page];
+    // TODO: Populate the page with the features
+    activePartition = partition;
 }
 
 const paginationButton = (i) => {
@@ -205,7 +204,7 @@ const paginationButton = (i) => {
  * Updates the pagination based on the current filters.
  */
 const updatePagination = () => {
-    const pages = Math.ceil(activeFeatures.length / PAGE_SIZE);
+    const pages = window.features.length;
 
     const paginationElem = document.getElementById('pagination');
 
@@ -221,13 +220,10 @@ const updatePagination = () => {
 };
 
 const update = () => {
-    // Remove all the features on the current page
-    togglePage(activePage, false);
     loadFeatures();
     updatePagination();
     // Reset active page back to 0
-    togglePage(0, true);
-    activePage = 0;
+    togglePage(0);
 };
 
 

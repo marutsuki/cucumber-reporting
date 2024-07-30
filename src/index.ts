@@ -4,6 +4,7 @@ import render from './rendering';
 import path from 'path';
 import { Config } from './config';
 import createDataJs from './create-datajs';
+import { getTestSuiteStats } from './data/stats';
 
 console.debug = (message: string, ...args: unknown[]) => {
     if (Config.getConfig('verbose')) {
@@ -43,11 +44,31 @@ export async function renderReport(
     console.info('Static HTML markup rendered');
 
     Promise.all([
-        createDataJs(outPath, features),
+        createDataJs(
+            outPath,
+            features,
+            getTestSuiteStats({ name: appName, features: features })
+        ),
         new Promise<void>((resolve, reject) =>
             fs.copyFile(
                 path.join(__dirname, 'script.js'),
                 path.join(outPath, 'script.js'),
+                (err) => {
+                    if (err) {
+                        console.error(`An error occurred: ${err}`);
+                        reject();
+                    } else {
+                        console.debug('script.js copied');
+                        resolve();
+                    }
+                }
+            )
+        ),
+
+        new Promise<void>((resolve, reject) =>
+            fs.copyFile(
+                path.join(__dirname, 'templating.js'),
+                path.join(outPath, 'templating.js'),
                 (err) => {
                     if (err) {
                         console.error(`An error occurred: ${err}`);
