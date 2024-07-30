@@ -3,7 +3,7 @@
         "baseUrl": ".",
         "rootDir": ".",
         "outDir": "./dist",
-        "target": "ESNext",
+        "target": "ES6",
         "moduleResolution": "node",
         "module": "commonjs",
         "esModuleInterop": true,
@@ -15,6 +15,15 @@
         "allowJs": true,
         "resolveJsonModule": true,
     },
-    "include": ["cli.ts", "src/**/*.tsx", "src/**/*.ts", "package.json", "src/script.js", "src/templating.js", "./LICENSE"],
-    "exclude": ["node_modules"]
+    "include": [
+        "cli.ts",
+        "src/**/*.tsx",
+        "src/**/*.ts",
+        "package.json",
+        "scripts/**/*.ts",
+        "./LICENSE"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }

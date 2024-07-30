@@ -43,7 +43,10 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                     showFailedOnStart: ${Config.getConfig('showFailedOnStart')},
                 };`}
             </script>
-            <script>window.features = []</script>
+            <script>
+                const exports = {'{}'};
+                window.features = [];
+            </script>
             {Array(partitions)
                 .fill(0)
                 .map((_, i) => (
@@ -53,9 +56,10 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                         type="application/json"
                     />
                 ))}
-            <script src="./templating.js" />
-            <script src="./data.js" />
-            <script src="./script.js" />
+            <script src="scripts/tailwind.js" />
+            <script src="scripts/templating.js" />
+            <script src="data.js" />
+            <script src="scripts/engine.js" />
         </html>
     );
 }

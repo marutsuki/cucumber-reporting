@@ -43,16 +43,35 @@ export async function renderReport(
 
     console.info('Static HTML markup rendered');
 
+    fs.mkdirSync(path.join(outPath, 'scripts'), { recursive: true });
+
     Promise.all([
         createDataJs(
             outPath,
             features,
             getTestSuiteStats({ name: appName, features: features })
         ),
+
         new Promise<void>((resolve, reject) =>
             fs.copyFile(
-                path.join(__dirname, 'script.js'),
-                path.join(outPath, 'script.js'),
+                path.join(__dirname, '../scripts', 'engine.js'),
+                path.join(outPath, 'scripts', 'engine.js'),
+                (err) => {
+                    if (err) {
+                        console.error(`An error occurred: ${err}`);
+                        reject();
+                    } else {
+                        console.debug('engine.js copied');
+                        resolve();
+                    }
+                }
+            )
+        ),
+
+        new Promise<void>((resolve, reject) =>
+            fs.copyFile(
+                path.join(__dirname, '../scripts', 'templating.js'),
+                path.join(outPath, 'scripts', 'templating.js'),
                 (err) => {
                     if (err) {
                         console.error(`An error occurred: ${err}`);
@@ -67,8 +86,8 @@ export async function renderReport(
 
         new Promise<void>((resolve, reject) =>
             fs.copyFile(
-                path.join(__dirname, 'templating.js'),
-                path.join(outPath, 'templating.js'),
+                path.join(__dirname, '/../scripts', 'tailwind.js'),
+                path.join(outPath, 'scripts', 'tailwind.js'),
                 (err) => {
                     if (err) {
                         console.error(`An error occurred: ${err}`);
