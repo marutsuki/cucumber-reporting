@@ -72,7 +72,7 @@ export async function renderReport(
         new Promise<void>((resolve, reject) =>
             render(appName, stats, partitions).then((document) =>
                 fs.writeFile(
-                    path.join(outPath, 'output.html'),
+                    path.join(outPath, 'index.html'),
                     document,
                     (err) => {
                         if (err) {
