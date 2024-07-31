@@ -17,6 +17,7 @@
     },
     "include": [
         "cli.ts",
+        "constants.ts",
         "src/**/*.tsx",
         "src/**/*.ts",
         "package.json",

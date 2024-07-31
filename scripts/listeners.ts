@@ -1,4 +1,4 @@
-import { SEARCH_INPUT_ID } from './constants';
+import { SEARCH_INPUT_ID } from '../constants';
 import engine from './engine';
 
 export default function addListeners(showFailed: boolean) {

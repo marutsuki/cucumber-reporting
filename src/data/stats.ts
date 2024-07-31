@@ -1,29 +1,36 @@
 import { Feature } from '../processing/types';
-import { TestSuite } from '../rendering/types';
 
 export type TestSuiteStats = {
-    passed: number;
-    failed: number;
+    featuresPassed: number;
+    featuresFailed: number;
+    scenariosPassed: number;
+    scenariosFailed: number;
     features: Readonly<Record<string, FeatureStats>>;
 };
 
-export function getTestSuiteStats(model: TestSuite): TestSuiteStats {
-    let passed = 0;
-    let failed = 0;
+export function getTestSuiteStats(featureList: Feature[]): TestSuiteStats {
+    let featuresPassed = 0;
+    let featuresFailed = 0;
+    let scenariosPassed = 0;
+    let scenariosFailed = 0;
     const features = Object.fromEntries(
-        model.features.map((feature) => {
+        featureList.map((feature) => {
             const featureStats = getFeatureStats(feature);
             if (featureStats.failed > 0) {
-                failed++;
+                featuresPassed++;
             } else {
-                passed++;
+                featuresFailed++;
             }
+            scenariosPassed += featureStats.passed;
+            scenariosFailed += featureStats.failed;
             return [feature.id, featureStats];
         })
     );
     return {
-        passed,
-        failed,
+        featuresPassed,
+        featuresFailed,
+        scenariosPassed,
+        scenariosFailed,
         features,
     };
 }

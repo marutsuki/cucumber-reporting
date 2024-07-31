@@ -1,0 +1,44 @@
+<html data-theme="{{theme}}">
+    <head>
+        <meta charSet="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        />
+        <title>{{model.name}} Cucumber Report</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="py-4 px-10">
+        {{ > Header }}
+        {{ > Summary }}
+        {{ > Toolbar }}
+        <div id="content" class="content"></div>
+        <div>
+            <div
+                id="pagination"
+                class="join w-full flex justify-center my-4"
+            ></div>
+        </div>
+    </body>
+    <script>
+        window.config = {
+            showFailedOnStart: {{showFailedOnStart}},
+        };
+    </script>
+    {{#partitions}}
+        <script
+            id="data-{{.}}"
+            src="data-{{.}}.json"
+            type="application/json"
+        ></script>
+    {{/partitions}}
+    <script src="data.js"></script>
+    <script src="failed.js"></script>
+    <script src="scripts/tailwind.js"></script>
+    <script src="scripts/main.js"></script>
+</html>

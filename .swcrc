@@ -1,0 +1,26 @@
+{
+    "$schema": "https://swc.rs/schema.json",
+    "exclude": [".*\\.test\\.ts$"],
+    "jsc": {
+        "parser": {
+        "syntax": "typescript",
+        "jsx": false,
+        "dynamicImport": false,
+        "privateMethod": false,
+        "functionBind": false,
+        "exportDefaultFrom": false,
+        "exportNamespaceFrom": false,
+        "decorators": false,
+        "decoratorsBeforeExport": false,
+        "topLevelAwait": false,
+        "importMeta": false
+        }
+    },
+    "module": {
+    "type": "commonjs",
+      "strict": true,
+      "strictMode": true,
+      "lazy": false,
+      "noInterop": false
+    }
+}

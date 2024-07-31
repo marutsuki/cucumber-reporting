@@ -1,4 +1,4 @@
-import { PAGES_PER_PARTITION } from './constants';
+import { PAGES_PER_PARTITION } from '../constants';
 import { features } from './features';
 import { genFeatureHtml } from './templating';
 import { genPaginationElements } from './pagination';

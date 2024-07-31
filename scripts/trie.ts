@@ -1,5 +1,5 @@
 import { ProcessedFeature } from 'src/processing/types';
-import { PAGES_PER_PARTITION } from './constants';
+import { PAGES_PER_PARTITION } from '../constants';
 import TrieSearch from 'trie-search';
 
 type TrieType = {

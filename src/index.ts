@@ -1,10 +1,11 @@
 import fs from 'fs';
 import processFeature from './processing/process';
-import render from './rendering';
 import path from 'path';
 import { Config } from './config';
 import createDataJs from './create-datajs';
 import { getTestSuiteStats } from './data/stats';
+import render from './ui/render';
+import { PARTITION_SIZE } from '../constants';
 
 console.debug = (message: string, ...args: unknown[]) => {
     if (Config.getConfig('verbose')) {
@@ -39,13 +40,13 @@ export async function renderReport(
     console.info('Processing JSON report files found under:', reportPath);
     const features = await processFeature(reportPath);
 
-    const document = render({ name: appName, features: features });
-
     console.info('Static HTML markup rendered');
 
     fs.mkdirSync(path.join(outPath, 'scripts'), { recursive: true });
 
-    const stats = getTestSuiteStats({ name: appName, features: features });
+    const partitions = Math.ceil(features.length / PARTITION_SIZE);
+    const stats = getTestSuiteStats(features);
+
     Promise.all([
         createDataJs(outPath, features, stats, 'data'),
 
@@ -69,15 +70,21 @@ export async function renderReport(
         ),
 
         new Promise<void>((resolve, reject) =>
-            fs.writeFile(path.join(outPath, 'output.html'), document, (err) => {
-                if (err) {
-                    console.error(`An error occurred: ${err}`);
-                    reject();
-                } else {
-                    console.debug('output.html created');
-                    resolve();
-                }
-            })
+            render(appName, stats, partitions).then((document) =>
+                fs.writeFile(
+                    path.join(outPath, 'output.html'),
+                    document,
+                    (err) => {
+                        if (err) {
+                            console.error(`An error occurred: ${err}`);
+                            reject();
+                        } else {
+                            console.debug('output.html created');
+                            resolve();
+                        }
+                    }
+                )
+            )
         ),
     ])
         .then(() => {
