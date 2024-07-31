@@ -56,7 +56,6 @@ export default function CucumberReport({ model }: { model: TestSuite }) {
                     />
                 ))}
             <script src="scripts/tailwind.js" />
-            <script src="scripts/templating.js" />
             <script src="data.js" />
             <script src="failed.js" />
             <script src="scripts/main.js" />
