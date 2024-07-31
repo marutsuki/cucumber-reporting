@@ -13,14 +13,26 @@ console.debug = (message: string, ...args: unknown[]) => {
     }
 };
 
+type RenderReportOptions = {
+    reportPath: string;
+    outPath: string;
+    projDir: string;
+    theme: string;
+    appName: string;
+    showFailed: boolean;
+    verbose: boolean;
+};
+
 export async function renderReport(
     reportPath: string,
-    outPath: string,
-    projDir: string | null,
-    theme: string,
-    appName: string,
-    showFailed: boolean,
-    verbose: boolean
+    {
+        outPath = 'out',
+        projDir, // TODO: NOT WORKING.
+        theme = 'dark',
+        appName = '[Undefined]',
+        showFailed = false,
+        verbose = false,
+    }: Partial<RenderReportOptions>
 ) {
     if (showFailed) {
         console.info('Showing failed scenarios by default');

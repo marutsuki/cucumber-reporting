@@ -30,16 +30,30 @@ cuke -i=path/to/reports/ -o=path/to/output/
 ## CLI Options
 | Option | Description |
 | --- | --- |
-| `-i, --input` | Path to the directory containing Cucumber JSON reports. |
-| `-o, --output` | Path to the directory where the generated report should be saved. |
+| `-i, --input` | Path to a JSON report or a directory containing JSON reports. |
+| `-o, --output` | Path where the generated report should be saved. |
 | `-v, --verbose` | Increase logging verbosity to debug mode. |
 | `-t, --theme` | Report theme, can be any of the DaisyUI supported themes: https://daisyui.com/docs/themes/ |
 | `-n, --app-name` | Application name to be displayed on the report. |
 | `-f, --show-failed` | Show only failed features/scenarios on initial page load. |
 
 ## API
+You can also render a report via `renderReport()`
 
-`WIP`
+```typescript
+renderReport(reportPath, {
+    // Path where the generated report should be saved
+    outPath: "out",
+    // Report theme
+    theme: "dark",
+    // Application name
+    appName: "My App",
+    // Show only failed features/scenarios on initial page load
+    showFailed: true,
+    // Increase logging verbosity to debug mode
+    verbose: true,
+});
+```
 
 ## Contributing
 

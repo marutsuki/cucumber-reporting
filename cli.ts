@@ -4,13 +4,13 @@ import yargs from 'yargs';
 
 const argv = yargs
     .options({
-        o: { type: 'string', alias: 'output', default: 'out' },
-        p: { type: 'string', alias: 'proj-loc', default: null },
-        t: { type: 'string', alias: 'theme', default: 'dark' },
-        n: { type: 'string', alias: 'app-name', default: '[undefined]' },
-        f: { type: 'boolean', alias: 'show-failed', default: false },
-        i: { type: 'string', alias: 'input', default: null },
-        v: { type: 'boolean', alias: 'verbose', default: false },
+        o: { type: 'string', alias: 'output' },
+        p: { type: 'string', alias: 'proj-loc' },
+        t: { type: 'string', alias: 'theme' },
+        n: { type: 'string', alias: 'app-name' },
+        f: { type: 'boolean', alias: 'show-failed' },
+        i: { type: 'string', alias: 'input' },
+        v: { type: 'boolean', alias: 'verbose' },
     })
     .positional('report-dir', {
         describe: 'The report directory to read from',
@@ -18,9 +18,16 @@ const argv = yargs
     .parseSync();
 
 const reportPath = argv.i;
-if (reportPath === null) {
+if (reportPath === undefined) {
     console.error('No report path provided.');
     process.exit(1);
 }
 
-renderReport(reportPath, argv.o, argv.p, argv.t, argv.n, argv.f, argv.v);
+renderReport(reportPath, {
+    outPath: argv.o,
+    projDir: argv.p,
+    theme: argv.t,
+    appName: argv.n,
+    showFailed: argv.f,
+    verbose: argv.v,
+});
