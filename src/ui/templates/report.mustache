@@ -30,13 +30,6 @@
             showFailedOnStart: {{showFailedOnStart}},
         };
     </script>
-    {{#partitions}}
-        <script
-            id="data-{{.}}"
-            src="data-{{.}}.json"
-            type="application/json"
-        ></script>
-    {{/partitions}}
     <script src="data.js"></script>
     <script src="failed.js"></script>
     <script src="scripts/tailwind.js"></script>
