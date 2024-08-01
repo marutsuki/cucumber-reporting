@@ -1,5 +1,5 @@
 import { ProcessedFeature } from 'src/processing/types';
-import { PAGE_SIZE } from './constants';
+import { PAGE_SIZE } from '../constants';
 import { allTrie, failedTrie } from './trie';
 
 let cache: ProcessedFeature[][];
@@ -23,11 +23,9 @@ export const features = (
         return Promise.resolve(cache);
     }
 
-    if (!searchFilter) {
-        return (failedOnly ? window.failed.providers : window.data.providers)[
-            partitionIndex
-        ]();
-    }
+    return (failedOnly ? window.failed.providers : window.data.providers)[
+        partitionIndex
+    ]();
 
     const results = (failedOnly ? failedTrie : allTrie).get(searchFilter);
     const ret = [];

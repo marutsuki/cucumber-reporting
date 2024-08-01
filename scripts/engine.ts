@@ -34,12 +34,13 @@ const engineInternal = {
     },
     togglePage: async (page: number) => {
         const partition = Math.floor(page / PAGES_PER_PARTITION);
+        const offset = page % PAGES_PER_PARTITION;
         const pages = await features(
             partition,
             engineInternal.failedFeaturesOnly,
             engineInternal.searchFilter
         );
-        contentElem.innerHTML = genFeatureHtml(pages[page]);
+        contentElem.innerHTML = genFeatureHtml(pages[offset]);
         engineInternal.allScenarios.splice(
             0,
             engineInternal.allScenarios.length
@@ -57,7 +58,9 @@ const engineInternal = {
             : window.data.pages;
         // Remove existing pagination buttons
         paginationElem.innerHTML = '';
-        genPaginationElements(pages, paginationElem, engine.togglePage);
+        genPaginationElements(pages, paginationElem, (page) =>
+            engine.togglePage(page)
+        );
     },
 };
 
