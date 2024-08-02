@@ -18,11 +18,11 @@ const config = [
             peerDeps(),
             copy({
                 targets: [
-                    { src: 'build/types/src/index.d.ts', dest: 'dist/index.d.ts' },
+                    { src: 'build/src/index.d.ts', dest: 'dist' },
                     { src: 'templates', dest: 'dist/templates' },
-                    { src: 'package.json', dest: 'dist/package.json' },
-                    { src: 'LICENSE', dest: 'dist/LICENSE' },
-                    { src: 'README.md', dest: 'dist/README.md' },
+                    { src: 'package.json', dest: 'dist' },
+                    { src: 'LICENSE', dest: 'dist' },
+                    { src: 'README.md', dest: 'dist' },
                 ]
             })
         ]

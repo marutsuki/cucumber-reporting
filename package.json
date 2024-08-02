@@ -2,12 +2,13 @@
     "name": "cucumber-reportify",
     "version": "0.2.0",
     "description": "HTML reports for Cucumber test results",
-    "main": "dist/cjs/index.js",
-    "types": "dist/index.d.ts",
+    "main": "index.js",
+    "types": "index.d.ts",
     "scripts": {
         "lint": "eslint src",
         "format": "prettier --write src",
-        "build": "tsc | rollup -c",
+        "build": "tsc",
+        "bundle": "rollup -c",
         "test": "jest ."
     },
     "author": "",
