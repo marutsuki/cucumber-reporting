@@ -1,5 +1,5 @@
 import { TestSuiteStats } from '../data/stats';
-import { render as mustacheRender } from 'mustache';
+import mustache from 'mustache';
 import { Config } from '../config';
 import path from 'path';
 import { filePromise } from '../data/file';
@@ -15,13 +15,13 @@ export default async function render(
             'summary.mustache',
             'toolbar.mustache',
         ]
-            .map((file) => path.join(__dirname, 'templates', file))
+            .map((file) => path.join('templates', file))
             .map((filePath) => filePromise(filePath))
     ).then((files) => {
         const [report, header, summary, toolbar] = files.map((file) =>
             file.toString()
         );
-        return mustacheRender(
+        return mustache.render(
             report,
             {
                 ...stats,

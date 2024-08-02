@@ -54,32 +54,34 @@ export async function renderReport(
 
     console.info('Static HTML markup rendered');
 
-    fs.mkdirSync(path.join(outPath, 'scripts'), { recursive: true });
+    const scriptsPath = path.join(outPath, 'scripts');
+    fs.mkdirSync(scriptsPath, { recursive: true });
 
     const partitions = Math.ceil(features.length / PARTITION_SIZE);
     const stats = getTestSuiteStats(features);
 
     Promise.all([
-        createDataJs(outPath, features, stats, 'data'),
+        createDataJs(outPath, features, stats, 'data').catch((err) => {
+            console.error('An error occurred:', err);
+        }),
 
-        createDataJs(outPath, features, stats, 'failed', true),
+        createDataJs(outPath, features, stats, 'failed', true).catch((err) => {
+            console.error('An error occurred:', err);
+        }),
 
-        new Promise<void>((resolve, reject) =>
-            fs.cp(
-                path.join(__dirname, '../scripts'),
-                path.join(outPath, 'scripts'),
-                { recursive: true },
-                (err) => {
-                    if (err) {
-                        console.error(`An error occurred: ${err}`);
-                        reject();
-                    } else {
-                        console.debug('engine.js copied');
-                        resolve();
-                    }
+        new Promise<void>((resolve, reject) => {
+            const from = path.join(__dirname, 'scripts');
+            console.debug('Copying scripts from', from, 'to', scriptsPath);
+            fs.cp(from, scriptsPath, { recursive: true }, (err) => {
+                if (err) {
+                    console.error(`An error occurred: ${err}`);
+                    reject();
+                } else {
+                    console.debug('Scripts copied');
+                    resolve();
                 }
-            )
-        ),
+            });
+        }),
 
         new Promise<void>((resolve, reject) =>
             render(appName, stats, partitions).then((document) =>
