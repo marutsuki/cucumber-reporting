@@ -1,7 +1,8 @@
 import * as fs from 'fs';
 import { Feature } from './types';
 import path from 'path';
-import JSONStream from 'jsonstream';
+
+import JSONStream from 'JSONstream';
 
 export default async function processFeature(
     filePath: string
