@@ -160,7 +160,7 @@ const template = `{{#features}}
 <div
     id={model.id}
     class="page feature collapse bg-base-200 m-1 shadow-xl shadow-base-content"
-    data-name="{{model.name}}"
+    data-name="{{name}}"
     data-status="{{status}}"
     {...props}
 >
