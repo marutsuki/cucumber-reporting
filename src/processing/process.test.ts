@@ -22,6 +22,7 @@ const assertFeaturesPopulated = (features: Feature[]) =>
         });
     });
 
+// TODO: These tests don't pass due to the JSONStream module import not resolving.
 skip('Report processing test suite', () => {
     test('Process a single JSON file', async () => {
         const features = await processFeature(
