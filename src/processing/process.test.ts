@@ -6,6 +6,7 @@ const FEATURE_KEYWORDS = ['Feature'];
 const SCENARIO_KEYWORDS = ['Scenario', 'Scenario Outline'];
 const STEP_KEYWORDS = ['After', 'Before', 'Given', 'When', 'Then', 'And'];
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const assertFeaturesPopulated = (features: Feature[]) =>
     features.map((f) => {
         expect(f.id).toBeTruthy();
