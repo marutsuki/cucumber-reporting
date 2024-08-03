@@ -3,18 +3,17 @@ import peerDeps from 'rollup-plugin-peer-deps-external';
 import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import copy from 'rollup-plugin-copy'
-
 const config = [
     {
         input: ['build/src/index.js', 'build/cli.js'],
         output: {
             dir: 'dist',
             format: 'cjs',
+            exports: "named",
         },
         plugins: [
             resolve(),
             commonjs(),
-            terser(),
             peerDeps(),
             copy({
                 targets: [
@@ -30,6 +29,7 @@ const config = [
     {
         input: ['build/scripts/index.js'],
         output: {
+            name: 'main',
             file: 'dist/scripts/main.js',
             format: 'iife',
         },

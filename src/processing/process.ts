@@ -1,27 +1,31 @@
 import * as fs from 'fs';
 import { Feature } from './types';
 import path from 'path';
-import { createParseStream } from 'big-json';
+import JSONStream from 'jsonstream';
 
 export default async function processFeature(
     filePath: string
 ): Promise<Feature[]> {
     console.debug('Processing feature/directory:', filePath);
-    const p = new Promise<Feature[]>((resolve) => {
+    return new Promise<Feature[]>((resolve) => {
         if (fs.existsSync(filePath) === false) {
             return resolve([]);
         }
         if (fs.lstatSync(filePath).isFile()) {
-            const readStream = fs.createReadStream(filePath);
-            const parseStream = createParseStream();
-            parseStream.on('data', (data) => {
-                resolve(data as Feature[]);
+            const features: Feature[] = [];
+            const readStream = fs.createReadStream(filePath, {
+                encoding: 'utf8',
+            });
+            const parseStream = JSONStream.parse('*');
+            parseStream.on('data', (data: Feature) => {
+                features.push(data);
             });
             parseStream.on('error', () => {
                 resolve([]);
             });
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
+            parseStream.on('end', () => {
+                resolve(features);
+            });
             readStream.pipe(parseStream);
         } else {
             return Promise.all(
@@ -41,6 +45,4 @@ export default async function processFeature(
             });
         }
     });
-
-    return p;
 }
