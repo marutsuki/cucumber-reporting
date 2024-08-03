@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import { Feature } from './types';
 import path from 'path';
-
-import JSONStream from 'JSONstream';
+import { parser } from 'stream-json';
+import { streamArray } from 'stream-json/streamers/StreamArray';
 
 export default async function processFeature(
     filePath: string
@@ -13,13 +13,18 @@ export default async function processFeature(
             return resolve([]);
         }
         if (fs.lstatSync(filePath).isFile()) {
+            if (!filePath.endsWith('.json')) {
+                return resolve([]);
+            }
             const features: Feature[] = [];
-            const readStream = fs.createReadStream(filePath, {
-                encoding: 'utf8',
-            });
-            const parseStream = JSONStream.parse('*');
-            parseStream.on('data', (data: Feature) => {
-                features.push(data);
+            const parseStream = fs
+                .createReadStream(filePath, {
+                    encoding: 'utf8',
+                })
+                .pipe(parser())
+                .pipe(streamArray());
+            parseStream.on('data', (data: { key: number; value: Feature }) => {
+                features.push(data.value);
             });
             parseStream.on('error', () => {
                 resolve([]);
@@ -27,7 +32,6 @@ export default async function processFeature(
             parseStream.on('end', () => {
                 resolve(features);
             });
-            readStream.pipe(parseStream);
         } else {
             return Promise.all(
                 fs
