@@ -2,6 +2,9 @@
 module.exports = {
   testEnvironment: "node",
   transform: {
-    "^.+.tsx?$": ["ts-jest",{}],
+    "^.+.tsx?$": ["ts-jest", {}],
   },
+  moduleDirectories: [
+    "node_modules"
+  ]
 };
