@@ -16,6 +16,7 @@ if (paginationElem === null) {
 }
 
 const engineInternal = {
+    pages: 0,
     allScenarios: [] as Element[],
     initialized: false,
     searchFilter: '',
@@ -35,12 +36,14 @@ const engineInternal = {
     togglePage: async (page: number) => {
         const partition = Math.floor(page / PAGES_PER_PARTITION);
         const offset = page % PAGES_PER_PARTITION;
-        const pages = await features(
+        const fs = await features(
             partition,
+            offset,
             engineInternal.failedFeaturesOnly,
             engineInternal.searchFilter
         );
-        contentElem.innerHTML = genFeatureHtml(pages[offset]);
+        console.log(fs);
+        contentElem.innerHTML = genFeatureHtml(fs.features);
         engineInternal.allScenarios.splice(
             0,
             engineInternal.allScenarios.length
@@ -48,17 +51,15 @@ const engineInternal = {
         engineInternal.allScenarios.push(
             ...document.getElementsByClassName('scenario')
         );
+        engineInternal.pages = fs.availablePages;
     },
     /**
      * Updates the pagination based on the current filters.
      */
     updatePagination: () => {
-        const pages = engineInternal.failedFeaturesOnly
-            ? window.failed.pages
-            : window.data.pages;
         // Remove existing pagination buttons
         paginationElem.innerHTML = '';
-        genPaginationElements(pages, paginationElem, (page) =>
+        genPaginationElements(engineInternal.pages, paginationElem, (page) =>
             engine.togglePage(page)
         );
     },
@@ -75,16 +76,16 @@ export const initEngine = (failedOnly: boolean) => {
 const engine = {
     setSearchFilter: (filter: string) => {
         engineInternal.searchFilter = filter;
-        engineInternal.updatePagination();
         engineInternal.togglePage(0);
+        engineInternal.updatePagination();
     },
     setFailedScenariosOnly: (enabled: boolean) => {
         engineInternal.failedScenariosOnly(enabled);
     },
     setFailedFeaturesOnly: (enabled: boolean) => {
         engineInternal.failedFeaturesOnly = enabled;
-        engineInternal.updatePagination();
         engineInternal.togglePage(0);
+        engineInternal.updatePagination();
     },
     setFailedOnly: (enabled: boolean) => {
         engine.setFailedFeaturesOnly(enabled);

@@ -4,16 +4,24 @@ import { PAGE_SIZE } from '../../constants';
 import { PAGES_PER_PARTITION } from '../../constants';
 import { writeFilePromise } from '../data/file';
 
-type PrefixIndex = {
+export type PrefixIndex = {
     start: number;
     page: number;
     partition: number;
     size: number;
 };
 
+/**
+ * Generates a prefix tree based on the feature names. Nodes contain information about the feature's position in the data.
+ *
+ * Expects the features to be in sorted order.
+ *
+ * @param outPath the file to output the prefix tree to
+ * @param features the features to generate the prefix tree from
+ * @returns a promise that resolves when the prefix tree has been written to the file
+ */
 export default function generate(outPath: string, features: Feature[]) {
     const prefixTree = trie.create<PrefixIndex>();
-    features.sort((a, b) => a.name.localeCompare(b.name));
     features.forEach((feature, i) => {
         const start = i % PAGE_SIZE;
         const page = Math.floor(i / PAGE_SIZE);

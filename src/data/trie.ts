@@ -1,4 +1,4 @@
-type TrieNode<T> = {
+export type TrieNode<T> = {
     key: string;
     value?: T;
     children: Record<string, TrieNode<T>>;
