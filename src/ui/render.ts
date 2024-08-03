@@ -15,7 +15,7 @@ export default async function render(
             'summary.mustache',
             'toolbar.mustache',
         ]
-            .map((file) => path.join('templates', file))
+            .map((file) => path.join(__dirname, 'templates', file))
             .map((filePath) => filePromise(filePath))
     ).then((files) => {
         const [report, header, summary, toolbar] = files.map((file) =>

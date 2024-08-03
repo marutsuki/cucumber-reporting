@@ -19,7 +19,7 @@ const config = [
             copy({
                 targets: [
                     { src: 'build/src/index.d.ts', dest: 'dist' },
-                    { src: 'templates', dest: 'dist/templates' },
+                    { src: 'templates', dest: 'dist' },
                     { src: 'package.json', dest: 'dist' },
                     { src: 'LICENSE', dest: 'dist' },
                     { src: 'README.md', dest: 'dist' },
