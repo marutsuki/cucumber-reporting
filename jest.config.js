@@ -2,6 +2,16 @@
 module.exports = {
   testEnvironment: "node",
   transform: {
-    "^.+.tsx?$": ["ts-jest",{}],
+    "^.+.tsx?$": ["ts-jest", {
+      useESM: true
+    }],
   },
+  extensionsToTreatAsEsm: ['.ts'],
+  moduleNameMapper: {
+    '(.+)\\.js': '$1'
+  },
+  moduleDirectories: [
+    "node_modules"
+  ],
+  modulePathIgnorePatterns: ['<rootDir>/build'],
 };
