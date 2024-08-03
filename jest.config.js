@@ -6,5 +6,6 @@ module.exports = {
   },
   moduleDirectories: [
     "node_modules"
-  ]
+  ],
+  modulePathIgnorePatterns: ['<rootDir>/build'],
 };
