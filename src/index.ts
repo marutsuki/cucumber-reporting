@@ -6,6 +6,7 @@ import createDataJs from './create-datajs';
 import { getTestSuiteStats } from './data/stats';
 import render from './ui/render';
 import { PARTITION_SIZE } from '../constants';
+import generate from './processing/prefix-tree';
 
 console.debug = (message: string, ...args: unknown[]) => {
     if (Config.getConfig('verbose')) {
@@ -68,6 +69,8 @@ export async function renderReport(
         createDataJs(outPath, features, stats, 'failed', true).catch((err) => {
             console.error('An error occurred:', err);
         }),
+
+        generate(path.join(outPath, 'prefix-tree.json'), features),
 
         new Promise<void>((resolve, reject) => {
             const from = path.join(__dirname, 'scripts');
