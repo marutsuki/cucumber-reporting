@@ -61,17 +61,19 @@ export default function createDataJs(
                 jsonWriteStream.write('[');
 
                 let first = true;
-                let index = 0;
+                let index = 1;
                 let page = gen.next();
 
                 writeStream.write(
                     `() => fetch('${prefix}-${partitionIndex}.json').then(res => res.json()),`
                 );
+
                 while (!page.done && index < PARTITION_SIZE) {
                     if (!first) {
                         jsonWriteStream.write(',');
                     }
-                    jsonWriteStream.write(JSON.stringify(page.value));
+                    const val = page.value;
+                    jsonWriteStream.write(JSON.stringify(val));
 
                     index++;
                     totalPages++;
@@ -89,8 +91,7 @@ export default function createDataJs(
         } catch (err) {
             reject(err);
         } finally {
-            writeStream.end();
+            writeStream.on('drain', () => resolve());
         }
-        resolve();
     });
 }
