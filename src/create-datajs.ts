@@ -45,6 +45,7 @@ export default function createDataJs(
             path.join(outPath, `${prefix}.js`)
         );
         const gen = pageGenerator(features, testStats, failedOnly);
+        let page = gen.next();
         let done = false;
         let partitionIndex = 0;
         let totalPages = 0;
@@ -61,8 +62,7 @@ export default function createDataJs(
                 jsonWriteStream.write('[');
 
                 let first = true;
-                let index = 1;
-                let page = gen.next();
+                let index = 0;
 
                 writeStream.write(
                     `() => fetch('${prefix}-${partitionIndex}.json').then(res => res.json()),`
