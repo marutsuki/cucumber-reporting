@@ -34,15 +34,11 @@ const engineInternal = {
         }
     },
     togglePage: async (page: number) => {
-        const partition = Math.floor(page / PAGES_PER_PARTITION);
-        const offset = page % PAGES_PER_PARTITION;
         const fs = await features(
-            partition,
-            offset,
+            page,
             engineInternal.failedFeaturesOnly,
             engineInternal.searchFilter
         );
-        console.log(fs);
         contentElem.innerHTML = genFeatureHtml(fs.features);
         engineInternal.allScenarios.splice(
             0,
@@ -63,6 +59,10 @@ const engineInternal = {
             engine.togglePage(page)
         );
     },
+    reset: async () => {
+        await engineInternal.togglePage(0);
+        engineInternal.updatePagination();
+    },
 };
 
 export const initEngine = (failedOnly: boolean) => {
@@ -70,22 +70,21 @@ export const initEngine = (failedOnly: boolean) => {
         return;
     }
     engineInternal.failedFeaturesOnly = failedOnly;
+    engineInternal.reset();
     engineInternal.initialized = true;
 };
 
 const engine = {
-    setSearchFilter: (filter: string) => {
+    setSearchFilter: async (filter: string) => {
         engineInternal.searchFilter = filter;
-        engineInternal.togglePage(0);
-        engineInternal.updatePagination();
+        engineInternal.reset();
     },
     setFailedScenariosOnly: (enabled: boolean) => {
         engineInternal.failedScenariosOnly(enabled);
     },
-    setFailedFeaturesOnly: (enabled: boolean) => {
+    setFailedFeaturesOnly: async (enabled: boolean) => {
         engineInternal.failedFeaturesOnly = enabled;
-        engineInternal.togglePage(0);
-        engineInternal.updatePagination();
+        engineInternal.reset();
     },
     setFailedOnly: (enabled: boolean) => {
         engine.setFailedFeaturesOnly(enabled);

@@ -36,6 +36,5 @@ export default function generate(outPath: string, features: Feature[]) {
             (node) => (node.size += 1)
         );
     });
-
     return writeFilePromise(outPath, JSON.stringify(prefixTree));
 }

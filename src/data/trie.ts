@@ -17,6 +17,7 @@ export default {
         op?: (value: T) => void
     ): TrieNode<T> {
         let node = root;
+
         for (const char of key) {
             if (!node.children[char]) {
                 node.children[char] = {
@@ -31,6 +32,7 @@ export default {
             }
             node = node.children[char];
         }
+
         node.value = value;
         return root;
     },
