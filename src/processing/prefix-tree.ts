@@ -3,6 +3,7 @@ import trie from '../data/trie';
 import { PAGE_SIZE } from '../../constants';
 import { PAGES_PER_PARTITION } from '../../constants';
 import { writeFilePromise } from '../data/file';
+import { featureFailed, TestSuiteStats } from '../data/stats';
 
 export type PrefixIndex = {
     start: number;
@@ -20,9 +21,17 @@ export type PrefixIndex = {
  * @param features the features to generate the prefix tree from
  * @returns a promise that resolves when the prefix tree has been written to the file
  */
-export default function generate(outPath: string, features: Feature[]) {
+export default function generate(
+    outPath: string,
+    features: Feature[],
+    failedOnly = false
+) {
     const prefixTree = trie.create<PrefixIndex>();
-    features.forEach((feature, i) => {
+    let i = 0;
+    features.forEach((feature) => {
+        if (failedOnly && !featureFailed(feature)) {
+            return;
+        }
         const start = i % PAGE_SIZE;
         const page = Math.floor(i / PAGE_SIZE);
         const partition = Math.floor(page / PAGES_PER_PARTITION);
@@ -35,6 +44,7 @@ export default function generate(outPath: string, features: Feature[]) {
             data,
             (node) => (node.size += 1)
         );
+        i++;
     });
     return writeFilePromise(outPath, JSON.stringify(prefixTree));
 }

@@ -74,7 +74,9 @@ export async function renderReport(
             console.error('An error occurred:', err);
         }),
 
-        generate(path.join(outPath, 'prefix-tree.json'), features),
+        generate(path.join(outPath, 'prefix-tree-data.json'), features),
+
+        generate(path.join(outPath, 'prefix-tree-failed.json'), features, true),
 
         new Promise<void>((resolve, reject) => {
             const from = path.join(__dirname, 'scripts');

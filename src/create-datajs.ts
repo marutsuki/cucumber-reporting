@@ -2,14 +2,9 @@ import { Feature } from './processing/types';
 import fs from 'fs';
 import path from 'path';
 import postProcess from './processing/post-process';
-import { TestSuiteStats } from './data/stats';
+import { featureFailed, TestSuiteStats } from './data/stats';
 import { PAGE_SIZE } from '../constants';
 import { PARTITION_SIZE } from '../constants';
-
-const featureFailed = (feature: Feature) =>
-    feature.elements.some((f) =>
-        f.steps.some((s) => s.result?.status === 'failed')
-    );
 
 function* pageGenerator(
     features: Feature[],

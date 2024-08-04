@@ -8,24 +8,31 @@ type ActiveFeatures = {
     availablePages: number;
 };
 
-fetch('prefix-tree.json')
-    .then((res) => res.json())
-    .then((data) => {
-        prefixTree = data;
-    });
-
 let cache: {
     features: ProcessedFeature[][];
     availablePages: number;
 } | null = null;
 
 let prefixTree: TrieNode<PrefixIndex> | null = null;
+let prefixTreeFailed: TrieNode<PrefixIndex> | null = null;
 
 const lastCall = {
     partitionIndex: -1,
     failedOnly: false,
     searchFilter: '',
 };
+
+fetch('prefix-tree-data.json')
+    .then((res) => res.json())
+    .then((data) => {
+        prefixTree = data;
+    });
+
+fetch('prefix-tree-failed.json')
+    .then((res) => res.json())
+    .then((data) => {
+        prefixTreeFailed = data;
+    });
 
 export const features = async (
     page: number,
@@ -52,8 +59,13 @@ export const features = async (
         : window.data.providers;
 
     const availablePages = failedOnly ? window.failed.pages : window.data.pages;
+
     if (searchFilter) {
-        return featuresByPrefix(searchFilter, providers, page);
+        const pTree = failedOnly ? prefixTreeFailed : prefixTree;
+        if (pTree === null) {
+            return Promise.resolve({ features: [], availablePages: 0 });
+        }
+        return featuresByPrefix(searchFilter, pTree, providers, page);
     }
 
     return providers[partition]().then((pages) => {
@@ -64,13 +76,11 @@ export const features = async (
 
 export const featuresByPrefix = async (
     prefix: string,
+    pTree: TrieNode<PrefixIndex>,
     providers: (() => Promise<ProcessedFeature[][]>)[],
     page: number
 ): Promise<ActiveFeatures> => {
-    if (prefixTree === null) {
-        return Promise.resolve({ features: [], availablePages: 0 });
-    }
-    const node = trie.search(prefixTree, prefix);
+    const node = trie.search(pTree, prefix);
     if (node === null) {
         return Promise.resolve({ features: [], availablePages: 0 });
     }
