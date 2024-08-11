@@ -17,6 +17,19 @@
         "email": "lucienlu2000@gmail.com"
     },
     "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/marutsuki/cucumber-reportify.git"
+    },
+    "keywords": [
+        "cucumber",
+        "report",
+        "html",
+        "performance",
+        "merge",
+        "json",
+        "test"
+    ],
     "devDependencies": {
         "@eslint/js": "8.57.0",
         "@rollup/plugin-commonjs": "^26.0.1",
