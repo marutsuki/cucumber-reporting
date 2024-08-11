@@ -1,6 +1,6 @@
 {
     "name": "cucumber-reportify",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "description": "HTML reports for Cucumber test results",
     "main": "index.js",
     "types": "index.d.ts",
