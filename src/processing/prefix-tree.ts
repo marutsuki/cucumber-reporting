@@ -3,7 +3,7 @@ import trie from '../data/trie';
 import { PAGE_SIZE } from '../../constants';
 import { PAGES_PER_PARTITION } from '../../constants';
 import { writeFilePromise } from '../data/file';
-import { featureFailed, TestSuiteStats } from '../data/stats';
+import { featureFailed } from '../data/stats';
 
 export type PrefixIndex = {
     start: number;
