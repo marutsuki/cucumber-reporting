@@ -1,6 +1,6 @@
 {
     "name": "cucumber-reportify",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "HTML reports for Cucumber test results",
     "main": "index.js",
     "types": "index.d.ts",
@@ -39,7 +39,6 @@
         "typescript-eslint": "^7.17.0"
     },
     "dependencies": {
-        "@types/stream-json": "^1.7.7",
         "mustache": "^4.2.0",
         "stream-json": "^1.8.0",
         "yargs": "^17.7.2"
