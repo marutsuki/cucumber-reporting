@@ -9,7 +9,7 @@
         "format": "prettier --write src",
         "format:check": "prettier --check src",
         "build": "tsc",
-        "bundle": "rollup -c",
+        "bundle": "npx rollup -c",
         "test": "jest ."
     },
     "author": {
