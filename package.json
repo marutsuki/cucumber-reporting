@@ -43,6 +43,9 @@
         "stream-json": "^1.8.0",
         "yargs": "^17.7.2"
     },
+    "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": "4.9.5"
+    },
     "bin": {
         "cuke": "cli.js"
     }
