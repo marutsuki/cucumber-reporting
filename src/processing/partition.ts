@@ -86,7 +86,7 @@ export default function partition(
         } catch (err) {
             reject(err);
         } finally {
-            writeStream.on('drain', () => resolve());
+            resolve();
         }
     });
 }

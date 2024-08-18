@@ -63,7 +63,7 @@ export async function renderReport(
     const stats = getTestSuiteStats(features);
     console.debug('Test suite stats generated');
 
-    Promise.all([
+    return Promise.all([
         partition(outPath, features, stats, 'data').catch((err) => {
             console.error('An error occurred:', err);
         }),
@@ -96,31 +96,8 @@ export async function renderReport(
             });
         }),
 
-        new Promise<void>((resolve, reject) =>
-            render(appName, stats, partitions, theme, showFailed).then(
-                (document) =>
-                    fs.writeFile(
-                        path.join(outPath, 'index.html'),
-                        document,
-                        (err) => {
-                            if (err) {
-                                console.error(`An error occurred: ${err}`);
-                                reject();
-                            } else {
-                                console.info('Static HTML markup rendered');
-                                resolve();
-                            }
-                        }
-                    )
-            )
+        render(appName, stats, partitions, theme, showFailed).then((document) =>
+            writeFilePromise(path.join(outPath, 'index.html'), document)
         ),
-    ])
-        .then(() => {
-            console.info('Done.');
-            process.exit(0);
-        })
-        .catch(() => {
-            console.error('Something went wrong.');
-            process.exit(1);
-        });
+    ]);
 }
