@@ -1,6 +1,6 @@
 import { getTestSuiteStats } from '../data/stats';
 import prepare from './template-prep';
-import { Feature } from '../processing/types';
+import { Feature } from '../types';
 
 const passedFeature: Feature = {
     id: '',
@@ -266,9 +266,7 @@ describe('Post processing test suite', () => {
 
     test('Post process correctly sets the scenario [failed] property - false', () => {
         const stats = getTestSuiteStats([passedFeature]);
-        expect(prepare(passedFeature, stats).elements[0].failed).toBe(
-            false
-        );
+        expect(prepare(passedFeature, stats).elements[0].failed).toBe(false);
     });
 
     test('Post process correctly sets the scenario [failed] property - true', () => {
@@ -294,8 +292,8 @@ describe('Post processing test suite', () => {
 
     test("Post process correctly sets the embedding type property - 'image/jpeg'", () => {
         const stats = getTestSuiteStats([FeatureWithJpegEmbedding]);
-        const embedding = prepare(FeatureWithJpegEmbedding, stats)
-            .elements[0].steps[0].embeddings![0];
+        const embedding = prepare(FeatureWithJpegEmbedding, stats).elements[0]
+            .steps[0].embeddings![0];
         expect(embedding.isJpeg).toBe(true);
         expect(embedding.isPng).toBe(false);
         expect(embedding.isText).toBe(false);
@@ -303,8 +301,8 @@ describe('Post processing test suite', () => {
 
     test("Post process correctly sets the embedding type property - 'image/png'", () => {
         const stats = getTestSuiteStats([FeatureWithPngEmbedding]);
-        const embedding = prepare(FeatureWithPngEmbedding, stats)
-            .elements[0].steps[0].embeddings![0];
+        const embedding = prepare(FeatureWithPngEmbedding, stats).elements[0]
+            .steps[0].embeddings![0];
         expect(embedding.isPng).toBe(true);
         expect(embedding.isJpeg).toBe(false);
         expect(embedding.isText).toBe(false);
@@ -312,8 +310,8 @@ describe('Post processing test suite', () => {
 
     test("Post process correctly sets the embedding type property - 'image/text'", () => {
         const stats = getTestSuiteStats([FeatureWithJsonEmbedding]);
-        const embedding = prepare(FeatureWithJsonEmbedding, stats)
-            .elements[0].steps[0].embeddings![0];
+        const embedding = prepare(FeatureWithJsonEmbedding, stats).elements[0]
+            .steps[0].embeddings![0];
         expect(embedding.isText).toBe(true);
         expect(embedding.isPng).toBe(false);
         expect(embedding.isJpeg).toBe(false);

@@ -1,4 +1,4 @@
-import { Feature } from './types';
+import { Feature } from '../types';
 import trie, { TrieNode } from '../data/trie';
 import { PAGE_SIZE } from '../../constants';
 import { PAGES_PER_PARTITION } from '../../constants';

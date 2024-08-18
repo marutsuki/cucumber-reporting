@@ -1,7 +1,7 @@
-import { Feature } from './processing/types';
+import { Feature } from './types';
 import fs from 'fs';
 import path from 'path';
-import postProcess from './processing/post-process';
+import prepare from './ui/template-prep';
 import { featureFailed, TestSuiteStats } from './data/stats';
 import { PAGE_SIZE } from '../constants';
 import { PARTITION_SIZE } from '../constants';
@@ -19,7 +19,7 @@ function* pageGenerator(
 
         while (size < PAGE_SIZE && i < len) {
             if (!failedOnly || featureFailed(features[i])) {
-                pageFeatures.push(postProcess(features[i], testStats));
+                pageFeatures.push(prepare(features[i], testStats));
                 size++;
             }
             i++;

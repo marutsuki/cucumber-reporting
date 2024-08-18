@@ -1,5 +1,5 @@
 import fs from 'fs';
-import processFeature from './processing/process';
+import readFeatures from './reading/read';
 import path from 'path';
 import { Config } from './config';
 import createDataJs from './create-datajs';
@@ -52,7 +52,7 @@ export async function renderReport(
     Config.setConfig('verbose', verbose);
 
     console.info('Processing JSON report files found under:', reportPath);
-    const features = await processFeature(reportPath);
+    const features = await readFeatures(reportPath);
 
     console.info('Features loaded into memory');
 
