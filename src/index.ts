@@ -7,6 +7,7 @@ import { getTestSuiteStats } from './data/stats';
 import render from './ui/render';
 import { PARTITION_SIZE } from '../constants';
 import generate from './processing/prefix-tree';
+import { writeFilePromise } from './data/file';
 
 console.debug = (message: string, ...args: unknown[]) => {
     if (Config.getConfig('verbose')) {
@@ -74,9 +75,15 @@ export async function renderReport(
             console.error('An error occurred:', err);
         }),
 
-        generate(path.join(outPath, 'prefix-tree-data.json'), features),
+        writeFilePromise(
+            path.join(outPath, 'prefix-tree-data.json'),
+            JSON.stringify(generate(features))
+        ),
 
-        generate(path.join(outPath, 'prefix-tree-failed.json'), features, true),
+        writeFilePromise(
+            path.join(outPath, 'prefix-tree-data.json'),
+            JSON.stringify(generate(features, true))
+        ),
 
         new Promise<void>((resolve, reject) => {
             const from = path.join(__dirname, 'scripts');
