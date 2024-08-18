@@ -1,8 +1,7 @@
 import { Feature } from './types';
-import trie from '../data/trie';
+import trie, { TrieNode } from '../data/trie';
 import { PAGE_SIZE } from '../../constants';
 import { PAGES_PER_PARTITION } from '../../constants';
-import { writeFilePromise } from '../data/file';
 import { featureFailed } from '../data/stats';
 
 export type PrefixIndex = {
@@ -22,10 +21,9 @@ export type PrefixIndex = {
  * @returns a promise that resolves when the prefix tree has been written to the file
  */
 export default function generate(
-    outPath: string,
     features: Feature[],
     failedOnly = false
-) {
+): TrieNode<PrefixIndex> {
     const prefixTree = trie.create<PrefixIndex>();
     let i = 0;
     features.forEach((feature) => {
@@ -46,5 +44,5 @@ export default function generate(
         );
         i++;
     });
-    return writeFilePromise(outPath, JSON.stringify(prefixTree));
+    return prefixTree;
 }
