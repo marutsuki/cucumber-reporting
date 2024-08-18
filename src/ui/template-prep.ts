@@ -8,9 +8,9 @@ import {
     ProcessedFeature,
     ProcessedResult,
     Result,
-} from './types';
+} from '../processing/types';
 
-export default function postProcess(
+export default function prepare(
     feature: Feature,
     testStats: TestSuiteStats
 ): ProcessedFeature {
