@@ -11,7 +11,7 @@ import { writeFilePromise } from '@util/file';
 
 console.debug = (message: string, ...args: unknown[]) => {
     if (Config.getConfig('verbose')) {
-        console.info(message, args);
+        console.info(message, ...args);
     }
 };
 
@@ -36,20 +36,17 @@ export async function renderReport(
         verbose = false,
     }: Partial<RenderReportOptions>
 ) {
+    Config.setConfig('verbose', verbose);
+
     if (showFailed) {
         console.info('Showing failed scenarios by default');
-        Config.setConfig('showFailedOnStart', showFailed);
     }
 
     if (projDir) {
         console.info('Using project directory:', projDir);
-        Config.setConfig('projDir', projDir);
     }
 
-    Config.setConfig('theme', theme);
     console.info('Using theme:', theme);
-
-    Config.setConfig('verbose', verbose);
 
     console.info('Processing JSON report files found under:', reportPath);
     const features = await readFeatures(reportPath);
@@ -100,20 +97,21 @@ export async function renderReport(
         }),
 
         new Promise<void>((resolve, reject) =>
-            render(appName, stats, partitions).then((document) =>
-                fs.writeFile(
-                    path.join(outPath, 'index.html'),
-                    document,
-                    (err) => {
-                        if (err) {
-                            console.error(`An error occurred: ${err}`);
-                            reject();
-                        } else {
-                            console.info('Static HTML markup rendered');
-                            resolve();
+            render(appName, stats, partitions, theme, showFailed).then(
+                (document) =>
+                    fs.writeFile(
+                        path.join(outPath, 'index.html'),
+                        document,
+                        (err) => {
+                            if (err) {
+                                console.error(`An error occurred: ${err}`);
+                                reject();
+                            } else {
+                                console.info('Static HTML markup rendered');
+                                resolve();
+                            }
                         }
-                    }
-                )
+                    )
             )
         ),
     ])
