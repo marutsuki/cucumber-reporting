@@ -1,5 +1,3 @@
-import { FeatureStats } from 'src/data/stats';
-
 export type Match = {
     location: string;
 };
@@ -73,42 +71,4 @@ export type Feature = {
     name: string;
     tags: Tag[];
     uri: string;
-};
-
-export type ProcessedResult = Omit<Result, 'status' | 'duration'> & {
-    [val in Status]: boolean;
-} & {
-    duration: string;
-};
-export type ProcessedEmbedding = Embedding & {
-    isPng: boolean;
-    isJpeg: boolean;
-    isText: boolean;
-};
-
-export type ProcessedBeforeAfter = Omit<
-    BeforeAfter,
-    'result' | 'embeddings'
-> & {
-    keyword: 'Before' | 'After';
-    result?: ProcessedResult;
-    embeddings?: ProcessedEmbedding[];
-};
-
-export type ProcessedStep = Omit<Step, 'result' | 'embeddings'> & {
-    result?: ProcessedResult;
-    embeddings?: ProcessedEmbedding[];
-};
-
-export type ProcessedScenario = Omit<Scenario, 'steps' | 'before' | 'after'> & {
-    steps: ProcessedStep[];
-    before?: ProcessedBeforeAfter[];
-    after?: ProcessedBeforeAfter[];
-    failed: boolean;
-};
-
-export type ProcessedFeature = Omit<Feature, 'elements'> & {
-    elements: ProcessedScenario[];
-    stats: FeatureStats;
-    failed: boolean;
 };

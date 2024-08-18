@@ -1,12 +1,14 @@
-import { TestSuiteStats } from '../data/stats';
+import { TestSuiteStats } from '@processing/stats';
 import mustache from 'mustache';
-import { Config } from '../config';
 import path from 'path';
-import { filePromise } from '../data/file';
+import { filePromise } from '@util/file';
+
 export default async function render(
     appName: string,
     stats: TestSuiteStats,
-    partitions: number
+    partitions: number,
+    theme: string,
+    showFailedOnStart: boolean
 ): Promise<string> {
     return Promise.all(
         [
@@ -27,8 +29,8 @@ export default async function render(
                 ...stats,
                 appName,
                 stats,
-                theme: Config.getConfig('theme'),
-                showFailedOnStart: Config.getConfig('showFailedOnStart'),
+                theme,
+                showFailedOnStart,
                 partitions: Array.from({ length: partitions }, (_, i) => i),
             },
             {

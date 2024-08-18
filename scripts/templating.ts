@@ -1,4 +1,4 @@
-import { ProcessedFeature } from 'src/processing/types';
+import { ProcessedFeature } from '@ui/template-prep';
 import Mustache from 'mustache';
 
 const beforeAfterTemplate = `

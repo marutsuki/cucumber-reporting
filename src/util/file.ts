@@ -22,6 +22,7 @@ export function writeFilePromise(
                 console.error('Error reading report template', err);
                 return reject(err);
             }
+            console.debug('Wrote to file:', filePath);
             resolve();
         })
     );

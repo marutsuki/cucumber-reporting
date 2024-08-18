@@ -1,17 +1,17 @@
 import fs from 'fs';
-import processFeature from './processing/process';
+import readFeatures from '@reading/read';
 import path from 'path';
-import { Config } from './config';
-import createDataJs from './create-datajs';
-import { getTestSuiteStats } from './data/stats';
-import render from './ui/render';
-import { PARTITION_SIZE } from '../constants';
-import generate from './processing/prefix-tree';
-import { writeFilePromise } from './data/file';
+import { Config } from '@config';
+import partition from '@processing/partition';
+import { getTestSuiteStats } from '@processing/stats';
+import render from '@ui/render';
+import { PARTITION_SIZE } from '@constants';
+import generate from '@processing/prefix-tree';
+import { writeFilePromise } from '@util/file';
 
 console.debug = (message: string, ...args: unknown[]) => {
     if (Config.getConfig('verbose')) {
-        console.info(message, args);
+        console.info(message, ...args);
     }
 };
 
@@ -36,23 +36,20 @@ export async function renderReport(
         verbose = false,
     }: Partial<RenderReportOptions>
 ) {
+    Config.setConfig('verbose', verbose);
+
     if (showFailed) {
         console.info('Showing failed scenarios by default');
-        Config.setConfig('showFailedOnStart', showFailed);
     }
 
     if (projDir) {
         console.info('Using project directory:', projDir);
-        Config.setConfig('projDir', projDir);
     }
 
-    Config.setConfig('theme', theme);
     console.info('Using theme:', theme);
 
-    Config.setConfig('verbose', verbose);
-
     console.info('Processing JSON report files found under:', reportPath);
-    const features = await processFeature(reportPath);
+    const features = await readFeatures(reportPath);
 
     console.info('Features loaded into memory');
 
@@ -66,12 +63,12 @@ export async function renderReport(
     const stats = getTestSuiteStats(features);
     console.debug('Test suite stats generated');
 
-    Promise.all([
-        createDataJs(outPath, features, stats, 'data').catch((err) => {
+    return Promise.all([
+        partition(outPath, features, stats, 'data').catch((err) => {
             console.error('An error occurred:', err);
         }),
 
-        createDataJs(outPath, features, stats, 'failed', true).catch((err) => {
+        partition(outPath, features, stats, 'failed', true).catch((err) => {
             console.error('An error occurred:', err);
         }),
 
@@ -81,7 +78,7 @@ export async function renderReport(
         ),
 
         writeFilePromise(
-            path.join(outPath, 'prefix-tree-data.json'),
+            path.join(outPath, 'prefix-tree-failed.json'),
             JSON.stringify(generate(features, true))
         ),
 
@@ -99,30 +96,8 @@ export async function renderReport(
             });
         }),
 
-        new Promise<void>((resolve, reject) =>
-            render(appName, stats, partitions).then((document) =>
-                fs.writeFile(
-                    path.join(outPath, 'index.html'),
-                    document,
-                    (err) => {
-                        if (err) {
-                            console.error(`An error occurred: ${err}`);
-                            reject();
-                        } else {
-                            console.info('Static HTML markup rendered');
-                            resolve();
-                        }
-                    }
-                )
-            )
+        render(appName, stats, partitions, theme, showFailed).then((document) =>
+            writeFilePromise(path.join(outPath, 'index.html'), document)
         ),
-    ])
-        .then(() => {
-            console.info('Done.');
-            process.exit(0);
-        })
-        .catch(() => {
-            console.error('Something went wrong.');
-            process.exit(1);
-        });
+    ]);
 }

@@ -1,7 +1,7 @@
-import { PAGE_SIZE, PAGES_PER_PARTITION } from '../constants';
-import trie, { TrieNode } from '../src/data/trie';
-import { PrefixIndex } from '../src/processing/prefix-tree';
-import { ProcessedFeature } from '../src/processing/types';
+import { PAGE_SIZE, PAGES_PER_PARTITION } from '@constants';
+import trie, { TrieNode } from '@util/trie';
+import { PrefixIndex } from '@processing/prefix-tree';
+import { ProcessedFeature } from '@ui/template-prep';
 
 type ActiveFeatures = {
     features: ProcessedFeature[];

@@ -8,7 +8,7 @@
         "lint": "eslint src",
         "format": "prettier --write src",
         "format:check": "prettier --check src",
-        "build": "tsc",
+        "build": "tsc && tsc-alias -p tsconfig.json",
         "bundle": "npx rollup -c",
         "test": "jest ."
     },
@@ -48,6 +48,7 @@
         "rollup-plugin-copy": "^3.5.0",
         "rollup-plugin-peer-deps-external": "^2.2.4",
         "ts-jest": "^29.2.3",
+        "tsc-alias": "^1.8.10",
         "typescript": "^5.5.4",
         "typescript-eslint": "^7.17.0"
     },

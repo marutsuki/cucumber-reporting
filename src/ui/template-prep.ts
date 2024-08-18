@@ -1,16 +1,46 @@
-import { TestSuiteStats } from '../data/stats';
-import {
-    BeforeAfter,
-    Embedding,
-    Feature,
-    ProcessedBeforeAfter,
-    ProcessedEmbedding,
-    ProcessedFeature,
-    ProcessedResult,
-    Result,
-} from './types';
+import { Feature, Scenario, Status, Step } from '@types';
+import { FeatureStats, TestSuiteStats } from '@processing/stats';
+import { BeforeAfter, Embedding, Result } from '@types';
 
-export default function postProcess(
+export type ProcessedResult = Omit<Result, 'status' | 'duration'> & {
+    [val in Status]: boolean;
+} & {
+    duration: string;
+};
+export type ProcessedEmbedding = Embedding & {
+    isPng: boolean;
+    isJpeg: boolean;
+    isText: boolean;
+};
+
+export type ProcessedBeforeAfter = Omit<
+    BeforeAfter,
+    'result' | 'embeddings'
+> & {
+    keyword: 'Before' | 'After';
+    result?: ProcessedResult;
+    embeddings?: ProcessedEmbedding[];
+};
+
+export type ProcessedStep = Omit<Step, 'result' | 'embeddings'> & {
+    result?: ProcessedResult;
+    embeddings?: ProcessedEmbedding[];
+};
+
+export type ProcessedScenario = Omit<Scenario, 'steps' | 'before' | 'after'> & {
+    steps: ProcessedStep[];
+    before?: ProcessedBeforeAfter[];
+    after?: ProcessedBeforeAfter[];
+    failed: boolean;
+};
+
+export type ProcessedFeature = Omit<Feature, 'elements'> & {
+    elements: ProcessedScenario[];
+    stats: FeatureStats;
+    failed: boolean;
+};
+
+export default function prepare(
     feature: Feature,
     testStats: TestSuiteStats
 ): ProcessedFeature {

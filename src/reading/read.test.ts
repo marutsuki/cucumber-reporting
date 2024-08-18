@@ -1,5 +1,5 @@
-import processFeature from './process';
-import { Feature } from './types';
+import readFeatures from './read';
+import { Feature } from '@types';
 
 const FEATURE_KEYWORDS = ['Feature'];
 const SCENARIO_KEYWORDS = ['Scenario', 'Scenario Outline'];
@@ -23,27 +23,25 @@ const assertFeaturesPopulated = (features: Feature[]) =>
 
 describe('Report processing test suite', () => {
     test('Process a single JSON file', async () => {
-        const features = await processFeature(
-            'test/data/reports/example-1.json'
-        );
+        const features = await readFeatures('test/data/reports/example-1.json');
         expect(features.length).toBe(1);
         assertFeaturesPopulated(features);
     });
     test('Process a directory of JSON files', async () => {
-        const features = await processFeature('test/data/reports');
+        const features = await readFeatures('test/data/reports');
         expect(features.length).toBe(3);
         assertFeaturesPopulated(features);
     });
     test('Process a non JSON file', async () => {
-        const features = await processFeature('test/data/notjson/an-xml.xml');
+        const features = await readFeatures('test/data/notjson/an-xml.xml');
         expect(features.length).toBe(0);
     });
     test('Process a directory with no JSON files', async () => {
-        const features = await processFeature('test/data/notjson');
+        const features = await readFeatures('test/data/notjson');
         expect(features.length).toBe(0);
     });
     test('Process a directory with a mix of JSON files and non-JSON files', async () => {
-        const features = await processFeature('test/data');
+        const features = await readFeatures('test/data');
         expect(features.length).toBe(3);
     });
 });

@@ -1,10 +1,10 @@
 import * as fs from 'fs';
-import { Feature } from './types';
+import { Feature } from '@types';
 import path from 'path';
 import { parser } from 'stream-json';
 import { streamArray } from 'stream-json/streamers/StreamArray';
 
-export default async function processFeature(
+export default async function readFeatures(
     filePath: string
 ): Promise<Feature[]> {
     console.debug('Processing feature/directory:', filePath);
@@ -36,7 +36,7 @@ export default async function processFeature(
             return Promise.all(
                 fs
                     .readdirSync(filePath)
-                    .map((f) => processFeature(path.join(filePath, f)))
+                    .map((f) => readFeatures(path.join(filePath, f)))
             ).then((features) => {
                 const flat = features.flat();
                 console.debug(

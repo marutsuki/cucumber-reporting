@@ -30,4 +30,12 @@ renderReport(reportPath, {
     appName: argv.n,
     showFailed: argv.f,
     verbose: argv.v,
-});
+})
+    .then(() => {
+        console.info('Done.');
+        process.exit(0);
+    })
+    .catch((err) => {
+        console.error('An error occurred:', err);
+        process.exit(1);
+    });

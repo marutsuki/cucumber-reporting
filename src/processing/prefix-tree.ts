@@ -1,8 +1,8 @@
-import { Feature } from './types';
-import trie, { TrieNode } from '../data/trie';
-import { PAGE_SIZE } from '../../constants';
-import { PAGES_PER_PARTITION } from '../../constants';
-import { featureFailed } from '../data/stats';
+import { Feature } from '@types';
+import trie, { TrieNode } from '@util/trie';
+import { PAGE_SIZE } from '@constants';
+import { PAGES_PER_PARTITION } from '@constants';
+import { featureFailed } from '@processing/stats';
 
 export type PrefixIndex = {
     start: number;

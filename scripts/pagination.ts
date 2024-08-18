@@ -1,4 +1,4 @@
-import { MAX_PAGINATION_BUTTONS } from '../constants';
+import { MAX_PAGINATION_BUTTONS } from '@constants';
 
 const paginationButton = (i: number, onPageChange: (page: number) => void) => {
     const button = document.createElement('input');

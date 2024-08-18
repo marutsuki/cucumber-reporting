@@ -14,6 +14,16 @@
         "strict": true,
         "allowJs": true,
         "resolveJsonModule": true,
+        "paths": {
+            "@config": ["src/config.ts"],
+            "@data/*": ["src/data/*"],
+            "@processing/*": ["src/processing/*"],
+            "@reading/*": ["src/reading/*"],
+            "@ui/*": ["src/ui/*"],
+            "@util/*": ["src/util/*"],
+            "@types": ["src/types.d.ts"],
+            "@constants": ["constants.ts"]
+        }
     },
     "include": [
         "cli.ts",
