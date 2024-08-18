@@ -2,7 +2,7 @@ import fs from 'fs';
 import readFeatures from './reading/read';
 import path from 'path';
 import { Config } from './config';
-import createDataJs from './create-datajs';
+import partition from './processing/partition';
 import { getTestSuiteStats } from './data/stats';
 import render from './ui/render';
 import { PARTITION_SIZE } from '../constants';
@@ -67,11 +67,11 @@ export async function renderReport(
     console.debug('Test suite stats generated');
 
     Promise.all([
-        createDataJs(outPath, features, stats, 'data').catch((err) => {
+        partition(outPath, features, stats, 'data').catch((err) => {
             console.error('An error occurred:', err);
         }),
 
-        createDataJs(outPath, features, stats, 'failed', true).catch((err) => {
+        partition(outPath, features, stats, 'failed', true).catch((err) => {
             console.error('An error occurred:', err);
         }),
 
