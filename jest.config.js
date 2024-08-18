@@ -1,3 +1,6 @@
+const { pathsToModuleNameMapper } = require('ts-jest');
+const { compilerOptions } = require('./tsconfig.json');
+
 /** @type {import('ts-jest').JestConfigWithTsJest} **/
 module.exports = {
   testEnvironment: "node",
@@ -7,10 +10,9 @@ module.exports = {
     }],
   },
   extensionsToTreatAsEsm: ['.ts'],
-  moduleNameMapper: {
-    '(.+)\\.js': '$1'
-  },
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
   moduleDirectories: [
+    "<rootDir>",
     "node_modules"
   ],
   modulePathIgnorePatterns: ['<rootDir>/build'],
