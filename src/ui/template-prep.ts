@@ -1,5 +1,5 @@
 import { Feature, Scenario, Status, Step } from '@types';
-import { FeatureStats, TestSuiteStats } from '@data/stats';
+import { FeatureStats, TestSuiteStats } from '@processing/stats';
 import { BeforeAfter, Embedding, Result } from '@types';
 
 export type ProcessedResult = Omit<Result, 'status' | 'duration'> & {

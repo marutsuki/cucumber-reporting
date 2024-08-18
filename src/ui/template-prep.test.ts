@@ -1,4 +1,4 @@
-import { getTestSuiteStats } from '@data/stats';
+import { getTestSuiteStats } from '@processing/stats';
 import prepare from './template-prep';
 import { Feature } from '@types';
 

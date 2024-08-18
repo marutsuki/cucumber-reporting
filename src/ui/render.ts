@@ -1,4 +1,4 @@
-import { TestSuiteStats } from '@data/stats';
+import { TestSuiteStats } from '@processing/stats';
 import mustache from 'mustache';
 import path from 'path';
 import { filePromise } from '@util/file';

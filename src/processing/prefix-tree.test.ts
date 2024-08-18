@@ -1,4 +1,4 @@
-import { TrieNode } from '@data/trie';
+import { TrieNode } from '@util/trie';
 import generate, { PrefixIndex } from './prefix-tree';
 import { Feature } from '@types';
 

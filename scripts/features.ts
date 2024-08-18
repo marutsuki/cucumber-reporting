@@ -1,5 +1,5 @@
 import { PAGE_SIZE, PAGES_PER_PARTITION } from '@constants';
-import trie, { TrieNode } from '@data/trie';
+import trie, { TrieNode } from '@util/trie';
 import { PrefixIndex } from '@processing/prefix-tree';
 import { ProcessedFeature } from '@ui/template-prep';
 
