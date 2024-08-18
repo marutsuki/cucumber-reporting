@@ -81,7 +81,7 @@ export async function renderReport(
         ),
 
         writeFilePromise(
-            path.join(outPath, 'prefix-tree-data.json'),
+            path.join(outPath, 'prefix-tree-failed.json'),
             JSON.stringify(generate(features, true))
         ),
 
