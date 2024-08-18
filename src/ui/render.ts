@@ -1,8 +1,8 @@
-import { TestSuiteStats } from '../data/stats';
+import { TestSuiteStats } from '@data/stats';
 import mustache from 'mustache';
 import { Config } from '@config';
 import path from 'path';
-import { filePromise } from '../data/file';
+import { filePromise } from '@util/file';
 export default async function render(
     appName: string,
     stats: TestSuiteStats,

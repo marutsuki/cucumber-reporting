@@ -20,6 +20,7 @@
             "@processing/*": ["src/processing/*"],
             "@reading/*": ["src/reading/*"],
             "@ui/*": ["src/ui/*"],
+            "@util/*": ["src/util/*"],
             "@types": ["src/types.d.ts"],
             "@constants": ["constants.ts"]
         }

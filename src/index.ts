@@ -7,7 +7,7 @@ import { getTestSuiteStats } from '@data/stats';
 import render from '@ui/render';
 import { PARTITION_SIZE } from '@constants';
 import generate from '@processing/prefix-tree';
-import { writeFilePromise } from '@data/file';
+import { writeFilePromise } from '@util/file';
 
 console.debug = (message: string, ...args: unknown[]) => {
     if (Config.getConfig('verbose')) {
