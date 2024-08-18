@@ -17,9 +17,9 @@ export function getTestSuiteStats(featureList: Feature[]): TestSuiteStats {
         featureList.map((feature) => {
             const featureStats = getFeatureStats(feature);
             if (featureStats.failed > 0) {
-                featuresPassed++;
-            } else {
                 featuresFailed++;
+            } else {
+                featuresPassed++;
             }
             scenariosPassed += featureStats.passed;
             scenariosFailed += featureStats.failed;
