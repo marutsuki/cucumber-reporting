@@ -1,6 +1,6 @@
-import { TrieNode } from 'src/data/trie';
+import { TrieNode } from '@data/trie';
 import generate, { PrefixIndex } from './prefix-tree';
-import { Feature } from '../types';
+import { Feature } from '@types';
 
 jest.mock('../../constants', () => ({ PAGE_SIZE: 2, PAGES_PER_PARTITION: 2 }));
 

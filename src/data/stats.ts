@@ -1,4 +1,4 @@
-import { Feature } from '../types';
+import { Feature } from '@types';
 
 export type TestSuiteStats = {
     featuresPassed: number;

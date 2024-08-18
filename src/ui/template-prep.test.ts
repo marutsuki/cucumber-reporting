@@ -1,6 +1,6 @@
-import { getTestSuiteStats } from '../data/stats';
+import { getTestSuiteStats } from '@data/stats';
 import prepare from './template-prep';
-import { Feature } from '../types';
+import { Feature } from '@types';
 
 const passedFeature: Feature = {
     id: '',

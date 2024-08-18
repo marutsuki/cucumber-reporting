@@ -1,13 +1,13 @@
 import fs from 'fs';
-import readFeatures from './reading/read';
+import readFeatures from '@reading/read';
 import path from 'path';
-import { Config } from './config';
-import partition from './processing/partition';
-import { getTestSuiteStats } from './data/stats';
-import render from './ui/render';
-import { PARTITION_SIZE } from '../constants';
-import generate from './processing/prefix-tree';
-import { writeFilePromise } from './data/file';
+import { Config } from '@config';
+import partition from '@processing/partition';
+import { getTestSuiteStats } from '@data/stats';
+import render from '@ui/render';
+import { PARTITION_SIZE } from '@constants';
+import generate from '@processing/prefix-tree';
+import { writeFilePromise } from '@data/file';
 
 console.debug = (message: string, ...args: unknown[]) => {
     if (Config.getConfig('verbose')) {

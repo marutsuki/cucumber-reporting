@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { Feature } from '../types';
+import { Feature } from '@types';
 import path from 'path';
 import { parser } from 'stream-json';
 import { streamArray } from 'stream-json/streamers/StreamArray';
