@@ -1,5 +1,5 @@
 {
-    "name": "cucumber-reports",
+    "name": "cucumber-reporting",
     "version": "0.1.0",
     "description": "HTML reports for Cucumber test results",
     "main": "src/index.js",
