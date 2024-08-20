@@ -1,7 +1,7 @@
 # Cucumber Reportify
 
-[![npm version](https://badge.fury.io/js/cucumber-reportify.svg)](https://badge.fury.io/js/cucumber-reportify)
-[![Build Status](https://github.com/marutsuki/cucumber-reportify/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/marutsuki/cucumber-reportify)
+[![npm version](https://badge.fury.io/js/cucumber-reporting.svg)](https://badge.fury.io/js/cucumber-reportify)
+[![Build Status](https://github.com/marutsuki/cucumber-reporting/actions/workflows/publish.yml/badge.svg)](https://github.com/marutsuki/cucumber-reportify)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
@@ -12,13 +12,13 @@ A performance optimized static HTML report generator for Cucumber test results.
 You can install the library using npm:
 
 ```bash
-npm install cucumber-reportify
+npm install cucumber-reporting
 ```
 
 Or using yarn:
 
 ```bash
-yarn add cucumber-reportify
+yarn add cucumber-reporting
 ```
 
 ## Usage
