@@ -1,4 +1,4 @@
-import { features } from './features';
+import features from './features';
 import { genFeatureHtml } from './templating';
 import { genPaginationElements } from './pagination';
 

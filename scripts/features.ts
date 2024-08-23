@@ -13,6 +13,11 @@ let cache: {
     availablePages: number;
 } | null = null;
 
+const pageCount = {
+    data: 0,
+    failed: 0,
+};
+
 let prefixTree: TrieNode<PrefixIndex> | null = null;
 let prefixTreeFailed: TrieNode<PrefixIndex> | null = null;
 
@@ -22,23 +27,52 @@ const lastCall = {
     searchFilter: '',
 };
 
-fetch('prefix-tree-data.json')
-    .then((res) => res.json())
-    .then((data) => {
-        prefixTree = data;
-    });
+/**
+ * {@link features} depends on:
+ * - global.json for page counts
+ * - prefix-tree-data.json for prefix tree of all features
+ * - prefix-tree-failed.json for prefix tree of failed features
+ */
+const deps = Promise.all([
+    fetch('global.json')
+        .then((res) => res.json())
+        .then((data) => {
+            pageCount.data = data.pages;
+            pageCount.failed = data.failedPages;
+            console.log(pageCount);
+        }),
 
-fetch('prefix-tree-failed.json')
-    .then((res) => res.json())
-    .then((data) => {
-        prefixTreeFailed = data;
-    });
+    fetch('prefix-tree-data.json')
+        .then((res) => res.json())
+        .then((data) => {
+            prefixTree = data;
+        }),
 
-export const features = async (
+    fetch('prefix-tree-failed.json')
+        .then((res) => res.json())
+        .then((data) => {
+            prefixTreeFailed = data;
+        }),
+]);
+
+const getPartition = (partition: number, failedOnly: boolean) =>
+    fetch(
+        failedOnly ? `failed-${partition}.json` : `data-${partition}.json`
+    ).then((data) => data.json());
+
+export default async function features(
     page: number,
     failedOnly: boolean,
     searchFilter?: string
-): Promise<ActiveFeatures> => {
+) {
+    return deps.then(() => featuresImpl(page, failedOnly, searchFilter));
+}
+
+async function featuresImpl(
+    page: number,
+    failedOnly: boolean,
+    searchFilter?: string
+): Promise<ActiveFeatures> {
     const partition = Math.floor(page / PAGES_PER_PARTITION);
     const offset = page % PAGES_PER_PARTITION;
 
@@ -54,31 +88,27 @@ export const features = async (
         });
     }
 
-    const providers = failedOnly
-        ? window.failed.providers
-        : window.data.providers;
-
-    const availablePages = failedOnly ? window.failed.pages : window.data.pages;
+    const availablePages = failedOnly ? pageCount.failed : pageCount.data;
 
     if (searchFilter) {
         const pTree = failedOnly ? prefixTreeFailed : prefixTree;
         if (pTree === null) {
             return Promise.resolve({ features: [], availablePages: 0 });
         }
-        return featuresByPrefix(searchFilter, pTree, providers, page);
+        return featuresByPrefix(searchFilter, pTree, page, failedOnly);
     }
 
-    return providers[partition]().then((pages) => {
+    return getPartition(partition, failedOnly).then((pages) => {
         cache = { features: pages, availablePages };
         return { features: pages[offset], availablePages };
     });
-};
+}
 
 export const featuresByPrefix = async (
     prefix: string,
     pTree: TrieNode<PrefixIndex>,
-    providers: (() => Promise<ProcessedFeature[][]>)[],
-    page: number
+    page: number,
+    failedOnly: boolean = false
 ): Promise<ActiveFeatures> => {
     const node = trie.search(pTree, prefix);
     if (node === null) {
@@ -98,14 +128,14 @@ export const featuresByPrefix = async (
 
     let requiredProviders;
     if (actualPageOffset + 1 < PAGES_PER_PARTITION) {
-        requiredProviders = [providers[actualPartition]];
+        requiredProviders = [getPartition(actualPartition, failedOnly)];
     } else {
         requiredProviders = [
-            providers[actualPartition],
-            providers[actualPartition + 1],
+            getPartition(actualPartition, failedOnly),
+            getPartition(actualPartition + 1, failedOnly),
         ];
     }
-    return Promise.all(requiredProviders.map((p) => p())).then((partitions) => {
+    return Promise.all(requiredProviders).then((partitions) => {
         const pages = partitions.flat();
         cache = {
             features: pages,

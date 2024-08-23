@@ -3,9 +3,9 @@ import readFeatures from '@reading/read';
 import path from 'path';
 import { Config } from '@config';
 import partition from '@processing/partition';
-import { getTestSuiteStats } from '@processing/stats';
+import { featureFailed, getTestSuiteStats } from '@processing/stats';
 import render from '@ui/render';
-import { PARTITION_SIZE } from '@constants';
+import { PAGE_SIZE, PARTITION_SIZE } from '@constants';
 import generate from '@processing/prefix-tree';
 import { writeFilePromise } from '@util/file';
 
@@ -63,14 +63,21 @@ export async function renderReport(
     const stats = getTestSuiteStats(features);
     console.debug('Test suite stats generated');
 
-    return Promise.all([
-        partition(outPath, features, stats, 'data').catch((err) => {
-            console.error('An error occurred:', err);
-        }),
+    const failedFeatures = features.filter((f) => featureFailed(f));
 
-        partition(outPath, features, stats, 'failed', true).catch((err) => {
-            console.error('An error occurred:', err);
-        }),
+    return Promise.all([
+        partition(features, stats).map((p, i) =>
+            writeFilePromise(path.join(outPath, `data-${i}.json`), p)
+        ),
+
+        partition(failedFeatures, stats).map((p, i) =>
+            writeFilePromise(path.join(outPath, `failed-${i}.json`), p)
+        ),
+
+        writeFilePromise(
+            path.join(outPath, 'global.json'),
+            `{ "failedPages": ${Math.ceil(failedFeatures.length / PAGE_SIZE)}, "pages": ${Math.ceil(features.length / PAGE_SIZE)} }`
+        ),
 
         writeFilePromise(
             path.join(outPath, 'prefix-tree-data.json'),
