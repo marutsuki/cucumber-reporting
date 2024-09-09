@@ -66,6 +66,6 @@ export default function addListeners(showFailed: boolean) {
     if (showFailed) {
         failedFeaturesCheckbox.checked = true;
         failedScenariosCheckbox.checked = true;
-        engine.setFailedOnly(true);
     }
+    engine.setFailedOnly(showFailed);
 }
