@@ -22,11 +22,13 @@ export type Embedding = {
     mime_type: string;
 };
 
-export type Argument = {
+export type Table = {
     rows: {
         cells: string[];
     }[];
 };
+
+export type Argument = Table;
 
 export type Step = {
     keyword: string;
@@ -36,7 +38,7 @@ export type Step = {
     result?: Result;
     embeddings?: Embedding[];
     arguments?: Argument[];
-};
+} & Partial<Table>; // For Java Cucumber report compatability
 
 export type Tag = {
     name: string;
