@@ -673,6 +673,10 @@
                     {
                         "name": "@Screenshot",
                         "line": 17
+                    },
+                    {
+                        "name": "@Atag",
+                        "line": 17
                     }
                 ],
                 "type": "scenario"

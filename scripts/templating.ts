@@ -65,7 +65,7 @@ const statusTemplate = `
     {{/result.pending}}
 `;
 const stepTemplate = `
-    <li class="pt-2 max-w-full">
+    <li class="max-w-full">
         <div>
             <div class="flex flex-row justify-between text-md">
                 <div class="flex flex-row">
@@ -137,6 +137,11 @@ const scenarioTemplate = `
         {{name}}
     </h2>
     <ul class="collapse-content">
+        <ul class="my-2">
+        {{#tags}}
+            <li class="tag">{{name}}</li>
+        {{/tags}}
+        </ul>
         {{#before}}
             {{> beforeAfter}}
         {{/before}}
