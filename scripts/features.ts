@@ -65,10 +65,10 @@ export default async function features(
 async function featuresImpl(
     page: number,
     failedOnly: boolean,
-    searchFilter?: string
+    searchFilter: string = ''
 ): Promise<ActiveFeatures> {
     let features;
-    if (searchFilter) {
+    if (searchFilter.length > 0) {
         features = featuresFiltered(page, failedOnly, searchFilter);
     } else {
         features = featuresUnfiltered(page, failedOnly);
@@ -79,6 +79,7 @@ async function featuresImpl(
             failedOnly,
             searchFilter,
         };
+        state.cache = data;
         return data;
     });
 }
@@ -87,11 +88,16 @@ type Metadata = {
     partition: number;
 };
 
+type FeatureData = ActiveFeatures &
+    Metadata & {
+        pages: ProcessedFeature[][];
+    };
+
 async function featuresFiltered(
     page: number,
     failedOnly: boolean,
     searchFilter: string
-): Promise<ActiveFeatures & Metadata> {
+): Promise<FeatureData> {
     const pTree = failedOnly ? state.prefixTreeFailed : state.prefixTree;
     if (pTree === undefined) {
         throw new Error("Prefix tree data hasn't been loaded yet");
@@ -102,7 +108,7 @@ async function featuresFiltered(
 async function featuresUnfiltered(
     page: number,
     failedOnly: boolean
-): Promise<ActiveFeatures & Metadata> {
+): Promise<FeatureData> {
     const partition = Math.floor(page / PAGES_PER_PARTITION);
     const offset = page % PAGES_PER_PARTITION;
     const cached = resolveCache(offset, partition, failedOnly);
@@ -115,6 +121,7 @@ async function featuresUnfiltered(
                 ? state.pageCount?.failedPages
                 : state.pageCount?.pages) || 0;
         return {
+            pages,
             features: pages[offset],
             availablePages,
             partition,
@@ -127,7 +134,7 @@ async function featuresByPrefix(
     pTree: TrieNode<PrefixIndex>,
     virtualPage: number,
     failedOnly: boolean = false
-): Promise<ActiveFeatures & Metadata> {
+): Promise<FeatureData> {
     const node = trie.search(pTree, prefix);
     if (node === null) {
         return Promise.resolve({
@@ -194,8 +201,15 @@ function resolveCache(
     page: number,
     partition: number,
     failedOnly: boolean,
-    searchFilter?: string
+    searchFilter: string = ''
 ) {
+    console.log(
+        state.cache !== undefined,
+        state.lastCall !== undefined,
+        state.lastCall?.partition === partition,
+        state.lastCall?.failedOnly === failedOnly,
+        state.lastCall?.searchFilter === searchFilter
+    );
     if (
         state.cache !== undefined &&
         state.lastCall !== undefined &&
