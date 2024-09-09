@@ -402,7 +402,16 @@
         "line": 1,
         "keyword": "Feature",
         "name": "This will utterly fail",
-        "tags": [],
+        "tags": [
+            {
+                "name": "@Feature",
+                "line": 17
+            },
+            {
+                "name": "@ThisWillUtterlyFail",
+                "line": 17
+            }
+        ],
         "uri": "features\\feature2.feature"
     },
     {
