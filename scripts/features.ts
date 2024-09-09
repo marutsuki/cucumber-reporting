@@ -160,41 +160,46 @@ async function featuresByPrefix(
         return cached;
     }
 
-    return Promise.all(
-        getProvidersByOffset(actualPage, actualPartition, failedOnly)
-    ).then((partitions) => {
-        const regrouped: ProcessedFeature[][] = [];
-        let group: ProcessedFeature[] = [];
-        const features =
-            // If the page is within the first partition, slice any potential imcomptable feature names.
-            virtualPage < PAGES_PER_PARTITION
-                ? partitions.flat().slice(node.page).flat().slice(node.start)
-                : // Otherwise, just take the features as they are.
-                  partitions.flat().flat();
-        // Use the same logic to retrieve the correct page.
-        const pageOffset =
-            virtualPage < PAGES_PER_PARTITION
-                ? actualPage - node.page
-                : actualPage;
+    return Promise.all(getProvidersByOffset(actualPartition, failedOnly)).then(
+        (partitions) => {
+            const regrouped: ProcessedFeature[][] = [];
+            let group: ProcessedFeature[] = [];
+            const features =
+                // If the page is within the first partition, slice any potential imcomptable feature names.
+                virtualPage < PAGES_PER_PARTITION
+                    ? partitions
+                          .flat()
+                          .slice(node.page)
+                          .flat()
+                          .slice(node.start)
+                    : // Otherwise, just take the features as they are.
+                      partitions.flat().flat();
+            // Use the same logic to retrieve the correct page.
+            const pageOffset =
+                virtualPage < PAGES_PER_PARTITION
+                    ? actualPage + node.page
+                    : actualPage;
 
-        features.forEach((feature, i) => {
-            if (i !== 0 && i % PAGE_SIZE === 0) {
+            features.forEach((feature, i) => {
+                if (i !== 0 && i % PAGE_SIZE === 0) {
+                    regrouped.push(group);
+                    group = [];
+                }
+                group.push(feature);
+            });
+            if (group.length > 0) {
                 regrouped.push(group);
-                group = [];
             }
-            group.push(feature);
-        });
-        if (group.length > 0) {
-            regrouped.push(group);
-        }
 
-        return {
-            pages: regrouped,
-            features: regrouped[pageOffset % PAGES_PER_PARTITION],
-            availablePages: Math.ceil(node.size / PAGE_SIZE),
-            partition: actualPartition,
-        };
-    });
+            console.log(features, partitions, pageOffset, node);
+            return {
+                pages: regrouped,
+                features: regrouped[pageOffset % PAGES_PER_PARTITION],
+                availablePages: Math.ceil(node.size / PAGE_SIZE),
+                partition: actualPartition,
+            };
+        }
+    );
 }
 
 function resolveCache(
@@ -203,13 +208,6 @@ function resolveCache(
     failedOnly: boolean,
     searchFilter: string = ''
 ) {
-    console.log(
-        state.cache !== undefined,
-        state.lastCall !== undefined,
-        state.lastCall?.partition === partition,
-        state.lastCall?.failedOnly === failedOnly,
-        state.lastCall?.searchFilter === searchFilter
-    );
     if (
         state.cache !== undefined &&
         state.lastCall !== undefined &&
@@ -240,19 +238,11 @@ function resolveCache(
     return null;
 }
 
-const getProvidersByOffset = (
-    actualPage: number,
-    partition: number,
-    failedOnly: boolean
-) => {
-    if (actualPage + 1 < PAGES_PER_PARTITION) {
-        return [getPartition(partition, failedOnly)];
-    } else {
-        return [
-            getPartition(partition, failedOnly),
-            getPartition(partition + 1, failedOnly),
-        ];
-    }
+const getProvidersByOffset = (partition: number, failedOnly: boolean) => {
+    return [
+        getPartition(partition, failedOnly),
+        getPartition(partition + 1, failedOnly),
+    ];
 };
 
 const getPartition = (
@@ -263,7 +253,9 @@ const getPartition = (
         failedOnly
             ? `data/failed/failed-${partition}.json`
             : `data/all/data-${partition}.json`
-    ).then((data) => data.json());
+    )
+        .then((data) => data.json())
+        .catch(() => []);
 
 const getPageLocation = (virtualPage: number, node: PrefixIndex) => {
     // If page is out of bounds
