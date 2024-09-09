@@ -56,8 +56,6 @@ export async function renderReport(
     features.sort((a, b) => a.name.localeCompare(b.name));
     console.debug('Sorted features by name');
     const scriptsPath = path.join(outPath, 'scripts');
-    fs.mkdirSync(scriptsPath, { recursive: true });
-    console.debug('Generated scripts directory');
 
     const partitions = Math.ceil(features.length / PARTITION_SIZE);
     const stats = getTestSuiteStats(features);
@@ -65,13 +63,27 @@ export async function renderReport(
 
     const failedFeatures = features.filter((f) => featureFailed(f));
 
+    console.debug('Failed features filtered, count:', failedFeatures.length);
+
+    fs.mkdirSync(scriptsPath, { recursive: true });
+    fs.mkdirSync(path.join(outPath, 'data/all'), { recursive: true });
+    fs.mkdirSync(path.join(outPath, 'data/failed'), { recursive: true });
+
+    console.debug('Generated output directories');
+
     return Promise.all([
         partition(features, stats).map((p, i) =>
-            writeFilePromise(path.join(outPath, `data-${i}.json`), p)
+            writeFilePromise(
+                path.join(outPath, 'data/all', `data-${i}.json`),
+                p
+            )
         ),
 
         partition(failedFeatures, stats).map((p, i) =>
-            writeFilePromise(path.join(outPath, `failed-${i}.json`), p)
+            writeFilePromise(
+                path.join(outPath, 'data/failed', `failed-${i}.json`),
+                p
+            )
         ),
 
         writeFilePromise(
