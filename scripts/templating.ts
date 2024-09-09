@@ -65,7 +65,7 @@ const statusTemplate = `
     {{/result.pending}}
 `;
 const stepTemplate = `
-    <li class="pt-2 max-w-full">
+    <li class="max-w-full">
         <div>
             <div class="flex flex-row justify-between text-md">
                 <div class="flex flex-row">
@@ -127,7 +127,7 @@ const stepTemplate = `
 const scenarioTemplate = `
 <div
     {{#failed}}data-status="failed"{{/failed}}
-    class="scenario collapse bg-base-300 m-2 shadow-lg shadow-base-content"
+    class="scenario collapse bg-base-300 shadow-lg shadow-base-content"
 >
     <input class="min-h-1" type="checkbox" />
     <h2
@@ -137,6 +137,11 @@ const scenarioTemplate = `
         {{name}}
     </h2>
     <ul class="collapse-content">
+        <ul class="my-1">
+        {{#tags}}
+            <li class="tag">{{name}}</li>
+        {{/tags}}
+        </ul>
         {{#before}}
             {{> beforeAfter}}
         {{/before}}
@@ -193,8 +198,13 @@ const template = `{{#features}}
         </div>
     </div>
 
-    <div class="content collapse-content">
-        <ul>
+    <div class="content collapse-content flex flex-col gap-1">
+        <ul class="my-1">
+            {{#tags}}
+                <li class="tag">{{name}}</li>
+            {{/tags}}
+        </ul>
+        <ul class="flex flex-col gap-1">
             {{ #elements }}
                 {{> scenario}}
             {{/ elements}}
