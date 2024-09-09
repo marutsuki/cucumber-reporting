@@ -1,6 +1,6 @@
 {
-    "name": "cucumber-reportify",
-    "version": "0.3.1",
+    "name": "cucumber-reporting",
+    "version": "0.4.0",
     "description": "HTML reports for Cucumber test results",
     "main": "index.js",
     "types": "index.d.ts",
@@ -19,7 +19,7 @@
     "license": "ISC",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/marutsuki/cucumber-reportify.git"
+        "url": "git+https://github.com/marutsuki/cucumber-reporting.git"
     },
     "keywords": [
         "cucumber",

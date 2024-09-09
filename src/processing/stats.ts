@@ -46,27 +46,30 @@ export function featureFailed(feature: Feature) {
         f.steps.some((s) => s.result?.status === 'failed')
     );
 }
+
 function getFeatureStats(feature: Feature): FeatureStats {
     let passed = 0;
     let failed = 0;
     let skipped = 0;
     feature.elements.forEach((scenario) => {
+        let passedScenario = true;
+        let skippedScenario = false;
         scenario.steps.forEach((step) => {
             if (step.result === undefined) {
                 return;
             }
             switch (step.result.status) {
                 case 'passed':
-                    passed++;
                     break;
                 case 'failed':
-                    failed++;
+                    passedScenario = false;
                     break;
                 case 'skipped':
-                    skipped++;
+                    skippedScenario = true;
                     break;
             }
         });
+        passedScenario ? (skippedScenario ? skipped++ : passed++) : failed++;
     });
     return {
         passed,
