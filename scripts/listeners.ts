@@ -32,14 +32,14 @@ export default function addListeners(showFailed: boolean) {
         });
     }
 
-    const FAILED_SCENARIOS_ONLY_CHECKBOX_ID = 'fail-filter-scenario';
-
     if (
         failedFeaturesCheckbox === null ||
         !(failedFeaturesCheckbox instanceof HTMLInputElement)
     ) {
         throw new Error("Couldn't find failed features filter checkbox");
     }
+
+    const FAILED_SCENARIOS_ONLY_CHECKBOX_ID = 'fail-filter-scenario';
 
     /**
      * Add an event listener to filter scenarios based on if they have failed.
@@ -66,5 +66,6 @@ export default function addListeners(showFailed: boolean) {
     if (showFailed) {
         failedFeaturesCheckbox.checked = true;
         failedScenariosCheckbox.checked = true;
+        engine.setFailedOnly(true);
     }
 }
