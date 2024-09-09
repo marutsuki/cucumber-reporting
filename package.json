@@ -1,6 +1,6 @@
 {
     "name": "cucumber-reporting",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "description": "HTML reports for Cucumber test results",
     "main": "index.js",
     "types": "index.d.ts",
