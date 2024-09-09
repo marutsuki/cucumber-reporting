@@ -37,9 +37,9 @@ const beforeAfterTemplate = `
                 </a>
             {{/match.location}}
             <div className="max-h-96 overflow-y-auto p-4">
-                <code className="text-sm bg-base-100 text-base-content p-2">
+                <pre className="text-xs bg-base-100 text-base-content p-2">
                     {{result.error_message}}
-                </code>
+                </pre>
             </div>
         {{/result.error_message}}
     </li>
@@ -116,9 +116,9 @@ const stepTemplate = `
                 </a>
             {{/match.location}}
             <div className="max-h-96 overflow-y-auto p-4">
-                <code className="text-sm bg-base-100 text-base-content p-2">
+                <pre className="text-xs bg-base-100 text-base-content p-2">
                     {{result.error_message}}
-                </code>
+                </pre>
             </div>
         {{/result.error_message}}
     </li>
@@ -129,13 +129,11 @@ const scenarioTemplate = `
     {{#failed}}data-status="failed"{{/failed}}
     class="scenario collapse bg-base-300 shadow-lg shadow-base-content"
 >
-    <input class="min-h-1" type="checkbox" />
-    <h2
-        class="text-base-content collapse-title text-md font-medium px-2 py-0.5 min-h-0 bg-opacity-50 {{#failed}}bg-error text-error-content{{/failed}}{{^failed}}bg-neutral text-neutral-content{{/failed}}"
-    >
+    <input id="checkbox-{{id}}" class="min-h-1" type="checkbox" />
+    <label for="checkbox-{{id}}" class="z-10 text-base-content collapse-title text-md select-auto font-medium px-2 py-0.5 min-h-0 bg-opacity-50 {{#failed}}bg-error text-error-content{{/failed}}{{^failed}}bg-neutral text-neutral-content{{/failed}}">
         <b>{{keyword}}:</b>
         {{name}}
-    </h2>
+    </label>
     <ul class="collapse-content">
         <ul class="my-1">
         {{#tags}}
@@ -164,27 +162,20 @@ const partial = {
 
 const template = `{{#features}}
 <div
-    id={model.id}
+    id="feature-{{id}}"
     class="page feature collapse bg-base-200 m-1 shadow-xl shadow-base-content"
     data-name="{{name}}"
     data-status="{{status}}"
     {...props}
 >
-    <input class="min-h-1" type="checkbox" />
+    <input id="checkbox-{{id}}" class="min-h-1" type="checkbox" />
     {{#failed}}
-        <div class="collapse-title rounded-md p-1 flex flex-row justify-between min-h-0 bg-opacity-50 bg-gradient-to-r from-error from-0% to-50% to-neutral">
+        <label for="checkbox-{{id}}" class="z-10 font-medium text-error-content collapse-title rounded-md p-1 flex flex-row justify-between min-h-0 bg-opacity-50 bg-gradient-to-r from-error from-0% to-50% to-neutral">
     {{/failed}}
     {{^failed}}
-        <div class="collapse-title rounded-md p-1 flex flex-row justify-between min-h-0 bg-opacity-50 bg-gradient-to-r from-success from-0% to-50% to-neutral">
+        <label for="checkbox-{{id}}" class="z-10 font-medium text-success-content collapse-title rounded-md p-1 flex flex-row justify-between min-h-0 bg-opacity-50 bg-gradient-to-r from-success from-0% to-50% to-neutral">
     {{/failed}}
-        {{#failed}}
-            <h2 class="text-error-content text-md font-medium m-0 min-h-0">
-        {{/failed}}
-        {{^failed}}
-            <h2 class="text-success-content text-md font-medium m-0 min-h-0">
-        {{/failed}}
-            {{ name }}
-        </h2>
+        {{ name }}
         <div class="flex flex-row">
             <div class="text-success h-full rounded-md w-24">
                 {{ stats.passed }} passed
@@ -196,7 +187,7 @@ const template = `{{#features}}
                 {{ stats.skipped }} skipped
             </div>
         </div>
-    </div>
+    </label>
 
     <div class="content collapse-content flex flex-col gap-1">
         <ul class="my-1">
