@@ -80,22 +80,33 @@ const stepTemplate = `
                 </div>
             </div>
 
-            <div class="max-w-[75%]">
-                {{#argumentz}}
-                    {{#argumentz}}
-                        <table class="table">
-                            {{#rows}}
-                                <tr>
-                                    {{#cells}}
-                                        <td>
-                                            {{.}}
-                                        </td>
-                                    {{/cells}}
-                                </tr>
-                            {{/rows}}
-                        </table>
-                    {{/argumentz}}
-                {{/argumentz}}
+            {{#arguments}}
+                <div class="w-fit">
+                    <table class="table">
+                        {{#rows}}
+                            <tr>
+                                {{#cells}}
+                                    <td>
+                                        {{.}}
+                                    </td>
+                                {{/cells}}
+                            </tr>
+                        {{/rows}}
+                    </table>
+                </div>
+            {{/arguments}}
+            <div class="w-fit">
+                <table class="table">
+                    {{#rows}}
+                        <tr>
+                            {{#cells}}
+                                <td class="w-fit">
+                                    {{.}}
+                                </td>
+                            {{/cells}}
+                        </tr>
+                    {{/rows}}
+                </table>
             </div>
         </div>
         {{#embeddings}}
