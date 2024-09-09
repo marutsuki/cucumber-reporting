@@ -158,11 +158,17 @@ async function featuresByPrefix(
     ).then((partitions) => {
         const regrouped: ProcessedFeature[][] = [];
         let group: ProcessedFeature[] = [];
-        const features = partitions.flat().slice(actualPage).flat();
-
-        while (!features[0].name.startsWith(prefix)) {
-            features.shift();
-        }
+        const features =
+            // If the page is within the first partition, slice any potential imcomptable feature names.
+            virtualPage < PAGES_PER_PARTITION
+                ? partitions.flat().slice(node.page).flat().slice(node.start)
+                : // Otherwise, just take the features as they are.
+                  partitions.flat().flat();
+        // Use the same logic to retrieve the correct page.
+        const pageOffset =
+            virtualPage < PAGES_PER_PARTITION
+                ? actualPage - node.page
+                : actualPage;
 
         features.forEach((feature, i) => {
             if (i !== 0 && i % PAGE_SIZE === 0) {
@@ -175,17 +181,9 @@ async function featuresByPrefix(
             regrouped.push(group);
         }
 
-        console.log(
-            partitions,
-            features,
-            actualPage,
-            node,
-            virtualPage,
-            regrouped.map((p) => p.map((p) => p.name))
-        );
         return {
             pages: regrouped,
-            features: regrouped[virtualPage % PAGES_PER_PARTITION],
+            features: regrouped[pageOffset % PAGES_PER_PARTITION],
             availablePages: Math.ceil(node.size / PAGE_SIZE),
             partition: actualPartition,
         };
