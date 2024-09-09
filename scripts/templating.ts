@@ -133,6 +133,7 @@ const scenarioTemplate = `
     <h2
         class="text-base-content collapse-title text-md font-medium px-2 py-0.5 min-h-0 bg-opacity-50 {{#failed}}bg-error text-error-content{{/failed}}{{^failed}}bg-neutral text-neutral-content{{/failed}}"
     >
+        <b>{{keyword}}:</b>
         {{name}}
     </h2>
     <ul class="collapse-content">
