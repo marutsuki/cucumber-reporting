@@ -37,9 +37,9 @@ const beforeAfterTemplate = `
                 </a>
             {{/match.location}}
             <div className="max-h-96 overflow-y-auto p-4">
-                <code className="text-sm bg-base-100 text-base-content p-2">
+                <pre className="text-xs bg-base-100 text-base-content p-2">
                     {{result.error_message}}
-                </code>
+                </pre>
             </div>
         {{/result.error_message}}
     </li>
@@ -116,9 +116,9 @@ const stepTemplate = `
                 </a>
             {{/match.location}}
             <div className="max-h-96 overflow-y-auto p-4">
-                <code className="text-sm bg-base-100 text-base-content p-2">
+                <pre className="text-xs bg-base-100 text-base-content p-2">
                     {{result.error_message}}
-                </code>
+                </pre>
             </div>
         {{/result.error_message}}
     </li>
