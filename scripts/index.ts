@@ -1,5 +1,4 @@
 import { ProcessedFeature } from '@ui/template-prep';
-import engine from './engine';
 import addListeners from './listeners';
 
 type PartitionData = {
@@ -21,5 +20,4 @@ if (window.config.showFailedOnStart) {
     console.info('Showing failed features only on load');
 }
 
-engine.setFailedOnly(window.config.showFailedOnStart);
 addListeners(window.config.showFailedOnStart);

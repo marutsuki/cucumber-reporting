@@ -20,6 +20,10 @@ const engineInternal = {
     initialized: false,
     searchFilter: '',
     failedFeaturesOnly: false,
+    _failedScenariosOnly: false,
+    updateFailedScenarios: () => {
+        engineInternal.failedScenariosOnly(engineInternal._failedScenariosOnly);
+    },
     failedScenariosOnly: (enabled: boolean) => {
         for (const scenario of engineInternal.allScenarios) {
             if (!(scenario instanceof HTMLElement)) {
@@ -31,6 +35,7 @@ const engineInternal = {
                 scenario.style.display = 'none';
             }
         }
+        engineInternal._failedScenariosOnly = enabled;
     },
     togglePage: async (page: number) => {
         const fs = await features(
@@ -83,11 +88,16 @@ const engine = {
     },
     setFailedFeaturesOnly: async (enabled: boolean) => {
         engineInternal.failedFeaturesOnly = enabled;
-        engineInternal.reset();
+        engineInternal
+            .reset()
+            .then(() => engineInternal.updateFailedScenarios());
     },
     setFailedOnly: (enabled: boolean) => {
-        engine.setFailedFeaturesOnly(enabled);
-        engine.setFailedScenariosOnly(enabled);
+        console.info('Setting failed only:', enabled);
+        engineInternal.failedFeaturesOnly = enabled;
+        engineInternal
+            .reset()
+            .then(() => engineInternal.failedScenariosOnly(enabled));
     },
     togglePage: async (page: number) => {
         engineInternal.togglePage(page);
