@@ -63,7 +63,7 @@ const statusTemplate = `
     {{/result.pending}}
 `;
 const stepTemplate = `
-    <li class="max-w-full">
+    <li class="max-w-full px-1 {{#result.failed}} bg-[rgb(255,88,97,0.4)] {{/result.failed}}">
         <div>
             <div class="flex flex-row justify-between text-md">
                 <div class="flex flex-row">
