@@ -1,7 +1,6 @@
 import { Feature, Scenario, Status, Step } from '@types';
 import { FeatureStats, TestSuiteStats } from '@processing/stats';
 import { BeforeAfter, Embedding, Result } from '@types';
-import { error } from 'console';
 
 export type ProcessedResult = Omit<Result, 'status' | 'duration'> & {
     [val in Status]: boolean;
