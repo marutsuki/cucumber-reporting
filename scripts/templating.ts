@@ -32,14 +32,12 @@ const beforeAfterTemplate = `
         {{/embeddings}}
         {{#result.error_message}}
             {{#match.location}}
-                <a className="text-primary underline">
+                <a class="text-primary underline">
                     {{match.location}}
                 </a>
             {{/match.location}}
-            <div className="max-h-96 overflow-y-auto p-4">
-                <pre className="text-xs bg-base-100 text-base-content p-2">
-                    {{result.error_message}}
-                </pre>
+            <div class="max-h-96 overflow-y-auto p-4">
+                <pre class="whitespace-pre-wrap text-xs bg-base-100 text-base-content p-2">{{result.error_message}}</pre>
             </div>
         {{/result.error_message}}
     </li>
@@ -65,7 +63,7 @@ const statusTemplate = `
     {{/result.pending}}
 `;
 const stepTemplate = `
-    <li class="max-w-full">
+    <li class="max-w-full px-1 {{#result.failed}} bg-[rgb(255,88,97,0.4)] {{/result.failed}}">
         <div>
             <div class="flex flex-row justify-between text-md">
                 <div class="flex flex-row">
@@ -122,14 +120,12 @@ const stepTemplate = `
         {{/embeddings}}
         {{#result.error_message}}
             {{#match.location}}
-                <a className="text-primary underline">
+                <a class="text-primary underline">
                     {{match.location}}
                 </a>
             {{/match.location}}
-            <div className="max-h-96 overflow-y-auto p-4">
-                <pre className="text-xs bg-base-100 text-base-content p-2">
-                    {{result.error_message}}
-                </pre>
+            <div class="max-h-96 overflow-y-auto p-4">
+                <pre class="whitespace-pre-wrap text-xs bg-base-100 text-base-content p-2">{{result.error_message}}</pre>
             </div>
         {{/result.error_message}}
     </li>

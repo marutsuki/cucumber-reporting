@@ -98,6 +98,7 @@ function mapBeforeAfter(
 function mapResult(result: Result): ProcessedResult {
     const mappedResult = {
         ...result,
+        error_message: (result.error_message || '').trim(),
         failed: result.status === 'failed',
         passed: result.status === 'passed',
         skipped: result.status === 'skipped',
